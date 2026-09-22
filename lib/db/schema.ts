@@ -1,0 +1,118 @@
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+
+export const categories = sqliteTable("categories", {
+  id: text("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  nameMn: text("name_mn").notNull(),
+  nameEn: text("name_en").notNull(),
+  meta: text("meta").notNull(),
+  image: text("image").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+export const products = sqliteTable("products", {
+  id: text("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  titleMn: text("title_mn").notNull(),
+  titleEn: text("title_en").notNull(),
+  price: integer("price").notNull(),
+  compareAtPrice: integer("compare_at_price"),
+  color: text("color").notNull(),
+  code: text("code").notNull(),
+  categorySlug: text("category_slug").notNull(),
+  collection: text("collection").notNull(),
+  badge: text("badge"),
+  image: text("image").notNull(),
+  inStock: integer("in_stock", { mode: "boolean" }).notNull().default(true),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const orders = sqliteTable("orders", {
+  id: text("id").primaryKey(),
+  customerName: text("customer_name").notNull(),
+  phone: text("phone").notNull(),
+  address: text("address").notNull(),
+  paymentMethod: text("payment_method").notNull(),
+  status: text("status").notNull().default("pending"),
+  total: integer("total").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const orderItems = sqliteTable("order_items", {
+  id: text("id").primaryKey(),
+  orderId: text("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
+  productId: text("product_id").notNull(),
+  titleMn: text("title_mn").notNull(),
+  price: integer("price").notNull(),
+  quantity: integer("quantity").notNull(),
+});
+
+export const user = sqliteTable("user", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: integer("email_verified", { mode: "boolean" })
+    .notNull()
+    .default(false),
+  image: text("image"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const session = sqliteTable("session", {
+  id: text("id").primaryKey(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  token: text("token").notNull().unique(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+});
+
+export const account = sqliteTable("account", {
+  id: text("id").primaryKey(),
+  accountId: text("account_id").notNull(),
+  providerId: text("provider_id").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  accessTokenExpiresAt: integer("access_token_expires_at", {
+    mode: "timestamp",
+  }),
+  refreshTokenExpiresAt: integer("refresh_token_expires_at", {
+    mode: "timestamp",
+  }),
+  scope: text("scope"),
+  password: text("password"),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+});
+
+export const verification = sqliteTable("verification", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
+    () => new Date(),
+  ),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(
+    () => new Date(),
+  ),
+});

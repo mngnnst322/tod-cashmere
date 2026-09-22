@@ -1,0 +1,45 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "tod-cashmere",
+	"compatibility_date": "2026-09-22",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Self-reference service binding, the service name must match the worker name
+			// see https://opennext.js.org/cloudflare/caching
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "tod-cashmere"
+		}
+	],
+	"images": {
+		// Enable image optimization
+		// see https://opennext.js.org/cloudflare/howtos/image
+		"binding": "IMAGES"
+	},
+	"d1_databases": [
+		{
+			// Placeholder id for local dev. Run `wrangler login && wrangler d1 create tod-cashmere-db`
+			// and replace database_id with the real id before deploying.
+			"binding": "DB",
+			"database_name": "tod-cashmere-db",
+			"database_id": "1aa00a52-fd88-4ea6-9f1d-ae8c4eb5052c",
+			"migrations_dir": "drizzle"
+		}
+	],
+	"r2_buckets": [
+		{
+			// Stores product images uploaded from the admin panel.
+			// Run `wrangler login && wrangler r2 bucket create tod-cashmere-images` before deploying.
+			"binding": "PRODUCT_IMAGES",
+			"bucket_name": "tod-cashmere-images"
+		}
+	]
+}
