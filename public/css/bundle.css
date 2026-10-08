@@ -69,7 +69,7 @@
   margin: 0;
   max-width: 900px;
   color: var(--bundle-paper);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(3rem, 7.2vw, 7.8rem);
   font-weight: 400;
   line-height: 0.84;
@@ -220,7 +220,7 @@
 .bundle-panel h2,
 .bundle-panel h3 {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 3vw, 3.4rem);
   font-weight: 400;
   line-height: 1;
@@ -329,7 +329,7 @@
 .bundle-saving-row { color: var(--bundle-copper); }
 .bundle-total-row { margin-top: 12px; padding-top: 16px !important; border-top: 1px solid var(--bundle-soft-rule); align-items: end; }
 .bundle-total-row dt { font-weight: 600; }
-.bundle-total-row dd { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.8rem, 2.7vw, 2.7rem); line-height: 1; }
+.bundle-total-row dd { font-family: var(--font-heading); font-size: clamp(1.8rem, 2.7vw, 2.7rem); line-height: 1; }
 
 .bundle-hint {
   min-height: 22px;

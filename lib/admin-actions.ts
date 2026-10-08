@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getDb } from "./db";
+import { requireAdmin } from "./auth-guard";
 import { categories, products, orders, orderItems } from "./db/schema";
 
 async function requireImagePath(formData: FormData, fallback?: string) {
@@ -22,7 +23,34 @@ async function requireImagePath(formData: FormData, fallback?: string) {
   return pasted || fallback || "";
 }
 
+// Optional translations: blank fields are stored as null so the storefront
+// falls back to English / the Mongolian original.
+function optional(formData: FormData, key: string) {
+  return String(formData.get(key) || "").trim() || null;
+}
+
+function productTranslations(formData: FormData) {
+  return {
+    titleRu: optional(formData, "titleRu"),
+    titleZh: optional(formData, "titleZh"),
+    colorEn: optional(formData, "colorEn"),
+    colorRu: optional(formData, "colorRu"),
+    colorZh: optional(formData, "colorZh"),
+  };
+}
+
+function categoryTranslations(formData: FormData) {
+  return {
+    nameRu: optional(formData, "nameRu"),
+    nameZh: optional(formData, "nameZh"),
+    metaMn: optional(formData, "metaMn"),
+    metaRu: optional(formData, "metaRu"),
+    metaZh: optional(formData, "metaZh"),
+  };
+}
+
 export async function createProduct(formData: FormData) {
+  await requireAdmin();
   const db = await getDb();
   const image = await requireImagePath(formData);
   await db.insert(products).values({
@@ -30,6 +58,7 @@ export async function createProduct(formData: FormData) {
     slug: String(formData.get("slug")),
     titleMn: String(formData.get("titleMn")),
     titleEn: String(formData.get("titleEn") || formData.get("titleMn")),
+    ...productTranslations(formData),
     price: Number(formData.get("price")),
     compareAtPrice: formData.get("compareAtPrice")
       ? Number(formData.get("compareAtPrice"))
@@ -47,6 +76,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(id: string, formData: FormData) {
+  await requireAdmin();
   const db = await getDb();
   const existing = await db.query.products.findFirst({
     where: eq(products.id, id),
@@ -58,6 +88,7 @@ export async function updateProduct(id: string, formData: FormData) {
       slug: String(formData.get("slug")),
       titleMn: String(formData.get("titleMn")),
       titleEn: String(formData.get("titleEn") || formData.get("titleMn")),
+      ...productTranslations(formData),
       price: Number(formData.get("price")),
       compareAtPrice: formData.get("compareAtPrice")
         ? Number(formData.get("compareAtPrice"))
@@ -75,12 +106,14 @@ export async function updateProduct(id: string, formData: FormData) {
 }
 
 export async function deleteProduct(id: string) {
+  await requireAdmin();
   const db = await getDb();
   await db.delete(products).where(eq(products.id, id));
   revalidatePath("/", "layout");
 }
 
 export async function createCategory(formData: FormData) {
+  await requireAdmin();
   const db = await getDb();
   const image = await requireImagePath(formData);
   await db.insert(categories).values({
@@ -89,6 +122,7 @@ export async function createCategory(formData: FormData) {
     nameMn: String(formData.get("nameMn")),
     nameEn: String(formData.get("nameEn") || formData.get("nameMn")),
     meta: String(formData.get("meta")),
+    ...categoryTranslations(formData),
     image,
     sortOrder: Number(formData.get("sortOrder") || 0),
   });
@@ -97,6 +131,7 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(id: string, formData: FormData) {
+  await requireAdmin();
   const db = await getDb();
   const existing = await db.query.categories.findFirst({
     where: eq(categories.id, id),
@@ -109,6 +144,7 @@ export async function updateCategory(id: string, formData: FormData) {
       nameMn: String(formData.get("nameMn")),
       nameEn: String(formData.get("nameEn") || formData.get("nameMn")),
       meta: String(formData.get("meta")),
+      ...categoryTranslations(formData),
       image,
       sortOrder: Number(formData.get("sortOrder") || 0),
     })
@@ -118,18 +154,21 @@ export async function updateCategory(id: string, formData: FormData) {
 }
 
 export async function deleteCategory(id: string) {
+  await requireAdmin();
   const db = await getDb();
   await db.delete(categories).where(eq(categories.id, id));
   revalidatePath("/", "layout");
 }
 
 export async function updateOrderStatus(id: string, status: string) {
+  await requireAdmin();
   const db = await getDb();
   await db.update(orders).set({ status }).where(eq(orders.id, id));
   revalidatePath("/admin/orders");
 }
 
 export async function listOrdersWithItems() {
+  await requireAdmin();
   const db = await getDb();
   const allOrders = await db
     .select()

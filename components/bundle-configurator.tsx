@@ -3,14 +3,13 @@
 import { useMemo, useState } from "react";
 import { useCart } from "./cart-provider";
 import { formatPrice } from "@/lib/products";
+import { useLang } from "./lang-provider";
 
-const lookItems = [
+// Copy for each piece lives in the dictionary (`lookItems`), in the same order.
+const lookPieces = [
   {
     id: "look-coat-1",
     no: "01",
-    title: "Ноолуур хосолсон урт пальто",
-    detail1: "Хар саарал · M размер",
-    detail2: "Самнасан гадарга · дотортой",
     price: 890000,
     x: 27,
     y: 42,
@@ -19,9 +18,6 @@ const lookItems = [
   {
     id: "look-turtleneck-1",
     no: "02",
-    title: "Зөөлөн ноолууран өндөр захт",
-    detail1: "Дулаан зааны яс · M размер",
-    detail2: "16 микрон · сул загвар",
     price: 289000,
     x: 70,
     y: 33,
@@ -30,9 +26,6 @@ const lookItems = [
   {
     id: "look-trouser-1",
     no: "03",
-    title: "Өргөн эсгүүртэй өмд",
-    detail1: "Зэс хүрэн · 38 размер",
-    detail2: "Зөөлөн эсгүүр · урт загвар",
     price: 349000,
     x: 68,
     y: 63,
@@ -41,9 +34,6 @@ const lookItems = [
   {
     id: "look-scarf-1",
     no: "04",
-    title: "Хөнгөн ноолууран ороолт",
-    detail1: "Мөөгөн бор · Нэг размер",
-    detail2: "Цэвэр ноолуур · 180 × 40 см",
     price: 159000,
     x: 28,
     y: 25,
@@ -52,9 +42,6 @@ const lookItems = [
   {
     id: "look-boots-1",
     no: "05",
-    title: "Арьсан шагайн гутал",
-    detail1: "Эспрессо хүрэн · 38 размер",
-    detail2: "Тугалын арьс · 55 мм өсгий",
     price: 279000,
     x: 66,
     y: 91,
@@ -64,10 +51,12 @@ const lookItems = [
 
 export function BundleConfigurator() {
   const [selected, setSelected] = useState<Set<string>>(
-    new Set(lookItems.map((i) => i.id)),
+    new Set(lookPieces.map((i) => i.id)),
   );
   const { addItem } = useCart();
+  const { dict } = useLang();
   const [status, setStatus] = useState("");
+  const lookItems = lookPieces.map((piece, i) => ({ ...piece, ...dict.lookItems[i] }));
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -79,23 +68,23 @@ export function BundleConfigurator() {
   };
 
   const { subtotal, discount, total, tierLabel, hint } = useMemo(() => {
-    const chosen = lookItems.filter((i) => selected.has(i.id));
+    const chosen = lookPieces.filter((i) => selected.has(i.id));
     const subtotal = chosen.reduce((sum, i) => sum + i.price, 0);
     let rate = 0;
-    let tierLabel = "Бараа тус бүрийн үнэ";
-    let hint = "Багцын үнэ авахын тулд 3-аас дээш бараа сонгоно уу.";
+    let tierLabel = dict.tierNone;
+    let hint = dict.hintNone;
     if (chosen.length === 5) {
       rate = 0.2;
-      tierLabel = "Бүтэн төрхийн үнэ · 20% хямд";
-      hint = "5 бараатай бүтэн төрхөөс 20% хэмнээрэй.";
+      tierLabel = dict.tierFull;
+      hint = dict.hintFull;
     } else if (chosen.length >= 3) {
       rate = 0.12;
-      tierLabel = "Сонголтын үнэ · 12% хямд";
-      hint = "3-аас дээш бараа сонгоод 12% хэмнээрэй.";
+      tierLabel = dict.tierPartial;
+      hint = dict.hintPartial;
     }
     const discount = Math.round(subtotal * rate);
     return { subtotal, discount, total: subtotal - discount, tierLabel, hint };
-  }, [selected]);
+  }, [selected, dict]);
 
   return (
     <section
@@ -106,21 +95,18 @@ export function BundleConfigurator() {
       <div className="bundle-main">
         <header className="bundle-intro">
           <div>
-            <p className="bundle-eyebrow">Төрх 04 · Намрын ателье</p>
-            <h2 id="bundle-title">Нам гүм илэрхийлэл</h2>
+            <p className="bundle-eyebrow">{dict.bundleEyebrow}</p>
+            <h2 id="bundle-title">{dict.bundleTitle}</h2>
           </div>
-          <p className="bundle-intro-copy">
-            Хүссэн хувцсаа сонгох эсвэл бүтэн төрхийг хамгийн таатай үнээр
-            аваарай.
-          </p>
+          <p className="bundle-intro-copy">{dict.bundleIntro}</p>
         </header>
 
         <div className="bundle-workspace">
-          <figure className="bundle-look" aria-label="Нам гүм илэрхийлэл">
+          <figure className="bundle-look" aria-label={dict.bundleTitle}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/bundle-look-01.png"
-              alt="Model wearing the five-piece Atelier bundle"
+              alt={dict.bundleImageAlt}
               loading="lazy"
             />
             <div className="bundle-look-shade" aria-hidden="true"></div>
@@ -148,7 +134,7 @@ export function BundleConfigurator() {
             ))}
             <figcaption>
               <span>Atelier series</span>
-              <span>Ulaanbaatar · 2026</span>
+              <span>{dict.bundleCity}</span>
             </figcaption>
           </figure>
 
@@ -156,19 +142,19 @@ export function BundleConfigurator() {
             <div className="bundle-panel-head">
               <div>
                 <p className="bundle-panel-kicker">TOD / 04</p>
-                <h3 id="bundle-edit-title">Төрхөө бүрдүүлэх</h3>
+                <h3 id="bundle-edit-title">{dict.bundleEditTitle}</h3>
               </div>
               <button
                 type="button"
                 className="bundle-select-all"
-                onClick={() => setSelected(new Set(lookItems.map((i) => i.id)))}
+                onClick={() => setSelected(new Set(lookPieces.map((i) => i.id)))}
               >
-                Бүгдийг сонгох
+                {dict.selectAll}
               </button>
             </div>
 
             <div className="bundle-selection-count" aria-live="polite">
-              <span>{selected.size}</span>/5 сонгосон
+              <span>{selected.size}</span>/5 {dict.selected}
             </div>
 
             <div className="bundle-items">
@@ -200,20 +186,20 @@ export function BundleConfigurator() {
 
             <section className="bundle-summary" aria-labelledby="bundle-pricing-title">
               <div className="bundle-summary-head">
-                <h4 id="bundle-pricing-title">Багцын үнэ</h4>
+                <h4 id="bundle-pricing-title">{dict.bundlePricing}</h4>
                 <span className="bundle-tier">{tierLabel}</span>
               </div>
               <dl>
                 <div>
-                  <dt>Барааны нийт</dt>
+                  <dt>{dict.subtotal}</dt>
                   <dd>{formatPrice(subtotal)}</dd>
                 </div>
                 <div className="bundle-saving-row">
-                  <dt>Таны хэмнэлт</dt>
+                  <dt>{dict.savings}</dt>
                   <dd>−{formatPrice(discount)}</dd>
                 </div>
                 <div className="bundle-total-row">
-                  <dt>Багцын нийт</dt>
+                  <dt>{dict.bundleTotal}</dt>
                   <dd>{formatPrice(total)}</dd>
                 </div>
               </dl>
@@ -233,11 +219,11 @@ export function BundleConfigurator() {
                         image: "/images/bundle-look-01.png",
                       }),
                     );
-                  setStatus("Багц сагсанд нэмэгдлээ");
+                  setStatus(dict.bundleAdded);
                   setTimeout(() => setStatus(""), 2000);
                 }}
               >
-                <span>Сонгосон багцыг сагслах</span>
+                <span>{dict.addBundle}</span>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M5 12h13M14 7l5 5-5 5" />
                 </svg>

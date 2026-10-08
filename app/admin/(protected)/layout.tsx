@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import Link from "next/link";
-import { getAuth } from "@/lib/auth";
+import { getSessionUser } from "@/lib/auth-guard";
 import { SignOutButton } from "../sign-out-button";
 
 export default async function ProtectedAdminLayout({
@@ -9,10 +8,13 @@ export default async function ProtectedAdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const auth = await getAuth();
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) {
+  const user = await getSessionUser();
+  if (!user) {
     redirect("/admin/login");
+  }
+  // Signed-in customers without the admin role go back to their profile.
+  if (user.role !== "admin") {
+    redirect("/account");
   }
 
   return (

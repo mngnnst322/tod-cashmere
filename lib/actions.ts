@@ -12,7 +12,7 @@ export async function createOrder(input: {
   items: CartLine[];
 }) {
   if (input.items.length === 0) {
-    return { ok: false as const, error: "Сагс хоосон байна." };
+    return { ok: false as const, error: "empty" as const };
   }
 
   const db = await getDb();

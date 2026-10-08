@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/components/cart-provider";
 import { LangProvider } from "@/components/lang-provider";
+import { getLang } from "@/lib/i18n-server";
 
 export const metadata: Metadata = {
   title: "Tod Cashmere",
@@ -22,9 +23,10 @@ const themeScript = `
 })();
 `;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const lang = await getLang();
   return (
-    <html lang="mn" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
@@ -35,13 +37,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap"
           rel="stylesheet"
         />
         <link rel="stylesheet" href="/css/styles.css" />
       </head>
       <body>
-        <LangProvider>
+        <LangProvider initialLang={lang}>
           <CartProvider>{children}</CartProvider>
         </LangProvider>
       </body>

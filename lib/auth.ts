@@ -20,6 +20,12 @@ async function buildAuth() {
     emailAndPassword: {
       enabled: true,
     },
+    user: {
+      additionalFields: {
+        // input: false — sign-up requests can't choose their own role.
+        role: { type: "string", defaultValue: "user", input: false },
+      },
+    },
     session: {
       cookieCache: {
         enabled: true,

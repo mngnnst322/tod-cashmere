@@ -18,8 +18,8 @@
   --transition-slow: 0.6s ease;
   --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --font-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Montserrat", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-heading: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Roboto", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 :root[data-theme="dark"] {
@@ -689,6 +689,45 @@ body:has(.hero--video) .site-header:not(.is-solid) {
 .lang-option.is-active::after {
   content: "✓";
   font-size: 12px;
+}
+
+/* Profile dropdown (reuses the language dropdown styles) */
+.lang-menu .lang-option {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-menu {
+  min-width: 220px;
+}
+
+.profile-menu-head {
+  display: grid;
+  gap: 2px;
+  padding: 9px 12px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.profile-menu-head span {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.profile-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--color-primary);
 }
 
 /* Day / night toggle */
@@ -2751,4 +2790,82 @@ footer {
   .section {
     padding: 44px 0;
   }
+}
+
+/* Site-wide typography: Roboto Bold for every piece of text. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+*,
+*::before,
+*::after {
+  font-weight: 700 !important;
+}
+
+/* Account sign-in / profile */
+.auth-card {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.auth-fields {
+  display: grid;
+  gap: 12px;
+}
+
+.form-field input {
+  font-size: 14px;
+}
+
+.auth-error {
+  color: #b42318;
+  font-size: 13px;
+}
+
+.auth-submit {
+  width: 100%;
+}
+
+.auth-switch {
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.profile-details {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-details dt {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+
+.profile-details dd {
+  overflow-wrap: anywhere;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.auth-card .form-field input {
+  background: var(--color-bg);
+  color: var(--color-text);
 }

@@ -1,16 +1,23 @@
 import { getArrivalProducts } from "@/lib/products";
 import { ArrivalCard } from "@/components/arrival-card";
+import { getDict } from "@/lib/i18n-server";
 
-export const metadata = { title: "Шинэ бүтээгдэхүүн – Tod Cashmere" };
+export async function generateMetadata() {
+  const { dict } = await getDict();
+  return { title: `${dict.arrivalsTitle} – Tod Cashmere` };
+}
 
 export default async function ArrivalsPage() {
-  const products = await getArrivalProducts();
+  const [products, { dict }] = await Promise.all([
+    getArrivalProducts(),
+    getDict(),
+  ]);
   return (
     <section className="section">
       <div className="section-header">
         <div>
-          <div className="section-title">Шинэ бүтээгдэхүүн</div>
-          <div className="section-subtitle">Шинэ силуэт, лимит капсул</div>
+          <div className="section-title">{dict.arrivalsTitle}</div>
+          <div className="section-subtitle">{dict.arrivalsSubtitle}</div>
         </div>
       </div>
       <div className="arrivals-grid container">

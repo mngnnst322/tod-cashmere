@@ -1,15 +1,39 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getProductBySlug, getRelatedProducts, formatPrice } from "@/lib/products";
+import {
+  getProductBySlug,
+  getRelatedProducts,
+  listCategories,
+  formatPrice,
+} from "@/lib/products";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { ProductCard } from "@/components/product-card";
+import {
+  badgeLabel,
+  categoryName,
+  productColor,
+  productTitle,
+} from "@/lib/i18n";
+import { getDict } from "@/lib/i18n-server";
 
 export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = await getRelatedProducts(product.slug, 4);
+  const [related, categories, { lang, dict }] = await Promise.all([
+    getRelatedProducts(product.slug, 4),
+    listCategories(),
+    getDict(),
+  ]);
+  const title = productTitle(product, lang);
+  const category = categories.find((c) => c.slug === product.categorySlug);
+  const collectionLabel =
+    product.collection === "arrival"
+      ? dict.collectionArrival
+      : product.collection === "catalog"
+        ? dict.collectionCatalog
+        : product.collection;
 
   return (
     <>
@@ -18,21 +42,29 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
           <div className="product-detail-media">
             <Image
               src={product.image}
-              alt={product.titleMn}
+              alt={title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             {product.badge && (
-              <span className="product-tag">{product.badge}</span>
+              <span className="product-tag">
+                {badgeLabel(product.badge, dict)}
+              </span>
             )}
           </div>
           <div className="product-detail-info">
             <div className="pill-row">
-              {product.badge === "Featured" && <span className="pill">Featured</span>}
-              <span className="pill">{product.categorySlug}</span>
+              {product.badge === "Онцлох" && (
+                <span className="pill">{badgeLabel(product.badge, dict)}</span>
+              )}
+              <span className="pill">
+                {category ? categoryName(category, lang) : product.categorySlug}
+              </span>
             </div>
-            <h1 className="product-detail-title">{product.titleMn}</h1>
-            <div className="product-detail-color">{product.color}</div>
+            <h1 className="product-detail-title">{title}</h1>
+            <div className="product-detail-color">
+              {productColor(product, lang)}
+            </div>
             <div className="product-detail-prices">
               <div className="product-price-current">
                 {formatPrice(product.price)}
@@ -47,20 +79,22 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
               {product.inStock ? (
                 <AddToCartButton
                   id={product.slug}
-                  title={product.titleMn}
+                  title={title}
                   price={product.price}
                   image={product.image}
                   className="btn btn-primary"
                 />
               ) : (
-                <div className="out-of-stock-text">Дууссан</div>
+                <div className="out-of-stock-text">{dict.outOfStock}</div>
               )}
             </div>
             <div className="product-detail-meta">
               <div>
-                Барааны код: <strong>{product.code}</strong>
+                {dict.productCode}: <strong>{product.code}</strong>
               </div>
-              <div>Collection: {product.collection}</div>
+              <div>
+                {dict.collection}: {collectionLabel}
+              </div>
             </div>
           </div>
         </div>
@@ -69,8 +103,8 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
       <section className="section">
         <div className="section-header">
           <div>
-            <div className="section-title">More to explore</div>
-            <div className="section-subtitle">Төстэй бүтээгдэхүүнүүд</div>
+            <div className="section-title">{dict.relatedTitle}</div>
+            <div className="section-subtitle">{dict.relatedSubtitle}</div>
           </div>
         </div>
         <div className="product-row">

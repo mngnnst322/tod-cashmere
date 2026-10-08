@@ -1,58 +1,61 @@
-export function SiteFooter() {
+import { getDict } from "@/lib/i18n-server";
+
+export async function SiteFooter() {
+  const { dict } = await getDict();
   return (
     <footer>
       <div className="footer-inner">
         <div>
           <div className="footer-brand">TOD CASHMERE</div>
           <p className="footer-text">
-            Premium Mongolian cashmere crafted with care.
+            {dict.footerBlurb}
           </p>
           <a className="section-link" href="#">
-            Find a store near you →
+            {dict.footerFindStore}
           </a>
         </div>
         <div>
-          <div className="footer-column-title">Company</div>
+          <div className="footer-column-title">{dict.footerCompany}</div>
           <ul className="footer-links">
             <li>
-              <a href="#">About Tod Cashmere</a>
+              <a href="#">{dict.footerAbout}</a>
             </li>
             <li>
-              <a href="#">Careers</a>
+              <a href="#">{dict.footerCareers}</a>
             </li>
             <li>
-              <a href="#">Press</a>
+              <a href="#">{dict.footerPress}</a>
             </li>
             <li>
-              <a href="#">Store Locator</a>
+              <a href="#">{dict.footerStores}</a>
             </li>
           </ul>
         </div>
         <div>
-          <div className="footer-column-title">Help</div>
+          <div className="footer-column-title">{dict.footerHelp}</div>
           <ul className="footer-links">
             <li>
-              <a href="#">Shipping</a>
+              <a href="#">{dict.footerShipping}</a>
             </li>
             <li>
-              <a href="#">Returns</a>
+              <a href="#">{dict.footerReturns}</a>
             </li>
             <li>
-              <a href="#">Contact</a>
+              <a href="#">{dict.footerContact}</a>
             </li>
           </ul>
         </div>
         <div>
-          <div className="footer-column-title">Legal</div>
+          <div className="footer-column-title">{dict.footerLegal}</div>
           <ul className="footer-links">
             <li>
-              <a href="#">Terms</a>
+              <a href="#">{dict.footerTerms}</a>
             </li>
             <li>
-              <a href="#">Privacy</a>
+              <a href="#">{dict.footerPrivacy}</a>
             </li>
             <li>
-              <a href="#">Cookies</a>
+              <a href="#">{dict.footerCookies}</a>
             </li>
           </ul>
         </div>

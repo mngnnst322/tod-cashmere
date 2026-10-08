@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getDb } from "./db";
 import { categories, products, user } from "./db/schema";
@@ -28,9 +29,13 @@ export async function runSeed() {
     });
     if (!existing) {
       const auth = await getAuth();
-      await auth.api.signUpEmail({
+      const { user: created } = await auth.api.signUpEmail({
         body: { email: adminEmail, name: "Admin", password: adminPassword },
       });
+      await db
+        .update(user)
+        .set({ role: "admin" })
+        .where(eq(user.id, created.id));
       log.push(`admin user created: ${adminEmail}`);
     } else {
       log.push(`admin user already exists: ${adminEmail}`);

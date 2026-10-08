@@ -5,9 +5,12 @@ import Image from "next/image";
 import { useCart } from "@/components/cart-provider";
 import { formatPrice } from "@/lib/products";
 import { createOrder } from "@/lib/actions";
+import { useLang } from "@/components/lang-provider";
+import { fmt } from "@/lib/i18n";
 
 export default function CartPage() {
   const { items, total, decrementItem, addItem, removeItem, clear } = useCart();
+  const { dict } = useLang();
   const [paymentMethod, setPaymentMethod] = useState("qpay");
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -29,9 +32,9 @@ export default function CartPage() {
     if (result.ok) {
       setOrderId(result.orderId);
       clear();
-      setStatus("Demo төлбөр амжилттай. Захиалга бүртгэгдлээ.");
+      setStatus(dict.orderSuccess);
     } else {
-      setStatus(result.error);
+      setStatus(dict.cartEmpty);
     }
   };
 
@@ -40,8 +43,10 @@ export default function CartPage() {
       <section className="section">
         <div className="section-header">
           <div>
-            <div className="section-title">Захиалга баталгаажлаа</div>
-            <div className="section-subtitle">Захиалгын дугаар: {orderId}</div>
+            <div className="section-title">{dict.orderConfirmed}</div>
+            <div className="section-subtitle">
+              {fmt(dict.orderNumber, { id: orderId })}
+            </div>
           </div>
         </div>
       </section>
@@ -52,16 +57,16 @@ export default function CartPage() {
     <section className="section">
       <div className="section-header">
         <div>
-          <div className="section-title">Сагс</div>
+          <div className="section-title">{dict.cart}</div>
           <div className="section-subtitle">
-            {items.length} бараа сагсанд байна
+            {fmt(dict.cartCount, { count: items.length })}
           </div>
         </div>
       </div>
 
       {items.length === 0 ? (
         <div className="container">
-          <p className="muted">Таны сагс хоосон байна.</p>
+          <p className="muted">{dict.cartEmpty}</p>
         </div>
       ) : (
         <div className="container checkout-grid">
@@ -112,22 +117,22 @@ export default function CartPage() {
             ))}
             <div className="summary" style={{ marginTop: 16 }}>
               <div className="summary-row">
-                <strong>Нийт дүн</strong>
+                <strong>{dict.total}</strong>
                 <strong>{formatPrice(total)}</strong>
               </div>
             </div>
           </div>
 
           <form className="card checkout-card" id="checkout-form" onSubmit={handleSubmit}>
-            <div className="card-title">Хүргэлтийн мэдээлэл</div>
+            <div className="card-title">{dict.shippingInfo}</div>
             <div className="form-grid">
-              <input name="customerName" placeholder="Овог нэр" required />
-              <input name="phone" placeholder="Утасны дугаар" required />
+              <input name="customerName" placeholder={dict.fullName} required />
+              <input name="phone" placeholder={dict.phone} required />
             </div>
-            <input name="address" placeholder="Хаяг" required style={{ marginTop: 12 }} />
+            <input name="address" placeholder={dict.address} required style={{ marginTop: 12 }} />
 
             <div className="card-title" style={{ marginTop: 16 }}>
-              Төлбөрийн арга
+              {dict.paymentMethod}
             </div>
             <div className="pill-row">
               <label className="pill">
@@ -148,7 +153,7 @@ export default function CartPage() {
                   checked={paymentMethod === "stripe"}
                   onChange={() => setPaymentMethod("stripe")}
                 />{" "}
-                Карт
+                {dict.card}
               </label>
             </div>
 
@@ -158,7 +163,7 @@ export default function CartPage() {
               disabled={submitting}
               style={{ marginTop: 16 }}
             >
-              {submitting ? "Төлбөр шалгаж байна..." : "Демо захиалга хийх"}
+              {submitting ? dict.processingPayment : dict.placeOrder}
             </button>
             <p id="payment-status">{status}</p>
           </form>

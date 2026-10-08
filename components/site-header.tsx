@@ -4,55 +4,57 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
 import { useLang } from "./lang-provider";
+import { AccountSignOutButton } from "./account-sign-out-button";
+import { LANGS, type Dict } from "@/lib/i18n";
 
-const megaColumns = (gender: "women" | "men") => [
+const megaColumns = (gender: "women" | "men", d: Dict) => [
   {
-    title: gender === "women" ? "Эмэгтэй" : "Эрэгтэй",
+    title: gender === "women" ? d.women : d.men,
     links: [
-      { label: "Шинэ бараа", href: "/arrivals" },
-      { label: "Гол бараа", href: `/categories#${gender}` },
-      { label: "Шилдэг борлуулалт", href: `/categories#${gender}` },
+      { label: d.megaNew, href: "/arrivals" },
+      { label: d.megaEssentials, href: `/categories#${gender}` },
+      { label: d.megaBestsellers, href: `/categories#${gender}` },
     ],
   },
   {
-    title: "Цамц",
+    title: d.megaTops,
     links: [
-      { label: "Свитр", href: `/categories#${gender}` },
-      { label: "Кардиган", href: `/categories#${gender}` },
-      { label: "Hoodie", href: `/categories#${gender}` },
+      { label: d.megaSweaters, href: `/categories#${gender}` },
+      { label: d.megaCardigans, href: `/categories#${gender}` },
+      { label: d.megaHoodies, href: `/categories#${gender}` },
       ...(gender === "women"
-        ? [{ label: "Даашинз", href: `/categories#${gender}` }]
+        ? [{ label: d.megaDresses, href: `/categories#${gender}` }]
         : []),
     ],
   },
   {
-    title: "Аксессуар",
+    title: d.megaAccessories,
     links: [
-      { label: "Малгай", href: `/categories#${gender}` },
-      { label: "Ороолт & Шаль", href: `/categories#${gender}` },
-      { label: "Бээлий", href: `/categories#${gender}` },
-      { label: "Гутал", href: "/categories#shoes" },
+      { label: d.megaBeanies, href: `/categories#${gender}` },
+      { label: d.megaScarves, href: `/categories#${gender}` },
+      { label: d.megaGloves, href: `/categories#${gender}` },
+      { label: d.megaShoes, href: "/categories#shoes" },
     ],
   },
   {
-    title: "Гадуур хувцас",
+    title: d.megaOuterwear,
     links: [
-      { label: "Пальто", href: "/categories#outerwear" },
-      { label: "Блэйзер", href: "/categories#outerwear" },
-      { label: "Куртка", href: "/categories#outerwear" },
+      { label: d.megaCoats, href: "/categories#outerwear" },
+      { label: d.megaBlazers, href: "/categories#outerwear" },
+      { label: d.megaJackets, href: "/categories#outerwear" },
     ],
   },
 ];
 
-const megaFeatures = (gender: "women" | "men") => [
+const megaFeatures = (gender: "women" | "men", d: Dict) => [
   {
     href: "/arrivals",
     image:
       gender === "women"
         ? "/images/front-view-woman-posing-beach_23-2150100135.jpg"
         : "/images/full-shot-woman-taking-walk-nature_23-2150100065.jpg",
-    title: "Коллекц",
-    caption: "Хавар–Зун 2026",
+    title: d.megaCollection,
+    caption: d.megaCollectionCaption,
   },
   {
     href: "/sale",
@@ -60,18 +62,21 @@ const megaFeatures = (gender: "women" | "men") => [
       gender === "women"
         ? "/images/smiley-woman-beach-front-view_23-2150100099.avif"
         : "/images/woman-walking-beach-side-view.jpg",
-    title: "Хямдрал",
-    caption: gender === "women" ? "Эмэгтэй хямдрал" : "Эрэгтэй хямдрал",
+    title: d.megaSale,
+    caption: gender === "women" ? d.megaSaleWomen : d.megaSaleMen,
   },
 ];
 
-export function SiteHeader() {
+export type HeaderUser = { name: string; email: string; isAdmin: boolean };
+
+export function SiteHeader({ user }: { user: HeaderUser | null }) {
   const { count } = useCart();
-  const { lang, setLang, t } = useLang();
+  const { lang, setLang, t, dict } = useLang();
   const headerRef = useRef<HTMLElement>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -101,9 +106,9 @@ export function SiteHeader() {
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest("[data-lang-select]")) {
-        setLangOpen(false);
-      }
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-lang-select]")) setLangOpen(false);
+      if (!target.closest("[data-profile-select]")) setProfileOpen(false);
     };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
@@ -145,7 +150,7 @@ export function SiteHeader() {
           <button
             type="button"
             className="nav-burger"
-            aria-label="Open menu"
+            aria-label={t("openMenu")}
             aria-expanded={navOpen}
             aria-controls="primary-nav"
             onClick={() => setNavOpen((o) => !o)}
@@ -173,7 +178,7 @@ export function SiteHeader() {
                   href={`/categories#${gender}`}
                   onClick={() => setNavOpen(false)}
                 >
-                  {gender === "women" ? "Эмэгтэй" : "Эрэгтэй"}
+                  {gender === "women" ? t("women") : t("men")}
                   <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M7 10l5 5 5-5z" />
                   </svg>
@@ -181,7 +186,7 @@ export function SiteHeader() {
                 <div className="mega-menu">
                   <div className="mega-inner">
                     <div className="mega-columns">
-                      {megaColumns(gender).map((col) => (
+                      {megaColumns(gender, dict).map((col) => (
                         <div className="mega-col" key={col.title}>
                           <div className="mega-col-title">{col.title}</div>
                           <ul>
@@ -197,7 +202,7 @@ export function SiteHeader() {
                       ))}
                     </div>
                     <div className="mega-features">
-                      {megaFeatures(gender).map((feature) => (
+                      {megaFeatures(gender, dict).map((feature) => (
                         <Link
                           className="mega-feature"
                           href={feature.href}
@@ -229,7 +234,7 @@ export function SiteHeader() {
             </li>
             <li className="nav-menu-item">
               <Link className="nav-menu-link" href="/lookbook" onClick={() => setNavOpen(false)}>
-                Lookbook
+                {t("lookbook")}
               </Link>
             </li>
             <li className="nav-menu-item">
@@ -258,7 +263,7 @@ export function SiteHeader() {
           <button
             type="button"
             className="nav-icon-button nav-icon-only theme-toggle"
-            aria-label="Toggle dark mode"
+            aria-label={t("toggleTheme")}
             onClick={toggleTheme}
           >
             <svg className="icon-svg theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
@@ -269,15 +274,16 @@ export function SiteHeader() {
             </svg>
           </button>
 
-          <div className="lang-select" data-lang-select>
+          <div className={`lang-select ${langOpen ? "open" : ""}`} data-lang-select>
             <button
               type="button"
               className="nav-icon-button lang-toggle"
               aria-haspopup="listbox"
               aria-expanded={langOpen}
-              aria-label="Select language"
+              aria-label={t("selectLanguage")}
               onClick={(e) => {
                 e.stopPropagation();
+                setProfileOpen(false);
                 setLangOpen((o) => !o);
               }}
             >
@@ -286,35 +292,107 @@ export function SiteHeader() {
                 <path d="M7 10l5 5 5-5z" />
               </svg>
             </button>
-            <ul className={`lang-menu ${langOpen ? "open" : ""}`} role="listbox">
-              <li>
-                <button
-                  type="button"
-                  className={`lang-option ${lang === "mn" ? "is-active" : ""}`}
-                  role="option"
-                  aria-selected={lang === "mn"}
-                  onClick={() => {
-                    setLang("mn");
-                    setLangOpen(false);
-                  }}
-                >
-                  Монгол
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className={`lang-option ${lang === "en" ? "is-active" : ""}`}
-                  role="option"
-                  aria-selected={lang === "en"}
-                  onClick={() => {
-                    setLang("en");
-                    setLangOpen(false);
-                  }}
-                >
-                  English
-                </button>
-              </li>
+            <ul className="lang-menu" role="listbox">
+              {LANGS.map((option) => (
+                <li key={option.code}>
+                  <button
+                    type="button"
+                    className={`lang-option ${lang === option.code ? "is-active" : ""}`}
+                    role="option"
+                    aria-selected={lang === option.code}
+                    onClick={() => {
+                      setLang(option.code);
+                      setLangOpen(false);
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div
+            className={`lang-select profile-select ${profileOpen ? "open" : ""}`}
+            data-profile-select
+          >
+            <button
+              type="button"
+              className="nav-icon-button nav-icon-only"
+              aria-haspopup="menu"
+              aria-expanded={profileOpen}
+              aria-label={user ? t("profile") : t("login")}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLangOpen(false);
+                setProfileOpen((o) => !o);
+              }}
+            >
+              <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
+              </svg>
+              {user && <span className="profile-dot" aria-hidden="true"></span>}
+            </button>
+            <ul className="lang-menu profile-menu" role="menu">
+              {user ? (
+                <>
+                  <li className="profile-menu-head" role="presentation">
+                    <strong>{user.name}</strong>
+                    <span>{user.email}</span>
+                  </li>
+                  <li>
+                    <Link
+                      className="lang-option"
+                      role="menuitem"
+                      href="/account"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      {t("profile")}
+                    </Link>
+                  </li>
+                  {user.isAdmin && (
+                    <li>
+                      <Link
+                        className="lang-option"
+                        role="menuitem"
+                        href="/admin"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        {t("admin")}
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <AccountSignOutButton
+                      className="lang-option"
+                      label={t("signOut")}
+                      onDone={() => setProfileOpen(false)}
+                    />
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link
+                      className="lang-option"
+                      role="menuitem"
+                      href="/account/login"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      {t("login")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="lang-option"
+                      role="menuitem"
+                      href="/account/login?mode=signup"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      {t("signUp")}
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
           <Link className="nav-icon-button nav-icon-only nav-cart" href="/cart" aria-label={t("cart")}>

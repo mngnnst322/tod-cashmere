@@ -40,6 +40,22 @@ export function ProductForm({
           className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
         />
       </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Title (RU, optional)</label>
+        <input
+          name="titleRu"
+          defaultValue={product?.titleRu ?? ""}
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Title (ZH, optional)</label>
+        <input
+          name="titleZh"
+          defaultValue={product?.titleZh ?? ""}
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="mb-1 block text-sm font-medium">Price (₮)</label>
@@ -64,13 +80,39 @@ export function ProductForm({
         </div>
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium">Color</label>
+        <label className="mb-1 block text-sm font-medium">Color (MN)</label>
         <input
           name="color"
           defaultValue={product?.color}
           required
           className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
         />
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <label className="mb-1 block text-sm font-medium">Color (EN)</label>
+          <input
+            name="colorEn"
+            defaultValue={product?.colorEn ?? ""}
+            className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium">Color (RU)</label>
+          <input
+            name="colorRu"
+            defaultValue={product?.colorRu ?? ""}
+            className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium">Color (ZH)</label>
+          <input
+            name="colorZh"
+            defaultValue={product?.colorZh ?? ""}
+            className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+          />
+        </div>
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium">Category</label>

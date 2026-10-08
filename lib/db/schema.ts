@@ -5,7 +5,13 @@ export const categories = sqliteTable("categories", {
   slug: text("slug").notNull().unique(),
   nameMn: text("name_mn").notNull(),
   nameEn: text("name_en").notNull(),
+  nameRu: text("name_ru"),
+  nameZh: text("name_zh"),
+  // `meta` is the English sub-line; the other languages fall back to it.
   meta: text("meta").notNull(),
+  metaMn: text("meta_mn"),
+  metaRu: text("meta_ru"),
+  metaZh: text("meta_zh"),
   image: text("image").notNull(),
   sortOrder: integer("sort_order").notNull().default(0),
 });
@@ -15,9 +21,15 @@ export const products = sqliteTable("products", {
   slug: text("slug").notNull().unique(),
   titleMn: text("title_mn").notNull(),
   titleEn: text("title_en").notNull(),
+  titleRu: text("title_ru"),
+  titleZh: text("title_zh"),
   price: integer("price").notNull(),
   compareAtPrice: integer("compare_at_price"),
+  // `color` is the Mongolian name; the other languages fall back to it.
   color: text("color").notNull(),
+  colorEn: text("color_en"),
+  colorRu: text("color_ru"),
+  colorZh: text("color_zh"),
   code: text("code").notNull(),
   categorySlug: text("category_slug").notNull(),
   collection: text("collection").notNull(),
@@ -61,6 +73,8 @@ export const user = sqliteTable("user", {
     .notNull()
     .default(false),
   image: text("image"),
+  // "admin" unlocks /admin; everyone who signs up on the storefront is "user".
+  role: text("role").notNull().default("user"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

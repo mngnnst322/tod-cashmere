@@ -1,39 +1,29 @@
-export const metadata = { title: "Craftsmanship – Tod Cashmere" };
+import { getDict } from "@/lib/i18n-server";
 
-export default function CraftsmanshipPage() {
+export async function generateMetadata() {
+  const { dict } = await getDict();
+  return { title: `${dict.craftTitle} – Tod Cashmere` };
+}
+
+export default async function CraftsmanshipPage() {
+  const { dict } = await getDict();
   return (
     <section className="section craftsmanship">
       <div className="container craftsmanship-inner">
         <div>
-          <div className="section-title">Ноолуурын ур дүй</div>
-          <div className="section-subtitle">Чанар, арчилгааны тухай товч</div>
+          <div className="section-title">{dict.craftTitle}</div>
+          <div className="section-subtitle">{dict.craftSubtitle}</div>
           <p className="craftsmanship-text" style={{ marginTop: 12 }}>
-            Tod Cashmere нь гэр бүлийн жижиг үйлдвэрийн урам зоригтойгоор
-            эхэлсэн бөгөөд өнөөдөр ч гэсэн хүний гарын дулаанаар хийсэн хэсэг
-            бүрийг чанд нягталдаг.
+            {dict.craftText}
           </p>
         </div>
         <div className="craftsmanship-list">
-          <div className="craftsmanship-item">
-            <div className="craftsmanship-label">Hand Finished</div>
-            <p className="craftsmanship-desc">
-              Тус бүрийг гараар дуусгаж, материалын уян зөөлөн уналтыг хэвээр
-              хадгалдаг.
-            </p>
-          </div>
-          <div className="craftsmanship-item">
-            <div className="craftsmanship-label">Traceable Fiber</div>
-            <p className="craftsmanship-desc">
-              Түүхий эд бүрийг хамтран ажилладаг малчдаас гаралтайг
-              баталгаажуулна.
-            </p>
-          </div>
-          <div className="craftsmanship-item">
-            <div className="craftsmanship-label">Lifetime Aftercare</div>
-            <p className="craftsmanship-desc">
-              Бүх салбарт үнэгүй үсэрхийлтийн үйлчилгээ, уураар арчилгаа.
-            </p>
-          </div>
+          {dict.craftItems.map((item) => (
+            <div className="craftsmanship-item" key={item.label}>
+              <div className="craftsmanship-label">{item.label}</div>
+              <p className="craftsmanship-desc">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

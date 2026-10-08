@@ -1,46 +1,22 @@
-export const metadata = { title: "Info – Tod Cashmere" };
+import { getDict } from "@/lib/i18n-server";
 
-const columns = [
-  {
-    title: "Бидний тухай",
-    links: [
-      "Tod Cashmere-ийн тухай",
-      "Дэлгүүрийн байршил",
-      "Ноолуур арчилгаа",
-    ],
-  },
-  {
-    title: "Үйлчилгээний нөхцөл",
-    links: [
-      "Үйлчилгээний нөхцөл",
-      "Бүртгэл, Хүргэлтийн нөхцөл",
-      "Нууцлалын баталгаа",
-      "Буцаах, Солих Журам",
-    ],
-  },
-  {
-    title: "Хувьцаа эзэмшигчдэд",
-    links: [
-      "Компанийн засаглал",
-      "Төлөөлөн удирдах зөвлөл",
-      "Гүйцэтгэх удирдлага",
-      "Ногдол ашиг",
-      "Мэдээ, мэдээлэл",
-    ],
-  },
-];
+export async function generateMetadata() {
+  const { dict } = await getDict();
+  return { title: `${dict.infoTitle} – Tod Cashmere` };
+}
 
-export default function InfoPage() {
+export default async function InfoPage() {
+  const { dict } = await getDict();
   return (
     <section className="section">
       <div className="section-header">
         <div>
-          <div className="section-title">Туслах холбоосууд</div>
-          <div className="section-subtitle">Support, policy, investor info</div>
+          <div className="section-title">{dict.infoTitle}</div>
+          <div className="section-subtitle">{dict.infoSubtitle}</div>
         </div>
       </div>
       <div className="info-grid">
-        {columns.map((col) => (
+        {dict.infoColumns.map((col) => (
           <div className="info-card" key={col.title}>
             <div className="info-title">{col.title}</div>
             <ul className="info-list">

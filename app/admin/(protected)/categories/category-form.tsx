@@ -38,11 +38,51 @@ export function CategoryForm({
         />
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium">Meta line</label>
+        <label className="mb-1 block text-sm font-medium">Name (RU, optional)</label>
+        <input
+          name="nameRu"
+          defaultValue={category?.nameRu ?? ""}
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Name (ZH, optional)</label>
+        <input
+          name="nameZh"
+          defaultValue={category?.nameZh ?? ""}
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Meta line (EN)</label>
         <input
           name="meta"
           defaultValue={category?.meta}
           placeholder="Coats · Jackets"
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Meta line (MN, optional)</label>
+        <input
+          name="metaMn"
+          defaultValue={category?.metaMn ?? ""}
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Meta line (RU, optional)</label>
+        <input
+          name="metaRu"
+          defaultValue={category?.metaRu ?? ""}
+          className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Meta line (ZH, optional)</label>
+        <input
+          name="metaZh"
+          defaultValue={category?.metaZh ?? ""}
           className="w-full rounded border border-neutral-300 px-3 py-2 text-sm"
         />
       </div>
