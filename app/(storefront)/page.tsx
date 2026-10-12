@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   listCategories,
   getFeaturedProducts,
@@ -30,17 +31,27 @@ export default async function HomePage() {
     <>
       <link rel="stylesheet" href="/css/bundle.css" />
 
-      <section className="editorial" id="intro">
-        <div className="editorial-inner editorial-block">
+      {/* `hero--video` lets the header float transparently over the photo. */}
+      <section className="hero hero--video hero--photo" id="intro">
+        <Image
+          className="hero-photo"
+          src="/images/front-view-woman-enjoying-time-beach.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+        />
+        <div className="hero-photo-shade" aria-hidden="true" />
+        <div className="hero-photo-content">
           <div className="editorial-eyebrow">{dict.introEyebrow}</div>
-          <h2 className="editorial-title">
+          <h1 className="editorial-title">
             <span className="line-reveal">
               <span>{dict.introTitle1}</span>
             </span>
             <span className="line-reveal">
               <span>{dict.introTitle2}</span>
             </span>
-          </h2>
+          </h1>
           <p className="editorial-lead">{dict.introLead}</p>
         </div>
       </section>

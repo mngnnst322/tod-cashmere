@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ComingSoon } from "@/components/coming-soon";
+import { RevealObserver } from "@/components/reveal-observer";
 import { getSessionUser, isStaffRole, staffHome } from "@/lib/auth-guard";
 import { getDict } from "@/lib/i18n-server";
 import { isComingSoon } from "@/lib/site-settings";
@@ -46,6 +47,7 @@ export default async function StorefrontLayout({
       />
       <main>{children}</main>
       <SiteFooter />
+      <RevealObserver />
     </div>
   );
 }

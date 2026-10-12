@@ -2912,3 +2912,127 @@ textarea {
   color: #6b6b6b;
   font-size: 15px;
 }
+
+/* Full-screen photo hero with the intro copy laid over it */
+.hero--photo {
+  align-items: flex-end;
+}
+
+.hero--photo .hero-photo {
+  object-fit: cover;
+  object-position: center 35%;
+  z-index: 0;
+}
+
+.hero-photo-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0.15) 55%,
+    rgba(0, 0, 0, 0.62) 100%
+  );
+}
+
+.hero-photo-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 48px) clamp(56px, 11vh, 120px);
+  color: #fff;
+}
+
+.hero-photo-content .editorial-eyebrow,
+.hero-photo-content .editorial-lead {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-photo-content .editorial-title {
+  color: #fff;
+  font-size: clamp(36px, 6.4vw, 88px);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Phones: the header has seven controls, so tighten it to fit 360–420px. */
+@media (max-width: 480px) {
+  .nav {
+    gap: 8px;
+    padding: 0 12px;
+  }
+
+  .brand {
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-right {
+    gap: 5px;
+    margin-left: auto;
+  }
+
+  .nav-icon-only {
+    width: 34px;
+    height: 34px;
+  }
+
+  .lang-toggle {
+    height: 34px;
+    padding: 0 8px;
+  }
+
+  .theme-toggle {
+    display: none;
+  }
+}
+
+/* The hero headline is above the fold, so animate it on load with CSS rather
+   than waiting for the scroll observer. */
+.hero-photo-content .line-reveal > span {
+  animation: line-up 0.95s var(--ease-out-expo) 0.15s both;
+}
+
+.hero-photo-content .line-reveal:nth-child(2) > span {
+  animation-delay: 0.29s;
+}
+
+@keyframes line-up {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Narrowest phones (≤380px). */
+@media (max-width: 380px) {
+  .nav {
+    gap: 6px;
+    padding: 0 10px;
+  }
+
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .nav-right {
+    gap: 4px;
+  }
+
+  .nav-icon-only,
+  .nav-burger {
+    width: 32px;
+    height: 32px;
+  }
+
+  .lang-toggle {
+    height: 32px;
+    padding: 0 6px;
+  }
+}
