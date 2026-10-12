@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
+import { enUS, mnMN, ruRU, zhCN } from "@clerk/localizations";
 import "./globals.css";
 import { CartProvider } from "@/components/cart-provider";
 import { LangProvider } from "@/components/lang-provider";
@@ -8,6 +10,8 @@ export const metadata: Metadata = {
   title: "Tod Cashmere",
   description: "Premium Mongolian cashmere.",
 };
+
+const clerkLocalizations = { mn: mnMN, en: enUS, ru: ruRU, zh: zhCN };
 
 const themeScript = `
 (function () {
@@ -37,15 +41,17 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
           rel="stylesheet"
         />
         <link rel="stylesheet" href="/css/styles.css" />
       </head>
       <body>
-        <LangProvider initialLang={lang}>
-          <CartProvider>{children}</CartProvider>
-        </LangProvider>
+        <ClerkProvider localization={clerkLocalizations[lang]}>
+          <LangProvider initialLang={lang}>
+            <CartProvider>{children}</CartProvider>
+          </LangProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

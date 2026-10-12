@@ -1,8 +1,4 @@
 NEXTJS_ENV=development
 
-BETTER_AUTH_SECRET=
-BETTER_AUTH_URL=http://localhost:3000
-
-# Set these, then hit /api/seed once to create the first admin login.
-ADMIN_EMAIL=
-ADMIN_PASSWORD=
+# Clerk keys live in .env.local (written by `npx clerk init`). For production,
+# set CLERK_SECRET_KEY with `npx wrangler secret put CLERK_SECRET_KEY`.

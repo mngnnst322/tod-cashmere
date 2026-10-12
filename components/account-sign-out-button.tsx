@@ -1,27 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useClerk } from "@clerk/nextjs";
 
 export function AccountSignOutButton({
   label,
   className = "btn btn-outline",
+  redirectUrl = "/",
   onDone,
 }: {
   label: string;
   className?: string;
+  redirectUrl?: string;
   onDone?: () => void;
 }) {
-  const router = useRouter();
+  const { signOut } = useClerk();
   return (
     <button
       type="button"
       className={className}
       onClick={async () => {
-        await authClient.signOut();
         onDone?.();
-        router.push("/");
-        router.refresh();
+        await signOut({ redirectUrl });
       }}
     >
       {label}

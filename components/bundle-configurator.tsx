@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "./cart-provider";
-import { formatPrice } from "@/lib/products";
+import { formatPrice } from "@/lib/format";
 import { useLang } from "./lang-provider";
 
 // Copy for each piece lives in the dictionary (`lookItems`), in the same order.

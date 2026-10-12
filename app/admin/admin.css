@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+/* Admin console palette (prefixed so it can't clash with the storefront's
+   --color-* variables in /css/styles.css). */
+@theme {
+  --color-adm-ink: #1c1a17;
+  --color-adm-ink-soft: #2a2723;
+  --color-adm-sand: #b39d7f;
+  --color-adm-sand-dark: #8f7756;
+  --color-adm-paper: #f3efe8;
+  --color-adm-cream: #faf8f4;
+  --color-adm-line: #e9e3d9;
+  --color-adm-mute: #8c847a;
+}
+
+.admin-shell {
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+}
+
+.admin-shell input,
+.admin-shell select,
+.admin-shell textarea {
+  font: inherit;
+}

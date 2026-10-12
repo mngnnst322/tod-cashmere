@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/components/cart-provider";
-import { formatPrice } from "@/lib/products";
+import { formatPrice } from "@/lib/format";
 import { createOrder } from "@/lib/actions";
 import { useLang } from "@/components/lang-provider";
 import { fmt } from "@/lib/i18n";

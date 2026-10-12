@@ -36,18 +36,33 @@ export const products = sqliteTable("products", {
   badge: text("badge"),
   image: text("image").notNull(),
   inStock: integer("in_stock", { mode: "boolean" }).notNull().default(true),
+  // Units on hand; null means stock isn't tracked for this product.
+  stock: integer("stock"),
+  // Hidden products stay in the admin but disappear from the storefront.
+  hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
 });
 
+export const ORDER_STATUSES = [
+  "new",
+  "confirmed",
+  "shipping",
+  "delivered",
+  "cancelled",
+] as const;
+export type OrderStatus = (typeof ORDER_STATUSES)[number];
+
 export const orders = sqliteTable("orders", {
   id: text("id").primaryKey(),
+  // Clerk user id when the customer was signed in at checkout.
+  userId: text("user_id"),
   customerName: text("customer_name").notNull(),
   phone: text("phone").notNull(),
   address: text("address").notNull(),
   paymentMethod: text("payment_method").notNull(),
-  status: text("status").notNull().default("pending"),
+  status: text("status").notNull().default("new"),
   total: integer("total").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
@@ -129,4 +144,36 @@ export const verification = sqliteTable("verification", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(
     () => new Date(),
   ),
+});
+
+export const news = sqliteTable("news", {
+  id: text("id").primaryKey(),
+  titleMn: text("title_mn").notNull(),
+  titleEn: text("title_en"),
+  titleRu: text("title_ru"),
+  titleZh: text("title_zh"),
+  bodyMn: text("body_mn").notNull(),
+  bodyEn: text("body_en"),
+  bodyRu: text("body_ru"),
+  bodyZh: text("body_zh"),
+  image: text("image"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+// "Online catalog": the garment types the brand makes, each with example items.
+export const catalogItems = sqliteTable("catalog_items", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(),
+  name: text("name").notNull(),
+  material: text("material").notNull().default(""),
+  image: text("image"),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+// Small key/value store for site-wide switches toggled from /admin/settings.
+export const siteSettings = sqliteTable("site_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
 });

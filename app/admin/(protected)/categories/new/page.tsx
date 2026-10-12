@@ -1,11 +1,16 @@
+import { guardPage } from "@/lib/auth-guard";
 import { createCategory } from "@/lib/admin-actions";
+import { PageBody, PageHeader } from "../../../ui";
 import { CategoryForm } from "../category-form";
 
-export default function NewCategoryPage() {
+export default async function NewCategoryPage() {
+  await guardPage("admin");
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-semibold">New category</h1>
-      <CategoryForm action={createCategory} />
-    </div>
+    <>
+      <PageHeader title="Ангилал нэмэх" subtitle="Шинэ ангилал 4 хэл дээр" />
+      <PageBody>
+        <CategoryForm action={createCategory} />
+      </PageBody>
+    </>
   );
 }

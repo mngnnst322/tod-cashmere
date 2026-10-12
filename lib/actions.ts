@@ -3,6 +3,7 @@
 import { getDb } from "./db/index";
 import { orders, orderItems } from "./db/schema";
 import type { CartLine } from "@/components/cart-provider";
+import { getUserId } from "./auth-guard";
 
 export async function createOrder(input: {
   customerName: string;
@@ -21,6 +22,8 @@ export async function createOrder(input: {
 
   await db.insert(orders).values({
     id: orderId,
+    userId: await getUserId(),
+    status: "new",
     customerName: input.customerName,
     phone: input.phone,
     address: input.address,

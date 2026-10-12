@@ -5,6 +5,7 @@ import {
   getRelatedProducts,
   listCategories,
   formatPrice,
+  isSoldOut,
 } from "@/lib/products";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { ProductCard } from "@/components/product-card";
@@ -76,7 +77,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
               )}
             </div>
             <div className="product-detail-actions">
-              {product.inStock ? (
+              {!isSoldOut(product) ? (
                 <AddToCartButton
                   id={product.slug}
                   title={title}

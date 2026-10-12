@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 import { AccountSignOutButton } from "@/components/account-sign-out-button";
-import { getSessionUser } from "@/lib/auth-guard";
+import { getSessionUser, isStaffRole, staffHome } from "@/lib/auth-guard";
 import { getDict } from "@/lib/i18n-server";
 
 const dateLocales = { mn: "mn-MN", en: "en-US", ru: "ru-RU", zh: "zh-CN" };
@@ -13,9 +13,9 @@ export async function generateMetadata() {
 
 export default async function AccountPage() {
   const [user, { lang, dict }] = await Promise.all([getSessionUser(), getDict()]);
-  if (!user) redirect("/account/login");
+  if (!user) return (await auth()).redirectToSignIn();
 
-  const isAdmin = user.role === "admin";
+  const isStaff = isStaffRole(user.role);
   return (
     <section className="section">
       <div className="section-header">
@@ -37,7 +37,7 @@ export default async function AccountPage() {
             </div>
             <div>
               <dt>{dict.role}</dt>
-              <dd>{isAdmin ? dict.roleAdmin : dict.roleUser}</dd>
+              <dd>{isStaff ? dict.roleAdmin : dict.roleUser}</dd>
             </div>
             <div>
               <dt>{dict.memberSince}</dt>
@@ -47,8 +47,8 @@ export default async function AccountPage() {
             </div>
           </dl>
           <div className="profile-actions">
-            {isAdmin && (
-              <Link className="btn btn-primary" href="/admin">
+            {isStaff && (
+              <Link className="btn btn-primary" href={staffHome(user.role)}>
                 {dict.openAdmin}
               </Link>
             )}

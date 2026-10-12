@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { AddToCartButton } from "./add-to-cart-button";
-import { formatPrice, discountPercent } from "@/lib/products";
+import { formatPrice, discountPercent, isSoldOut } from "@/lib/products";
 import { badgeLabel, productTitle } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
 import type { products } from "@/lib/db/schema";
@@ -11,7 +11,7 @@ type Product = typeof products.$inferSelect;
 export async function ProductCard({ product }: { product: Product }) {
   const { lang, dict } = await getDict();
   const title = productTitle(product, lang);
-  const isOut = !product.inStock;
+  const isOut = isSoldOut(product);
   return (
     <article className={`product-card ${isOut ? "is-out" : ""}`}>
       <div className="product-image">

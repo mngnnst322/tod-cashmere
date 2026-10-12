@@ -67,7 +67,12 @@ const megaFeatures = (gender: "women" | "men", d: Dict) => [
   },
 ];
 
-export type HeaderUser = { name: string; email: string; isAdmin: boolean };
+export type HeaderUser = {
+  name: string;
+  email: string;
+  /** Set for staff: where their admin entry point is. */
+  adminHref: string | null;
+};
 
 export function SiteHeader({ user }: { user: HeaderUser | null }) {
   const { count } = useCart();
@@ -349,12 +354,12 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                       {t("profile")}
                     </Link>
                   </li>
-                  {user.isAdmin && (
+                  {user.adminHref && (
                     <li>
                       <Link
                         className="lang-option"
                         role="menuitem"
-                        href="/admin"
+                        href={user.adminHref}
                         onClick={() => setProfileOpen(false)}
                       >
                         {t("admin")}
@@ -375,7 +380,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                     <Link
                       className="lang-option"
                       role="menuitem"
-                      href="/account/login"
+                      href="/sign-in"
                       onClick={() => setProfileOpen(false)}
                     >
                       {t("login")}
@@ -385,7 +390,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                     <Link
                       className="lang-option"
                       role="menuitem"
-                      href="/account/login?mode=signup"
+                      href="/sign-up"
                       onClick={() => setProfileOpen(false)}
                     >
                       {t("signUp")}

@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth-guard";
 import { runSeed } from "@/lib/seed";
 
-// One-off idempotent setup endpoint: seeds the catalog and, if ADMIN_EMAIL /
-// ADMIN_PASSWORD are set in .dev.vars, creates the first admin user.
+// Idempotent setup endpoint: seeds the demo catalog. Admin-only, otherwise
+// anyone could re-insert seed products the admin has deleted.
 export async function GET() {
+  try {
+    await requireAdmin();
+  } catch {
+    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
+  }
   const log = await runSeed();
   return NextResponse.json({ ok: true, log });
 }

@@ -1,76 +1,68 @@
 import Link from "next/link";
-import Image from "next/image";
-import { listProducts, formatPrice } from "@/lib/products";
-import { deleteProduct } from "@/lib/admin-actions";
+import { guardPage } from "@/lib/auth-guard";
+import { listAllProducts, listCategories } from "@/lib/products";
+import { PageBody, PageHeader, StatCard, btnDark, btnOutline, icons } from "../../ui";
+import { ProductsTable } from "./products-table";
+import { PriceImportButton } from "./price-import";
 
 export default async function AdminProductsPage() {
-  const products = await listProducts();
+  const user = await guardPage("admin", "orders");
+  const canEdit = user.role === "admin";
+  const [products, categories] = await Promise.all([listAllProducts(), listCategories()]);
+  const hidden = products.filter((p) => p.hidden).length;
 
   return (
-    <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Products</h1>
-        <Link
-          href="/admin/products/new"
-          className="rounded bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-700"
-        >
-          + New product
-        </Link>
-      </div>
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table className="w-full text-sm">
-          <thead className="bg-neutral-100 text-left">
-            <tr>
-              <th className="px-4 py-2"></th>
-              <th className="px-4 py-2">Title</th>
-              <th className="px-4 py-2">Category</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">In stock</th>
-              <th className="px-4 py-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.id} className="border-t border-neutral-100">
-                <td className="px-4 py-2">
-                  <div className="relative h-12 w-10 overflow-hidden rounded">
-                    <Image
-                      src={product.image}
-                      alt={product.titleMn}
-                      fill
-                      sizes="40px"
-                      className="object-cover"
-                    />
-                  </div>
-                </td>
-                <td className="px-4 py-2">{product.titleMn}</td>
-                <td className="px-4 py-2">{product.categorySlug}</td>
-                <td className="px-4 py-2">{formatPrice(product.price)}</td>
-                <td className="px-4 py-2">{product.inStock ? "Yes" : "No"}</td>
-                <td className="px-4 py-2 text-right">
-                  <Link
-                    href={`/admin/products/${product.id}/edit`}
-                    className="mr-3 underline"
-                  >
-                    Edit
-                  </Link>
-                  <form
-                    action={async () => {
-                      "use server";
-                      await deleteProduct(product.id);
-                    }}
-                    className="inline"
-                  >
-                    <button type="submit" className="text-red-600 underline">
-                      Delete
-                    </button>
-                  </form>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <>
+      <PageHeader
+        title="Бараа"
+        subtitle={canEdit ? "Бүтээгдэхүүн нэмэх, засах, устгах" : "Бүтээгдэхүүний жагсаалт (зөвхөн харах)"}
+        actions={
+          canEdit && (
+            <>
+              <a href="/admin/export/products" className={btnOutline}>
+                {icons.download}
+                Excel татах ({products.length})
+              </a>
+              <a href="/admin/export/products?images=1" className={btnOutline}>
+                {icons.image}
+                Зурагтай татах ({products.length})
+              </a>
+              <PriceImportButton />
+              <Link href="/admin/products/new" className={btnDark}>
+                {icons.plus}
+                Нэмэх
+              </Link>
+            </>
+          )
+        }
+      />
+      <PageBody>
+        <div className="grid gap-5 sm:grid-cols-3">
+          <StatCard label="Нийт бүтээгдэхүүн" value={products.length} />
+          <StatCard label="Идэвхтэй" value={products.length - hidden} />
+          <StatCard label="Нуусан" value={hidden} />
+        </div>
+        <ProductsTable
+          canEdit={canEdit}
+          categories={categories.map((c) => ({ slug: c.slug, name: c.nameMn }))}
+          products={products.map((p) => ({
+            id: p.id,
+            slug: p.slug,
+            code: p.code,
+            title: p.titleMn,
+            titleEn: p.titleEn,
+            image: p.image,
+            categorySlug: p.categorySlug,
+            collection: p.collection,
+            color: p.color,
+            price: p.price,
+            compareAtPrice: p.compareAtPrice,
+            stock: p.stock,
+            inStock: p.inStock,
+            hidden: p.hidden,
+          }))}
+        />
+      </PageBody>
+    </>
   );
 }

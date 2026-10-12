@@ -29,20 +29,6 @@ export default async function HomePage() {
   return (
     <>
       <link rel="stylesheet" href="/css/bundle.css" />
-      <section className="hero hero--video" id="home" aria-label="Tod Cashmere">
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/images/front-view-woman-posing-beach_23-2150100135.jpg"
-          aria-hidden="true"
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
-      </section>
 
       <section className="editorial" id="intro">
         <div className="editorial-inner editorial-block">
