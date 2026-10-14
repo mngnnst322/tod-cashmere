@@ -299,9 +299,6 @@ const mn = {
   footerTerms: "Үйлчилгээний нөхцөл",
   footerPrivacy: "Нууцлал",
   footerCookies: "Күүки",
-
-  comingSoon: "Тун удахгүй",
-  comingSoonText: "Шинэ вэбсайт маань удахгүй нээгдэнэ.",
 };
 
 export type Dict = typeof mn;
@@ -577,9 +574,6 @@ const en: Dict = {
   footerTerms: "Terms",
   footerPrivacy: "Privacy",
   footerCookies: "Cookies",
-
-  comingSoon: "Coming soon",
-  comingSoonText: "Our new website is opening soon.",
 };
 
 const ru: Dict = {
@@ -853,9 +847,6 @@ const ru: Dict = {
   footerTerms: "Условия",
   footerPrivacy: "Конфиденциальность",
   footerCookies: "Cookies",
-
-  comingSoon: "Скоро открытие",
-  comingSoonText: "Наш новый сайт скоро откроется.",
 };
 
 const zh: Dict = {
@@ -1104,9 +1095,6 @@ const zh: Dict = {
   footerTerms: "条款",
   footerPrivacy: "隐私",
   footerCookies: "Cookies",
-
-  comingSoon: "即将上线",
-  comingSoonText: "我们的新网站即将开放。",
 };
 
 export const dictionary: Record<Lang, Dict> = { mn, en, ru, zh };

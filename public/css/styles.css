@@ -2886,31 +2886,41 @@ textarea {
 .coming-soon {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 24px 16px;
+  padding: 48px 40px;
   background: #ffffff;
   color: #111111;
   text-align: center;
 }
 
-.coming-soon-logo {
-  width: min(320px, 70vw);
-  height: auto;
+.coming-soon-inner {
+  max-width: 640px;
 }
 
-.coming-soon-title {
-  margin-top: 16px;
-  font-size: clamp(22px, 4vw, 32px);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+.coming-soon-logo {
+  display: block;
+  width: min(320px, 70vw);
+  height: auto;
+  margin: 0 auto 24px;
+}
+
+.coming-soon-lead {
+  margin-top: 20px;
+  font-size: 17px;
 }
 
 .coming-soon-text {
+  margin-top: 8px;
   color: #6b6b6b;
   font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .coming-soon {
+    padding: 40px 16px;
+  }
 }
 
 /* Full-screen photo hero with the intro copy laid over it */
