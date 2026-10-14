@@ -5,26 +5,8 @@ import { deleteCatalogItem } from "@/lib/admin-actions";
 import { ConfirmButton } from "../confirm-button";
 import { EmptyRow, PageBody, PageHeader, panel, th } from "../../ui";
 import { CatalogItemButton } from "./catalog-item-button";
+import { CATALOG_TYPES } from "@/lib/catalog";
 
-// Garment types shown on the brand's "Онлайн каталог" page.
-const CATALOG_TYPES = [
-  "Оймс",
-  "Түрий",
-  "Өвдөгөвч",
-  "Улавч",
-  "Бойтог",
-  "Малгай",
-  "Ороолт",
-  "Хүзүүвч",
-  "Бээлий",
-  "Цамц",
-  "Ханцуйгүй цамц, хүрэм",
-  "Нуруувч",
-  "Даашинз",
-  "Өмд",
-  "Богино өмд",
-  "Банзал (юбка)",
-];
 
 export default async function AdminCatalogPage(props: PageProps<"/admin/catalog">) {
   await guardPage("admin");

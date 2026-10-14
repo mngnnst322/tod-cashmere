@@ -2923,6 +2923,95 @@ textarea {
   }
 }
 
+/* Public online catalog (/katalog): its own header floats over the hero */
+.katalog-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px clamp(16px, 4vw, 48px);
+  color: #fff;
+}
+
+.katalog-brand {
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+
+.katalog-nav {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.katalog-nav a {
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.katalog-card-image {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.katalog-card-image img {
+  object-fit: cover;
+}
+
+.katalog-card-name {
+  margin-top: 14px;
+  font-size: 16px;
+}
+
+.katalog-card-material {
+  margin-top: 4px;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.katalog-empty {
+  color: var(--color-muted);
+  font-size: 17px;
+  text-align: center;
+}
+
+.katalog-footer {
+  padding: 40px 16px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .katalog-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding-top: 20px;
+  }
+  .katalog-nav {
+    max-width: 100%;
+    gap: 18px;
+  }
+}
+
 /* Full-screen photo hero with the intro copy laid over it */
 .hero--photo {
   align-items: flex-end;
