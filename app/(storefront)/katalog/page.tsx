@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { CATALOG_MENU_TYPES, CATALOG_TYPES, listCatalog } from "@/lib/catalog";
-import { catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
+import { catalogItemName, catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
 import { KatalogIntro } from "@/components/katalog-intro";
 import { CatalogGrid } from "@/components/catalog-grid";
@@ -28,7 +28,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
   if (saved === "1") {
     return (
       <Listing title={s.saved}>
-        <CatalogGrid items={items} strings={s} savedOnly />
+        <CatalogGrid items={items} strings={s} lang={lang} savedOnly />
       </Listing>
     );
   }
@@ -36,13 +36,19 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
   if (typeof q === "string" && q.trim()) {
     const needle = q.trim().toLowerCase();
     const matches = items.filter((i) =>
-      [i.name, i.code, i.material, i.colors, i.type, catalogTypeName(i.type, lang)].some((v) =>
-        v.toLowerCase().includes(needle),
-      ),
+      [
+        i.name,
+        catalogItemName(i.name, lang),
+        i.code,
+        i.material,
+        i.colors,
+        i.type,
+        catalogTypeName(i.type, lang),
+      ].some((v) => v.toLowerCase().includes(needle)),
     );
     return (
       <Listing title={`${s.searchResults}: “${q.trim()}”`} subtitle={`${matches.length} ${s.styles}`}>
-        {matches.length > 0 && <CatalogGrid items={matches} strings={s} />}
+        {matches.length > 0 && <CatalogGrid items={matches} strings={s} lang={lang} />}
       </Listing>
     );
   }
@@ -70,7 +76,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
             title={`${s[gender]} · ${catalogTypeName(sec.type, lang)}`}
             subtitle={`${sec.items.length} ${s.styles}`}
           >
-            {sec.items.length > 0 && <CatalogGrid items={sec.items} strings={s} />}
+            {sec.items.length > 0 && <CatalogGrid items={sec.items} strings={s} lang={lang} />}
           </Listing>
         ))}
       </>
@@ -115,7 +121,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
           title={catalogTypeName(g.type, lang)}
           subtitle={`${g.items.length} ${s.styles}`}
         >
-          <CatalogGrid items={g.items} strings={s} />
+          <CatalogGrid items={g.items} strings={s} lang={lang} />
         </Listing>
       ))}
     </>

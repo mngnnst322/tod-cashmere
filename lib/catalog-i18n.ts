@@ -4,6 +4,7 @@ import type { Lang } from "./i18n";
 // admin as typed and are not translated.
 const strings = {
   mn: {
+    back: "Каталог руу буцах",
     color: "Өнгө",
     size: "Хэмжээ",
     women: "Эмэгтэй",
@@ -28,6 +29,7 @@ const strings = {
     nextPage: "Дараагийн хуудас",
   },
   en: {
+    back: "Back to catalog",
     color: "Color",
     size: "Size",
     women: "Women",
@@ -52,6 +54,7 @@ const strings = {
     nextPage: "Next page",
   },
   ru: {
+    back: "Назад к каталогу",
     color: "Цвет",
     size: "Размер",
     women: "Женщинам",
@@ -76,6 +79,7 @@ const strings = {
     nextPage: "Следующая страница",
   },
   zh: {
+    back: "返回目录",
     color: "颜色",
     size: "尺码",
     women: "女士",
@@ -116,7 +120,7 @@ const typeNames: Record<string, [en: string, ru: string, zh: string]> = {
   "Ороолт": ["Scarves", "Шарфы", "围巾"],
   "Хүзүүвч": ["Neck warmers", "Снуды", "围脖"],
   "Бээлий": ["Gloves", "Перчатки", "手套"],
-  "Цамц": ["Tops", "Кофты", "上衣"],
+  "Цамц": ["Knit shirts", "Кофты", "针织衫"],
   "Ханцуйгүй цамц, хүрэм": ["Vests & jackets", "Жилеты и куртки", "背心与外套"],
   "Нуруувч": ["Back warmers", "Пояса для спины", "护腰"],
   "Даашинз": ["Dresses", "Платья", "连衣裙"],
@@ -127,7 +131,7 @@ const typeNames: Record<string, [en: string, ru: string, zh: string]> = {
   "Свитер": ["Sweaters", "Свитеры", "毛衣"],
   "Пуловер": ["Pullovers", "Пуловеры", "套衫"],
   "Кардиган": ["Cardigans", "Кардиганы", "开衫"],
-  "Майк": ["T-shirts", "Футболки", "T恤"],
+  "Майк": ["Knit tops", "Топы", "针织上衣"],
   "Жилет": ["Vests", "Жилеты", "马甲"],
   "Платье": ["Dresses", "Платья", "连衣裙"],
   "Шорт": ["Shorts", "Шорты", "短裤"],
@@ -139,6 +143,108 @@ const typeNames: Record<string, [en: string, ru: string, zh: string]> = {
 export function catalogTypeName(type: string, lang: Lang) {
   if (lang === "mn") return type;
   const names = typeNames[type];
-  if (!names) return type;
-  return names[lang === "en" ? 0 : lang === "ru" ? 1 : 2];
+  return names ? pick(names, lang) : type;
+}
+
+// Item names (as typed in the admin, in Mongolian) in the other languages.
+// Names not listed here show as typed.
+const itemNames: Record<string, [en: string, ru: string, zh: string]> = {
+  "Алаг кардиган": ["Two-tone cardigan", "Двухцветный кардиган", "撞色开衫"],
+  "Алаг майк": ["Two-tone knit top", "Двухцветный топ", "撞色针织上衣"],
+  "Алаг платье": ["Two-tone dress", "Двухцветное платье", "撞色连衣裙"],
+  "Битүү кебельтэй свитер": ["All-over cable sweater", "Свитер с косами", "全麻花毛衣"],
+  "Битүү кебельтэй цамц": ["All-over cable knit shirt", "Кофта с косами", "全麻花针织衫"],
+  "Богино дотуур өмд": ["Short leggings", "Короткие леггинсы", "短款打底裤"],
+  "Богино ханцуйтай платье": ["Short-sleeve dress", "Платье с коротким рукавом", "短袖连衣裙"],
+  "Богино ханцуйтай сорочка": ["Short-sleeve collared top", "Кофта с воротником и коротким рукавом", "短袖翻领衫"],
+  "Бомбер": ["Bomber", "Бомбер", "飞行员夹克"],
+  "Бүтэн кебельтэй цамц": ["Full cable knit shirt", "Кофта с косами", "全麻花针织衫"],
+  "Гурвалжин захтай джемпер": ["V-neck jumper", "Джемпер с V-вырезом", "V领套头衫"],
+  "Джемпер": ["Jumper", "Джемпер", "套头衫"],
+  "Дотуур өмд": ["Leggings", "Леггинсы", "打底裤"],
+  "Жилет": ["Vest", "Жилет", "马甲"],
+  "Канттай өмд": ["Side-stripe trousers", "Брюки с лампасами", "侧条纹裤"],
+  "Кардиган": ["Cardigan", "Кардиган", "开衫"],
+  "Кебель урт кардиган": ["Long cable cardigan", "Длинный кардиган с косами", "长款麻花开衫"],
+  "Кебель өргөн өмд": ["Wide cable trousers", "Широкие брюки с косами", "麻花阔腿裤"],
+  "Кебельтэй цахилгаантай кардиган": ["Cable zip cardigan", "Кардиган на молнии с косами", "麻花拉链开衫"],
+  "Майк": ["Knit top", "Топ", "针织上衣"],
+  "Малгайтай цамц": ["Hoodie", "Худи", "连帽衫"],
+  "Нарийн джемпер": ["Slim jumper", "Приталенный джемпер", "修身套头衫"],
+  "Нимгэн кардиган": ["Fine-knit cardigan", "Тонкий кардиган", "薄款开衫"],
+  "Оноотой өмд": ["Slit trousers", "Брюки с разрезами", "开衩裤"],
+  "Платье": ["Dress", "Платье", "连衣裙"],
+  "Пуловер": ["Pullover", "Пуловер", "套衫"],
+  "Свитер": ["Sweater", "Свитер", "毛衣"],
+  "Сорочка цамц": ["Collared knit shirt", "Кофта с воротником", "翻领针织衫"],
+  "Сорочкан захтай майк": ["Collared knit top", "Топ с воротником", "翻领针织上衣"],
+  "Сорочкин захтай цамц": ["Shirt-collar knit shirt", "Кофта с рубашечным воротником", "衬衫领针织衫"],
+  "Сүлжмэл захтай майк": ["Knit-collar top", "Топ с вязаным воротником", "针织领上衣"],
+  "Товчтой кардиган": ["Button cardigan", "Кардиган на пуговицах", "纽扣开衫"],
+  "Товчтой майк": ["Button knit top", "Топ на пуговицах", "纽扣针织上衣"],
+  "Урт майк": ["Long knit top", "Удлинённый топ", "长款针织上衣"],
+  "Уяатай свитер": ["Tie sweater", "Свитер с завязками", "系带毛衣"],
+  "Уяатай цамц": ["Tie knit shirt", "Кофта с завязками", "系带针织衫"],
+  "Хагас ханцуйтай джемпер": ["Half-sleeve jumper", "Джемпер с рукавом до локтя", "中袖套头衫"],
+  "Хагас ханцуйтай майк": ["Half-sleeve knit top", "Топ с рукавом до локтя", "中袖针织上衣"],
+  "Хагас ханцуйтай платье": ["Half-sleeve dress", "Платье с рукавом до локтя", "中袖连衣裙"],
+  "Хошуу захтай кардиган": ["Pointed-collar cardigan", "Кардиган с острым воротником", "尖领开衫"],
+  "Цамц": ["Knit shirt", "Кофта", "针织衫"],
+  "Цахилгаантай кардиган": ["Zip cardigan", "Кардиган на молнии", "拉链开衫"],
+  "Цахилгаантай кебельтэй кардиган": ["Cable zip cardigan", "Кардиган на молнии с косами", "麻花拉链开衫"],
+  "Цахилгаантай майк": ["Zip knit top", "Топ на молнии", "拉链针织上衣"],
+  "Цахилгаантай поло": ["Zip polo", "Поло на молнии", "拉链Polo衫"],
+  "Шорт": ["Shorts", "Шорты", "短裤"],
+  "Шулуун юбка": ["Straight skirt", "Прямая юбка", "直筒半身裙"],
+  "Эм майк": ["Women's knit top", "Женский топ", "女款针织上衣"],
+  "Юбка": ["Skirt", "Юбка", "半身裙"],
+  "Өмд": ["Trousers", "Брюки", "裤子"],
+  "Өргөн карматай өмд": ["Wide patch-pocket trousers", "Широкие брюки с накладными карманами", "贴袋阔腿裤"],
+  "Өргөн уяатай өмд": ["Wide drawstring trousers", "Широкие брюки на завязках", "抽绳阔腿裤"],
+  "Өргөн ханцуйтай джемпер": ["Wide-sleeve jumper", "Джемпер с широкими рукавами", "宽袖套头衫"],
+  "Өргөн өмд халаастай": ["Wide trousers with pockets", "Широкие брюки с карманами", "带口袋阔腿裤"],
+};
+
+const pick = (names: [string, string, string], lang: Exclude<Lang, "mn">) =>
+  names[lang === "en" ? 0 : lang === "ru" ? 1 : 2];
+
+export function catalogItemName(name: string, lang: Lang) {
+  const names = itemNames[name.trim()];
+  return lang === "mn" || !names ? name : pick(names, lang);
+}
+
+// Material and colors are typed in English in the admin, as in the printed
+// catalog; these cover the values it uses.
+const materials: Record<string, Record<Lang, string>> = {
+  "100% mongolian cashmere": {
+    mn: "100% Монгол ноолуур",
+    en: "100% Mongolian cashmere",
+    ru: "100% монгольский кашемир",
+    zh: "100% 蒙古羊绒",
+  },
+};
+
+const colors: Record<string, Record<Lang, string>> = {
+  beige: { mn: "Шаргал", en: "Beige", ru: "Бежевый", zh: "米色" },
+  brown: { mn: "Хүрэн", en: "Brown", ru: "Коричневый", zh: "棕色" },
+  oatmeal: { mn: "Цайвар бор", en: "Oatmeal", ru: "Овсяный", zh: "燕麦色" },
+  camel: { mn: "Тэмээн шаргал", en: "Camel", ru: "Кэмел", zh: "驼色" },
+  ivory: { mn: "Цайвар цагаан", en: "Ivory", ru: "Слоновая кость", zh: "象牙白" },
+  grey: { mn: "Саарал", en: "Grey", ru: "Серый", zh: "灰色" },
+  gray: { mn: "Саарал", en: "Grey", ru: "Серый", zh: "灰色" },
+  black: { mn: "Хар", en: "Black", ru: "Чёрный", zh: "黑色" },
+  white: { mn: "Цагаан", en: "White", ru: "Белый", zh: "白色" },
+};
+
+export function catalogMaterial(material: string, lang: Lang) {
+  return materials[material.trim().toLowerCase()]?.[lang] ?? material;
+}
+
+export function catalogColors(list: string, lang: Lang) {
+  return list
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean)
+    .map((c) => colors[c.toLowerCase()]?.[lang] ?? c)
+    .join(", ");
 }

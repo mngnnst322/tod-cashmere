@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { catalogItems } from "@/lib/db/schema";
-import type { CatalogStrings } from "@/lib/catalog-i18n";
+import { catalogItemName, type CatalogStrings } from "@/lib/catalog-i18n";
+import type { Lang } from "@/lib/i18n";
 import { useCatalogFavorites } from "./catalog-favorites";
 
 export type CatalogItem = typeof catalogItems.$inferSelect;
@@ -10,10 +12,12 @@ export type CatalogItem = typeof catalogItems.$inferSelect;
 export function CatalogGrid({
   items,
   strings,
+  lang,
   savedOnly,
 }: {
   items: CatalogItem[];
   strings: CatalogStrings;
+  lang: Lang;
   /** Show only the items this browser has hearted (the "saved" page). */
   savedOnly?: boolean;
 }) {
@@ -26,48 +30,61 @@ export function CatalogGrid({
 
   return (
     <div className="category-grid">
-      {shown.map((item) => {
-        const saved = ids.includes(item.id);
-        return (
-          <article className="katalog-card" id={item.id} key={item.id}>
+      {shown.map((item) => (
+        <article className="katalog-card" id={item.id} key={item.id}>
+          {/* Just the photo; its name and details are on the item page. */}
+          <Link
+            href={`/katalog/${item.id}`}
+            className="katalog-card-link"
+            aria-label={catalogItemName(item.name, lang)}
+          >
             <div className="katalog-card-image">
               {item.image && (
                 <Image
                   src={item.image}
-                  alt={item.name}
+                  alt=""
                   fill
                   sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 300px"
                 />
               )}
-              <button
-                type="button"
-                className={`katalog-heart ${saved ? "is-saved" : ""}`}
-                aria-pressed={saved}
-                aria-label={saved ? strings.unsave : strings.save}
-                onClick={() => toggle(item.id)}
-              >
-                <HeartIcon />
-              </button>
             </div>
-            <div className="katalog-card-name">{item.name}</div>
-            {item.code && <div className="katalog-card-code">{item.code}</div>}
-            <div className="katalog-card-details">
-              {item.material && <div>{item.material}</div>}
-              {item.colors && (
-                <div>
-                  {strings.color}: {item.colors}
-                </div>
-              )}
-              {item.sizes && (
-                <div>
-                  {strings.size}: {item.sizes}
-                </div>
-              )}
-            </div>
-          </article>
-        );
-      })}
+          </Link>
+          <HeartButton
+            saved={ids.includes(item.id)}
+            onToggle={() => toggle(item.id)}
+            strings={strings}
+          />
+        </article>
+      ))}
     </div>
+  );
+}
+
+/** The heart for a single item (the item page), wired to saved items. */
+export function CatalogItemHeart({ id, strings }: { id: string; strings: CatalogStrings }) {
+  const { ids, toggle } = useCatalogFavorites();
+  return <HeartButton saved={ids.includes(id)} onToggle={() => toggle(id)} strings={strings} />;
+}
+
+export function HeartButton({
+  saved,
+  onToggle,
+  strings,
+}: {
+  saved: boolean;
+  onToggle: () => void;
+  strings: CatalogStrings;
+}) {
+  return (
+    <button
+      type="button"
+      className={`katalog-heart ${saved ? "is-saved" : ""}`}
+      aria-pressed={saved}
+      aria-label={saved ? strings.unsave : strings.save}
+      onClick={onToggle}
+    >
+      <HeartIcon />
+    </button>
   );
 }
 

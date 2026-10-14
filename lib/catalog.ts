@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { getDb } from "./db";
 import { catalogItems } from "./db/schema";
 
@@ -13,4 +14,9 @@ export {
 export async function listCatalog() {
   const db = await getDb();
   return db.select().from(catalogItems).orderBy(catalogItems.sortOrder);
+}
+
+export async function getCatalogItem(id: string) {
+  const db = await getDb();
+  return db.query.catalogItems.findFirst({ where: eq(catalogItems.id, id) });
 }

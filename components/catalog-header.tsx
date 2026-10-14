@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CATALOG_MENU_TYPES } from "@/lib/catalog-types";
-import { catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
+import { catalogItemName, catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
 import { LANGS } from "@/lib/i18n";
 import { useLang } from "./lang-provider";
 import { useCatalogFavorites } from "./catalog-favorites";
@@ -14,7 +15,7 @@ const MENU = ["women", "men"] as const;
 const typeHref = (gender: string, type: string) =>
   `/katalog?gender=${gender}&type=${encodeURIComponent(type)}`;
 
-export type MenuItem = { id: string; name: string; type: string; gender: string };
+export type MenuItem = { id: string; name: string; code: string; type: string; gender: string };
 
 /**
  * The storefront header's look (transparent over the hero, dropdown menus)
@@ -88,8 +89,8 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
             <span></span>
             <span></span>
           </button>
-          <Link className="brand" href="/katalog" onClick={close}>
-            <span>TOD</span> CASHMERE
+          <Link className="brand katalog-logo" href="/katalog" onClick={close}>
+            <Image src="/images/web-logo-trim.png" alt="Tod Cashmere" width={836} height={932} priority />
           </Link>
         </div>
 
@@ -139,10 +140,11 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
                               .map((i) => (
                                 <li key={i.id}>
                                   <Link
-                                    href={`${typeHref(gender, hoverType)}#${i.id}`}
+                                    href={`/katalog/${i.id}`}
                                     onClick={close}
                                   >
-                                    {i.name}
+                                    {catalogItemName(i.name, lang)}
+                                    {i.code && <span className="katalog-mega-code">{i.code}</span>}
                                   </Link>
                                 </li>
                               ))}

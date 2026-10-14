@@ -2924,32 +2924,25 @@ textarea {
 }
 
 /* Public online catalog (/katalog) */
+.katalog-card {
+  position: relative;
+}
+
+.katalog-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
 .katalog-card-image {
   position: relative;
   aspect-ratio: 3 / 4;
-  margin-bottom: 14px;
   background: var(--color-bg-alt);
   overflow: hidden;
 }
 
 .katalog-card-image img {
   object-fit: cover;
-}
-
-.katalog-card-name {
-  font-size: 16px;
-}
-
-.katalog-card-code {
-  margin-top: 2px;
-  color: var(--color-muted);
-  font-size: 13px;
-}
-
-.katalog-card-details {
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.5;
 }
 
 .katalog-heart {
@@ -2988,8 +2981,85 @@ textarea {
 
 /* Item names of the type hovered in a /katalog dropdown */
 .katalog-mega-items {
+  max-height: 60vh;
   padding-left: 32px;
   border-left: 1px solid var(--color-border);
+  overflow-y: auto;
+}
+
+.katalog-mega-code {
+  margin-left: 10px;
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+/* /katalog/[id]: one item, photo on top and its details below */
+.katalog-item {
+  max-width: 560px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.katalog-item-back {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--color-muted);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.katalog-item-image {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.katalog-item-image img {
+  object-fit: cover;
+}
+
+.katalog-item-type {
+  margin-top: 24px;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.katalog-item-name {
+  margin-top: 6px;
+  font-size: 24px;
+}
+
+.katalog-item-code {
+  margin-top: 4px;
+  color: var(--color-muted);
+  font-size: 15px;
+}
+
+.katalog-item-details {
+  margin-top: 14px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* /katalog header logo: black on the white header, white over the hero
+   photo and in dark mode. */
+.katalog-logo {
+  display: flex;
+  align-items: center;
+}
+
+.katalog-logo img {
+  width: auto;
+  height: 52px;
+}
+
+body:has(.hero--video) .site-header:not(.is-solid) .katalog-logo img,
+:root[data-theme="dark"] .katalog-logo img {
+  filter: invert(1);
 }
 
 /* /katalog cover pages, turned like a book on click */

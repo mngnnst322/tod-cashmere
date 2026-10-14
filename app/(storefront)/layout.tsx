@@ -33,7 +33,7 @@ export default async function StorefrontLayout({
     return (
       <div className="page">
         <CatalogHeader
-          items={items.map(({ id, name, type, gender }) => ({ id, name, type, gender }))}
+          items={items.map(({ id, name, code, type, gender }) => ({ id, name, code, type, gender }))}
         />
         <main>{children}</main>
         <RevealObserver />
