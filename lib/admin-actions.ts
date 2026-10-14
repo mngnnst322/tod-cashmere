@@ -9,6 +9,7 @@ import { getDb } from "./db";
 import {
   ORDER_STATUSES,
   catalogItems,
+  catalogTypes,
   categories,
   news,
   orders,
@@ -366,7 +367,7 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     material: String(formData.get("material") || ""),
     colors: String(formData.get("colors") || "").trim(),
     sizes: String(formData.get("sizes") || "").trim(),
-    gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "unisex",
+    gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "women",
     sortOrder: Number(formData.get("sortOrder") || 0),
     image: (await requireImagePath(formData, existing?.image)) || null,
   };
@@ -376,7 +377,7 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     await db.insert(catalogItems).values({ id: crypto.randomUUID(), ...values });
   }
   revalidatePath("/admin", "layout");
-  redirect(`/admin/catalog?type=${encodeURIComponent(type)}`);
+  redirect(catalogAdminHref(values.gender, type));
 }
 
 export async function deleteCatalogItem(id: string) {
@@ -384,6 +385,57 @@ export async function deleteCatalogItem(id: string) {
   const db = await getDb();
   await db.delete(catalogItems).where(eq(catalogItems.id, id));
   revalidatePath("/admin", "layout");
+}
+
+const catalogAdminHref = (gender: string, type?: string) =>
+  `/admin/catalog?gender=${gender}${type ? `&type=${encodeURIComponent(type)}` : ""}`;
+
+export async function addCatalogType(gender: string, formData: FormData) {
+  await requireAdmin();
+  const name = String(formData.get("name") || "").trim();
+  if (!isCatalogGender(gender) || !name) return;
+  const db = await getDb();
+  const existing = await db.select().from(catalogTypes).where(eq(catalogTypes.gender, gender));
+  if (!existing.some((t) => t.name === name)) {
+    const sortOrder = Math.max(-1, ...existing.map((t) => t.sortOrder)) + 1;
+    await db.insert(catalogTypes).values({ id: crypto.randomUUID(), gender, name, sortOrder });
+  }
+  revalidatePath("/admin", "layout");
+  redirect(catalogAdminHref(gender, name));
+}
+
+/** Renames a type and moves that gender's items over to the new name. */
+export async function renameCatalogType(id: string, formData: FormData) {
+  await requireAdmin();
+  const name = String(formData.get("name") || "").trim();
+  const db = await getDb();
+  const type = await db.query.catalogTypes.findFirst({ where: eq(catalogTypes.id, id) });
+  if (!type || !name) return;
+  if (name !== type.name) {
+    await db.update(catalogTypes).set({ name }).where(eq(catalogTypes.id, id));
+    await db
+      .update(catalogItems)
+      .set({ type: name })
+      .where(and(eq(catalogItems.gender, type.gender), eq(catalogItems.type, type.name)));
+  }
+  revalidatePath("/admin", "layout");
+  redirect(catalogAdminHref(type.gender, name));
+}
+
+/** Deletes a type; only offered for types with no items. */
+export async function deleteCatalogType(id: string) {
+  await requireAdmin();
+  const db = await getDb();
+  const type = await db.query.catalogTypes.findFirst({ where: eq(catalogTypes.id, id) });
+  if (!type) return;
+  const items = await db
+    .select({ id: catalogItems.id })
+    .from(catalogItems)
+    .where(and(eq(catalogItems.gender, type.gender), eq(catalogItems.type, type.name)));
+  if (items.length > 0) throw new Error("Type still has items");
+  await db.delete(catalogTypes).where(eq(catalogTypes.id, id));
+  revalidatePath("/admin", "layout");
+  redirect(catalogAdminHref(type.gender));
 }
 
 // ---- Site launch switch ----

@@ -32,12 +32,8 @@ export function CatalogGrid({
     <div className="category-grid">
       {shown.map((item) => (
         <article className="katalog-card" id={item.id} key={item.id}>
-          {/* Just the photo; its name and details are on the item page. */}
-          <Link
-            href={`/katalog/${item.id}`}
-            className="katalog-card-link"
-            aria-label={catalogItemName(item.name, lang)}
-          >
+          {/* Photo and name; the details are on the item page. */}
+          <Link href={`/katalog/${item.id}`} className="katalog-card-link">
             <div className="katalog-card-image">
               {item.image && (
                 <Image
@@ -48,6 +44,7 @@ export function CatalogGrid({
                 />
               )}
             </div>
+            <div className="katalog-card-name">{catalogItemName(item.name, lang)}</div>
           </Link>
           <HeartButton
             saved={ids.includes(item.id)}

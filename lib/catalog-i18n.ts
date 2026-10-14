@@ -4,6 +4,7 @@ import type { Lang } from "./i18n";
 // admin as typed and are not translated.
 const strings = {
   mn: {
+    admin: "Админ",
     back: "Каталог руу буцах",
     color: "Өнгө",
     size: "Хэмжээ",
@@ -29,6 +30,7 @@ const strings = {
     nextPage: "Дараагийн хуудас",
   },
   en: {
+    admin: "Admin",
     back: "Back to catalog",
     color: "Color",
     size: "Size",
@@ -54,6 +56,7 @@ const strings = {
     nextPage: "Next page",
   },
   ru: {
+    admin: "Админ",
     back: "Назад к каталогу",
     color: "Цвет",
     size: "Размер",
@@ -79,6 +82,7 @@ const strings = {
     nextPage: "Следующая страница",
   },
   zh: {
+    admin: "管理",
     back: "返回目录",
     color: "颜色",
     size: "尺码",

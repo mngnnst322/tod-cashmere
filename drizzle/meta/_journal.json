@@ -92,6 +92,13 @@
       "when": 1791962479670,
       "tag": "0012_catalog_photo_files",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1791962933990,
+      "tag": "0013_catalog_types",
+      "breakpoints": true
     }
   ]
 }

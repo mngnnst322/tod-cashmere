@@ -3,14 +3,21 @@
 import { useState } from "react";
 import { saveCatalogItem } from "@/lib/admin-actions";
 import type { catalogItems } from "@/lib/db/schema";
-import { CATALOG_GENDERS } from "@/lib/catalog-types";
 import { Modal } from "../modal";
 import { btnDark, icons, input, label } from "../../ui";
 
 type Item = typeof catalogItems.$inferSelect;
 
 /** "+ Каталог нэмэх" (no item) or the row's "Засах" link (with item). */
-export function CatalogItemButton({ type, item }: { type: string; item?: Item }) {
+export function CatalogItemButton({
+  gender,
+  type,
+  item,
+}: {
+  gender: string;
+  type: string;
+  item?: Item;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -31,6 +38,7 @@ export function CatalogItemButton({ type, item }: { type: string; item?: Item })
         subtitle={type}
       >
         <form action={saveCatalogItem.bind(null, item?.id ?? null)} className="space-y-4 text-left">
+          <input type="hidden" name="gender" value={gender} />
           <input type="hidden" name="type" value={type} />
           <div>
             <label className={label} htmlFor="catalog-name">
@@ -49,23 +57,6 @@ export function CatalogItemButton({ type, item }: { type: string; item?: Item })
               placeholder="12-10-335"
               className={input}
             />
-          </div>
-          <div>
-            <label className={label} htmlFor="catalog-gender">
-              Хүйс
-            </label>
-            <select
-              id="catalog-gender"
-              name="gender"
-              defaultValue={item?.gender ?? "unisex"}
-              className={input}
-            >
-              {CATALOG_GENDERS.map((g) => (
-                <option key={g.key} value={g.key}>
-                  {g.label}
-                </option>
-              ))}
-            </select>
           </div>
           <div>
             <label className={label} htmlFor="catalog-material">

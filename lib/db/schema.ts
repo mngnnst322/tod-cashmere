@@ -174,9 +174,18 @@ export const catalogItems = sqliteTable("catalog_items", {
   colors: text("colors").notNull().default(""),
   // e.g. "S / M / L / XL / 2XL".
   sizes: text("sizes").notNull().default(""),
-  // "women" | "men" | "unisex" (listed under both in the /katalog menu).
+  // "women" | "men"; set from the admin tab the item is added under.
   gender: text("gender").notNull().default("unisex"),
   image: text("image"),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+// Garment types of the online catalog, per gender, managed in Admin → Каталог.
+// Items refer to their type by name.
+export const catalogTypes = sqliteTable("catalog_types", {
+  id: text("id").primaryKey(),
+  gender: text("gender").notNull(),
+  name: text("name").notNull(),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 

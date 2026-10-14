@@ -322,7 +322,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
           >
             <button
               type="button"
-              className="nav-icon-button nav-icon-only"
+              className={`nav-icon-button ${user ? "nav-icon-only" : "nav-pill"}`}
               aria-haspopup="menu"
               aria-expanded={profileOpen}
               aria-label={user ? t("profile") : t("login")}
@@ -332,10 +332,21 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                 setProfileOpen((o) => !o);
               }}
             >
-              <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
-              </svg>
-              {user && <span className="profile-dot" aria-hidden="true"></span>}
+              {user ? (
+                <>
+                  <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
+                  </svg>
+                  <span className="profile-dot" aria-hidden="true"></span>
+                </>
+              ) : (
+                <>
+                  <svg className="icon-svg nav-pill-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
+                  </svg>
+                  <span className="nav-pill-text">{t("login")}</span>
+                </>
+              )}
             </button>
             <ul className="lang-menu profile-menu" role="menu">
               {user ? (
@@ -400,11 +411,12 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               )}
             </ul>
           </div>
-          <Link className="nav-icon-button nav-icon-only nav-cart" href="/cart" aria-label={t("cart")}>
-            <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <Link className="nav-icon-button nav-pill nav-cart-pill" href="/cart" aria-label={t("cart")}>
+            <svg className="icon-svg nav-pill-icon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 4h-2l-1 2h2l2.6 9h8.8l2.1-7H9.1l-.6-2h12.5V4H7Zm3 18a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z" />
             </svg>
-            <span className="cart-count">{count}</span>
+            <span className="nav-pill-text">{t("cart")}</span>
+            <span className="cart-count-inline">{count}</span>
           </Link>
         </div>
 

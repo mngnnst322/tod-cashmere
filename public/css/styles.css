@@ -2945,6 +2945,15 @@ textarea {
   object-fit: cover;
 }
 
+.katalog-card-name {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+.katalog-card-link:hover .katalog-card-name {
+  text-decoration: underline;
+}
+
 .katalog-heart {
   position: absolute;
   top: 10px;
@@ -2985,12 +2994,6 @@ textarea {
   padding-left: 32px;
   border-left: 1px solid var(--color-border);
   overflow-y: auto;
-}
-
-.katalog-mega-code {
-  margin-left: 10px;
-  color: var(--color-muted);
-  font-size: 12px;
 }
 
 /* /katalog/[id]: one item, photo on top and its details below */
@@ -3060,6 +3063,101 @@ textarea {
 body:has(.hero--video) .site-header:not(.is-solid) .katalog-logo img,
 :root[data-theme="dark"] .katalog-logo img {
   filter: invert(1);
+}
+
+/* Header buttons are round and counts are red badges — an exception to the
+   sharp-edge rule above. */
+.site-header .nav-icon-button,
+.site-header .nav-icon-button.lang-toggle {
+  border-radius: 999px !important;
+}
+
+.site-header .nav-icon-only {
+  width: 44px;
+  height: 44px;
+}
+
+.nav-pill {
+  height: 44px;
+  padding: 0 22px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.nav-cart-pill {
+  gap: 10px;
+  padding-right: 8px;
+}
+
+/* Pills show their label on wide screens and an icon on phones. */
+.nav-pill-icon {
+  display: none;
+}
+
+/* The saved-items heart is an outline, like the one on the cards. */
+.site-header .nav-cart .icon-svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.cart-count-inline {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 999px !important;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 13px;
+}
+
+.nav-cart .cart-count {
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px !important;
+  background: #e5484d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profile-dot {
+  border-radius: 999px !important;
+  background: #e5484d;
+}
+
+/* Over the hero photo the pills keep the light-on-dark look. */
+body:has(.hero--video) .site-header:not(.is-solid) .nav-pill {
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .nav-pill {
+    height: 34px;
+    padding: 0 9px;
+  }
+  .nav-pill-icon {
+    display: block;
+  }
+  .nav-pill-text {
+    display: none;
+  }
+  .nav-cart-pill {
+    gap: 4px;
+    padding-right: 4px;
+  }
+  .cart-count-inline {
+    min-width: 24px;
+    height: 24px;
+  }
+  .site-header .nav-icon-only {
+    width: 34px;
+    height: 34px;
+  }
 }
 
 /* /katalog cover pages, turned like a book on click */

@@ -3,8 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { CATALOG_MENU_TYPES } from "@/lib/catalog-types";
-import { catalogItemName, catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
+import {
+  catalogItemName,
+  catalogStrings,
+  catalogTypeName,
+} from "@/lib/catalog-i18n";
 import { LANGS } from "@/lib/i18n";
 import { useLang } from "./lang-provider";
 import { useCatalogFavorites } from "./catalog-favorites";
@@ -15,14 +18,28 @@ const MENU = ["women", "men"] as const;
 const typeHref = (gender: string, type: string) =>
   `/katalog?gender=${gender}&type=${encodeURIComponent(type)}`;
 
-export type MenuItem = { id: string; name: string; code: string; type: string; gender: string };
+export type MenuItem = {
+  id: string;
+  name: string;
+  type: string;
+  gender: string;
+};
 
 /**
  * The storefront header's look (transparent over the hero, dropdown menus)
  * with a women / men / all menu of catalog garment types instead of shop
  * links, plus catalog search, saved items and the language picker.
  */
-export function CatalogHeader({ items }: { items: MenuItem[] }) {
+export function CatalogHeader({
+  items,
+  types,
+  adminHref,
+}: {
+  items: MenuItem[];
+  types: { gender: string; name: string }[];
+  /** Set for signed-in staff: their admin entry point. */
+  adminHref: string | null;
+}) {
   const headerRef = useRef<HTMLElement>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -61,7 +78,8 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest("[data-lang-select]")) setLangOpen(false);
+      if (!(e.target as HTMLElement).closest("[data-lang-select]"))
+        setLangOpen(false);
     };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
@@ -90,7 +108,13 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
             <span></span>
           </button>
           <Link className="brand katalog-logo" href="/katalog" onClick={close}>
-            <Image src="/images/web-logo-trim.png" alt="Tod Cashmere" width={836} height={932} priority />
+            <Image
+              src="/images/web-logo-trim.png"
+              alt="Tod Cashmere"
+              width={836}
+              height={932}
+              priority
+            />
           </Link>
         </div>
 
@@ -109,45 +133,66 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
                   onClick={close}
                 >
                   {s[gender]}
-                  <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg
+                    className="nav-caret"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <path d="M7 10l5 5 5-5z" />
                   </svg>
                 </Link>
                 <div className="mega-menu">
                   <div className="mega-inner">
-                    <div className="mega-columns" onMouseLeave={() => setHoverType(null)}>
+                    <div
+                      className="mega-columns"
+                      onMouseLeave={() => setHoverType(null)}
+                    >
                       <div className="mega-col">
                         <ul>
-                          {CATALOG_MENU_TYPES[gender].map((type) => (
-                            <li key={type} onMouseEnter={() => setHoverType(type)}>
-                              <Link href={typeHref(gender, type)} onClick={close}>
-                                {catalogTypeName(type, lang)}
-                              </Link>
-                            </li>
-                          ))}
+                          {types
+                            .filter((t) => t.gender === gender)
+                            .map(({ name: type }) => (
+                              <li
+                                key={type}
+                                onMouseEnter={() => setHoverType(type)}
+                              >
+                                <Link
+                                  href={typeHref(gender, type)}
+                                  onClick={close}
+                                >
+                                  {catalogTypeName(type, lang)}
+                                </Link>
+                              </li>
+                            ))}
                         </ul>
                       </div>
                       {hoverType && (
                         <div className="mega-col katalog-mega-items">
-                          <div className="mega-col-title">{catalogTypeName(hoverType, lang)}</div>
+                          <div className="mega-col-title">
+                            {catalogTypeName(hoverType, lang)}
+                          </div>
                           <ul>
-                            {items
-                              .filter(
-                                (i) =>
-                                  i.type === hoverType &&
-                                  (i.gender === gender || i.gender === "unisex"),
-                              )
-                              .map((i) => (
-                                <li key={i.id}>
-                                  <Link
-                                    href={`/katalog/${i.id}`}
-                                    onClick={close}
-                                  >
-                                    {catalogItemName(i.name, lang)}
-                                    {i.code && <span className="katalog-mega-code">{i.code}</span>}
-                                  </Link>
-                                </li>
-                              ))}
+                            {/* Each style name once; it lists all its items. */}
+                            {[
+                              ...new Set(
+                                items
+                                  .filter(
+                                    (i) =>
+                                      i.type === hoverType &&
+                                      i.gender === gender,
+                                  )
+                                  .map((i) => i.name),
+                              ),
+                            ].map((name) => (
+                              <li key={name}>
+                                <Link
+                                  href={`${typeHref(gender, hoverType)}&name=${encodeURIComponent(name)}`}
+                                  onClick={close}
+                                >
+                                  {catalogItemName(name, lang)}
+                                </Link>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       )}
@@ -157,7 +202,11 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
               </li>
             ))}
             <li className="nav-menu-item">
-              <Link className="nav-menu-link" href="/katalog?gender=all" onClick={close}>
+              <Link
+                className="nav-menu-link"
+                href="/katalog?gender=all"
+                onClick={close}
+              >
                 {s.all}
               </Link>
             </li>
@@ -185,10 +234,15 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
             aria-label={s.saved}
           >
             <HeartIcon />
-            {savedIds.length > 0 && <span className="cart-count">{savedIds.length}</span>}
+            {savedIds.length > 0 && (
+              <span className="cart-count">{savedIds.length}</span>
+            )}
           </Link>
 
-          <div className={`lang-select ${langOpen ? "open" : ""}`} data-lang-select>
+          <div
+            className={`lang-select ${langOpen ? "open" : ""}`}
+            data-lang-select
+          >
             <button
               type="button"
               className="nav-icon-button lang-toggle"
@@ -224,10 +278,20 @@ export function CatalogHeader({ items }: { items: MenuItem[] }) {
               ))}
             </ul>
           </div>
+          {adminHref && (
+            <Link className="nav-icon-button nav-pill" href={adminHref}>
+              {s.admin}
+            </Link>
+          )}
         </div>
 
         <div className="nav-search" data-search-panel>
-          <form role="search" action="/katalog" method="GET" onSubmit={() => setSearchActive(false)}>
+          <form
+            role="search"
+            action="/katalog"
+            method="GET"
+            onSubmit={() => setSearchActive(false)}
+          >
             <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l4.25 4.25 1.49-1.49L15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z" />
             </svg>

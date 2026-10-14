@@ -1,19 +1,19 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "./db";
-import { catalogItems } from "./db/schema";
+import { catalogItems, catalogTypes } from "./db/schema";
 
-export {
-  CATALOG_GENDERS,
-  CATALOG_MENU_TYPES,
-  CATALOG_TYPES,
-  catalogGenderLabel,
-  isCatalogGender,
-} from "./catalog-types";
+export { CATALOG_GENDERS, isCatalogGender, type CatalogGender } from "./catalog-types";
 
 /** Public read of the online catalog for /katalog. */
 export async function listCatalog() {
   const db = await getDb();
   return db.select().from(catalogItems).orderBy(catalogItems.sortOrder);
+}
+
+/** Garment types of both genders, in menu order. */
+export async function listCatalogTypes() {
+  const db = await getDb();
+  return db.select().from(catalogTypes).orderBy(catalogTypes.sortOrder);
 }
 
 export async function getCatalogItem(id: string) {

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CATALOG_MENU_TYPES, CATALOG_TYPES, listCatalog } from "@/lib/catalog";
+import { listCatalog, listCatalogTypes } from "@/lib/catalog";
 import { catalogItemName, catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
 import { KatalogIntro } from "@/components/katalog-intro";
@@ -18,12 +18,20 @@ const isMenuGender = (v: unknown): v is MenuGender => GENDERS.includes(v as Menu
 // The header leads to filtered lists: ?gender= (and &type=), ?q= search and
 // ?saved=1 for the items this browser has hearted.
 export default async function CatalogPage(props: PageProps<"/katalog">) {
-  const [{ gender, type, q, saved }, items, lang] = await Promise.all([
+  const [{ gender, type, name, q, saved }, items, types, lang] = await Promise.all([
     props.searchParams,
     listCatalog(),
+    listCatalogTypes(),
     getLang(),
   ]);
   const s = catalogStrings(lang);
+  // Type names in menu order: a gender's own, or both (women's first) for "all".
+  const typeNames = (g: string) => {
+    const genders = g === "all" ? ["women", "men"] : [g];
+    return [
+      ...new Set(genders.flatMap((x) => types.filter((t) => t.gender === x).map((t) => t.name))),
+    ];
+  };
 
   if (saved === "1") {
     return (
@@ -53,18 +61,16 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
     );
   }
 
-  // A menu pick lists matching items; unisex items show under women and men.
+  // A menu pick lists matching items, by type in that gender's menu order.
   if (isMenuGender(gender)) {
-    const pickedType = typeof type === "string" && CATALOG_TYPES.includes(type) ? type : null;
+    const order = typeNames(gender);
+    const pickedType = typeof type === "string" && order.includes(type) ? type : null;
+    // A style name picked in the dropdown narrows to items with that name.
+    const pickedName = pickedType && typeof name === "string" ? name : null;
     const matches = items.filter(
-      (i) =>
-        (gender === "all" || i.gender === gender || i.gender === "unisex") &&
-        (!pickedType || i.type === pickedType),
+      (i) => (gender === "all" || i.gender === gender) && (!pickedName || i.name === pickedName),
     );
-    // Same order as that gender's dropdown, then any other types.
-    const menuTypes: string[] = gender === "all" ? [] : CATALOG_MENU_TYPES[gender];
-    const typeOrder = [...menuTypes, ...CATALOG_TYPES.filter((t) => !menuTypes.includes(t))];
-    const sections = (pickedType ? [pickedType] : typeOrder)
+    const sections = (pickedType ? [pickedType] : order)
       .map((t) => ({ type: t, items: matches.filter((i) => i.type === t) }))
       .filter((sec) => pickedType || sec.items.length > 0);
 
@@ -73,7 +79,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
         {sections.map((sec) => (
           <Listing
             key={sec.type}
-            title={`${s[gender]} · ${catalogTypeName(sec.type, lang)}`}
+            title={`${s[gender]} · ${pickedName ? catalogItemName(pickedName, lang) : catalogTypeName(sec.type, lang)}`}
             subtitle={`${sec.items.length} ${s.styles}`}
           >
             {sec.items.length > 0 && <CatalogGrid items={sec.items} strings={s} lang={lang} />}
@@ -83,7 +89,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
     );
   }
 
-  const groups = CATALOG_TYPES.map((t) => ({
+  const groups = typeNames("all").map((t) => ({
     type: t,
     items: items.filter((i) => i.type === t),
   })).filter((g) => g.items.length > 0);
