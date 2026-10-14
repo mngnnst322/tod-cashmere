@@ -4,6 +4,7 @@ import { useState } from "react";
 import { saveCatalogItem } from "@/lib/admin-actions";
 import type { catalogItems } from "@/lib/db/schema";
 import { Modal } from "../modal";
+import { ImageField } from "../image-field";
 import { btnDark, icons, input, label } from "../../ui";
 
 type Item = typeof catalogItems.$inferSelect;
@@ -106,13 +107,7 @@ export function CatalogItemButton({
               className={input}
             />
           </div>
-          <div>
-            <label className={label} htmlFor="catalog-image">
-              Зураг
-            </label>
-            <input id="catalog-image" type="file" name="imageFile" accept="image/*" className="w-full text-sm" />
-            <input type="hidden" name="imagePath" value={item?.image ?? ""} />
-          </div>
+          <ImageField current={item?.image} id={`catalog-image-${item?.id ?? "new"}`} />
           <button type="submit" className={`${btnDark} w-full`}>
             Хадгалах
           </button>

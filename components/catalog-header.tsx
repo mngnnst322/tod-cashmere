@@ -10,6 +10,7 @@ import {
 } from "@/lib/catalog-i18n";
 import { LANGS } from "@/lib/i18n";
 import { useLang } from "./lang-provider";
+import { LangFlag } from "./lang-flag";
 import { useCatalogFavorites } from "./catalog-favorites";
 import { HeartIcon } from "./catalog-grid";
 
@@ -54,26 +55,15 @@ export function CatalogHeader({
   const s = catalogStrings(lang);
 
   useEffect(() => {
-    const header = headerRef.current;
-    const fullHero = document.querySelector(".hero--video");
-    if (!fullHero || !header) {
+    if (!document.querySelector(".hero--video")) {
       setSolid(true);
       return;
     }
-    const update = () => {
-      const threshold = Math.max(
-        (fullHero as HTMLElement).offsetHeight - header.offsetHeight,
-        0,
-      );
-      setSolid(window.scrollY >= threshold - 4);
-    };
+    // Turn white as soon as the page starts scrolling off the hero.
+    const update = () => setSolid(window.scrollY > 40);
     update();
     window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
   useEffect(() => {
@@ -95,18 +85,6 @@ export function CatalogHeader({
     >
       <div className="nav">
         <div className="nav-left">
-          <button
-            type="button"
-            className="nav-burger"
-            aria-label={s.openMenu}
-            aria-expanded={navOpen}
-            aria-controls="catalog-nav"
-            onClick={() => setNavOpen((o) => !o)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
           <Link className="brand katalog-logo" href="/katalog" onClick={close}>
             <Image
               src="/images/web-logo-trim.png"
@@ -254,6 +232,7 @@ export function CatalogHeader({
                 setLangOpen((o) => !o);
               }}
             >
+              <LangFlag lang={lang} />
               <span className="lang-current">{lang.toUpperCase()}</span>
               <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 10l5 5 5-5z" />
@@ -272,6 +251,8 @@ export function CatalogHeader({
                       setLangOpen(false);
                     }}
                   >
+                    <LangFlag lang={option.code} />
+                    <span className="lang-code">{option.code.toUpperCase()}</span>
                     {option.label}
                   </button>
                 </li>
@@ -279,11 +260,31 @@ export function CatalogHeader({
             </ul>
           </div>
           {adminHref && (
-            <Link className="nav-icon-button nav-pill" href={adminHref}>
-              {s.admin}
+            <Link
+              className="nav-icon-button nav-icon-only"
+              href={adminHref}
+              aria-label={s.admin}
+              title={s.admin}
+            >
+              <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
+              </svg>
             </Link>
           )}
         </div>
+
+          <button
+            type="button"
+            className="nav-burger nav-burger-end"
+            aria-label={s.openMenu}
+            aria-expanded={navOpen}
+            aria-controls="catalog-nav"
+            onClick={() => setNavOpen((o) => !o)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
         <div className="nav-search" data-search-panel>
           <form

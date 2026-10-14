@@ -29,7 +29,7 @@ export function CatalogGrid({
   }
 
   return (
-    <div className="category-grid">
+    <div className="category-grid katalog-grid">
       {shown.map((item) => (
         <article className="katalog-card" id={item.id} key={item.id}>
           {/* Photo and name; the details are on the item page. */}

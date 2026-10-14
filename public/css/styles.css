@@ -2996,12 +2996,55 @@ textarea {
   overflow-y: auto;
 }
 
-/* /katalog/[id]: one item, photo on top and its details below */
+/* Phones: catalog lists stay two across (the shop grid drops to one). */
+@media (max-width: 600px) {
+  .category-grid.katalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+  .katalog-grid .katalog-card-name {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  .katalog-grid .katalog-heart {
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* /katalog/[id]: one item, details on the left and a large photo on the right */
 .katalog-item {
-  max-width: 560px;
+  max-width: 1140px;
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
+}
+
+.katalog-item-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 640px);
+  gap: 56px;
+  align-items: start;
+}
+
+.katalog-item-info {
+  order: -1;
+  position: sticky;
+  top: calc(var(--header-h) + 32px);
+}
+
+@media (max-width: 860px) {
+  .katalog-item-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .katalog-item-info {
+    order: 0;
+    position: static;
+    margin-top: 24px;
+  }
 }
 
 .katalog-item-back {
@@ -3024,7 +3067,6 @@ textarea {
 }
 
 .katalog-item-type {
-  margin-top: 24px;
   color: var(--color-muted);
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -3033,7 +3075,7 @@ textarea {
 
 .katalog-item-name {
   margin-top: 6px;
-  font-size: 24px;
+  font-size: clamp(24px, 2.6vw, 34px);
 }
 
 .katalog-item-code {
@@ -3048,8 +3090,8 @@ textarea {
   line-height: 1.6;
 }
 
-/* /katalog header logo: black on the white header, white over the hero
-   photo and in dark mode. */
+/* Header logo (shop and catalog): black on the white header, white over the
+   hero photo and in dark mode. */
 .katalog-logo {
   display: flex;
   align-items: center;
@@ -3075,6 +3117,57 @@ body:has(.hero--video) .site-header:not(.is-solid) .katalog-logo img,
 .site-header .nav-icon-only {
   width: 44px;
   height: 44px;
+  padding: 0;
+}
+
+.site-header .nav-icon-button .icon-svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+
+/* Buttons pushed right, with the (phone) menu button last. */
+.nav-right:has(+ .nav-burger-end) {
+  margin-left: auto;
+}
+
+.nav-burger-end {
+  flex: none;
+}
+
+/* Language picker: flag, two-letter code and name. */
+.lang-flag {
+  flex: none;
+  width: 22px;
+  height: 15px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.lang-toggle {
+  gap: 8px;
+}
+
+.lang-option:has(.lang-flag) {
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.lang-option:has(.lang-flag)::after {
+  margin-left: auto;
+}
+
+/* Phones: the header is tight, so the button keeps just the code. */
+@media (max-width: 480px) {
+  .lang-toggle .lang-flag {
+    display: none;
+  }
+}
+
+.lang-code {
+  min-width: 24px;
+  color: var(--color-muted);
+  font-size: 13px;
+  letter-spacing: 0.04em;
 }
 
 .nav-pill {

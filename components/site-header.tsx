@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
 import { useLang } from "./lang-provider";
+import { LangFlag } from "./lang-flag";
 import { AccountSignOutButton } from "./account-sign-out-button";
 import { LANGS, type Dict } from "@/lib/i18n";
 
@@ -87,26 +89,15 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const header = headerRef.current;
-    const fullHero = document.querySelector(".hero--video");
-    if (!fullHero || !header) {
+    if (!document.querySelector(".hero--video")) {
       setSolid(true);
       return;
     }
-    const update = () => {
-      const threshold = Math.max(
-        (fullHero as HTMLElement).offsetHeight - header.offsetHeight,
-        0,
-      );
-      setSolid(window.scrollY >= threshold - 4);
-    };
+    // Turn white as soon as the page starts scrolling off the hero.
+    const update = () => setSolid(window.scrollY > 40);
     update();
     window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
   useEffect(() => {
@@ -152,20 +143,8 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
     >
       <div className="nav">
         <div className="nav-left">
-          <button
-            type="button"
-            className="nav-burger"
-            aria-label={t("openMenu")}
-            aria-expanded={navOpen}
-            aria-controls="primary-nav"
-            onClick={() => setNavOpen((o) => !o)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <Link className="brand" href="/">
-            <span>TOD</span> CASHMERE
+          <Link className="brand katalog-logo" href="/">
+            <Image src="/images/web-logo-trim.png" alt="Tod Cashmere" width={836} height={932} priority />
           </Link>
         </div>
 
@@ -292,6 +271,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                 setLangOpen((o) => !o);
               }}
             >
+              <LangFlag lang={lang} />
               <span className="lang-current">{lang.toUpperCase()}</span>
               <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 10l5 5 5-5z" />
@@ -310,6 +290,8 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                       setLangOpen(false);
                     }}
                   >
+                    <LangFlag lang={option.code} />
+                    <span className="lang-code">{option.code.toUpperCase()}</span>
                     {option.label}
                   </button>
                 </li>
@@ -419,6 +401,19 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
             <span className="cart-count-inline">{count}</span>
           </Link>
         </div>
+
+          <button
+            type="button"
+            className="nav-burger nav-burger-end"
+            aria-label={t("openMenu")}
+            aria-expanded={navOpen}
+            aria-controls="primary-nav"
+            onClick={() => setNavOpen((o) => !o)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
         <div className="nav-search" data-search-panel>
           <form
