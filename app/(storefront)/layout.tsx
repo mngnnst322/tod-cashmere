@@ -6,6 +6,7 @@ import { CatalogHeader } from "@/components/catalog-header";
 import { RevealObserver } from "@/components/reveal-observer";
 import { getSessionUser, isStaffRole, staffHome } from "@/lib/auth-guard";
 import { isComingSoon } from "@/lib/site-settings";
+import { listCatalog } from "@/lib/catalog";
 
 // Storefront pages read the catalog from D1, so render them per request —
 // otherwise the build bakes in whatever the DB held at build time.
@@ -28,11 +29,13 @@ export default async function StorefrontLayout({
   // The online catalog is its own public page with its own menu, open even
   // before launch.
   if (path.startsWith("/katalog")) {
+    const items = await listCatalog();
     return (
       <div className="page">
-        <CatalogHeader />
+        <CatalogHeader
+          items={items.map(({ id, name, type, gender }) => ({ id, name, type, gender }))}
+        />
         <main>{children}</main>
-        <footer className="katalog-footer">© Tod Cashmere</footer>
         <RevealObserver />
       </div>
     );

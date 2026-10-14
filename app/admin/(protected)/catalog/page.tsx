@@ -5,7 +5,7 @@ import { deleteCatalogItem } from "@/lib/admin-actions";
 import { ConfirmButton } from "../confirm-button";
 import { EmptyRow, PageBody, PageHeader, panel, th } from "../../ui";
 import { CatalogItemButton } from "./catalog-item-button";
-import { CATALOG_TYPES } from "@/lib/catalog";
+import { CATALOG_TYPES, catalogGenderLabel } from "@/lib/catalog";
 
 
 export default async function AdminCatalogPage(props: PageProps<"/admin/catalog">) {
@@ -45,11 +45,13 @@ export default async function AdminCatalogPage(props: PageProps<"/admin/catalog"
         </div>
 
         <div className={`${panel} overflow-x-auto`}>
-          <table className="w-full min-w-[640px] text-sm">
+          <table className="w-full min-w-[800px] text-sm">
             <thead>
               <tr className="border-b border-adm-line">
                 <th className={`${th} w-20`}></th>
                 <th className={th}>Нэр</th>
+                <th className={th}>Код</th>
+                <th className={th}>Хүйс</th>
                 <th className={th}>Материал</th>
                 <th className={th}>Дараалал</th>
                 <th className={th}></th>
@@ -67,6 +69,8 @@ export default async function AdminCatalogPage(props: PageProps<"/admin/catalog"
                     )}
                   </td>
                   <td className="px-5 py-4 font-semibold">{item.name}</td>
+                  <td className="whitespace-nowrap px-5 py-4 text-adm-mute">{item.code}</td>
+                  <td className="px-5 py-4">{catalogGenderLabel(item.gender)}</td>
                   <td className="px-5 py-4 text-adm-mute">{item.material}</td>
                   <td className="px-5 py-4">{item.sortOrder}</td>
                   <td className="whitespace-nowrap px-5 py-4 text-right font-medium">
@@ -84,7 +88,7 @@ export default async function AdminCatalogPage(props: PageProps<"/admin/catalog"
                 </tr>
               ))}
               {items.length === 0 && (
-                <EmptyRow colSpan={5}>
+                <EmptyRow colSpan={7}>
                   &quot;{active.toUpperCase()}&quot;-д бараа алга. &quot;КАТАЛОГ НЭМЭХ&quot; дарж нэмнэ үү.
                 </EmptyRow>
               )}

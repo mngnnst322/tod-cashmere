@@ -1,0 +1,1 @@
+ALTER TABLE `catalog_items` ADD `gender` text DEFAULT 'unisex' NOT NULL;

@@ -17,6 +17,7 @@ import {
   type OrderStatus,
 } from "./db/schema";
 import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
+import { isCatalogGender } from "./catalog-types";
 
 async function requireImagePath(formData: FormData, fallback?: string | null) {
   const file = formData.get("imageFile");
@@ -361,7 +362,11 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
   const values = {
     type,
     name: String(formData.get("name")),
+    code: String(formData.get("code") || "").trim(),
     material: String(formData.get("material") || ""),
+    colors: String(formData.get("colors") || "").trim(),
+    sizes: String(formData.get("sizes") || "").trim(),
+    gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "unisex",
     sortOrder: Number(formData.get("sortOrder") || 0),
     image: (await requireImagePath(formData, existing?.image)) || null,
   };

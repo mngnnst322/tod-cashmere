@@ -2936,36 +2936,60 @@ textarea {
   object-fit: cover;
 }
 
-.katalog-card-type {
-  margin-bottom: 6px;
-  color: var(--color-muted);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .katalog-card-name {
   font-size: 16px;
 }
 
-.katalog-card-material {
-  margin-top: 4px;
-  color: var(--color-muted);
-  font-size: 14px;
-}
-
-.katalog-empty {
-  color: var(--color-muted);
-  font-size: 17px;
-  text-align: center;
-}
-
-.katalog-footer {
-  padding: 40px 16px;
-  border-top: 1px solid var(--color-border);
+.katalog-card-code {
+  margin-top: 2px;
   color: var(--color-muted);
   font-size: 13px;
+}
+
+.katalog-card-details {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.katalog-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.85);
+  color: #111;
+  cursor: pointer;
+}
+
+.katalog-heart .icon-svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.katalog-heart.is-saved .icon-svg {
+  fill: #b3261e;
+  stroke: #b3261e;
+}
+
+.katalog-saved-empty {
+  color: var(--color-muted);
+  font-size: 16px;
   text-align: center;
+}
+
+/* Item names of the type hovered in a /katalog dropdown */
+.katalog-mega-items {
+  padding-left: 32px;
+  border-left: 1px solid var(--color-border);
 }
 
 /* /katalog cover pages, turned like a book on click */

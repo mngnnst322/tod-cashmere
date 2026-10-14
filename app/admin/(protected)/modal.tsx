@@ -33,7 +33,7 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-2xl"
+        className="max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-6 flex items-start justify-between gap-4">

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { saveCatalogItem } from "@/lib/admin-actions";
 import type { catalogItems } from "@/lib/db/schema";
+import { CATALOG_GENDERS } from "@/lib/catalog-types";
 import { Modal } from "../modal";
 import { btnDark, icons, input, label } from "../../ui";
 
@@ -38,6 +39,35 @@ export function CatalogItemButton({ type, item }: { type: string; item?: Item })
             <input id="catalog-name" name="name" defaultValue={item?.name} required className={input} />
           </div>
           <div>
+            <label className={label} htmlFor="catalog-code">
+              Код
+            </label>
+            <input
+              id="catalog-code"
+              name="code"
+              defaultValue={item?.code}
+              placeholder="12-10-335"
+              className={input}
+            />
+          </div>
+          <div>
+            <label className={label} htmlFor="catalog-gender">
+              Хүйс
+            </label>
+            <select
+              id="catalog-gender"
+              name="gender"
+              defaultValue={item?.gender ?? "unisex"}
+              className={input}
+            >
+              {CATALOG_GENDERS.map((g) => (
+                <option key={g.key} value={g.key}>
+                  {g.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label className={label} htmlFor="catalog-material">
               Материал
             </label>
@@ -45,7 +75,31 @@ export function CatalogItemButton({ type, item }: { type: string; item?: Item })
               id="catalog-material"
               name="material"
               defaultValue={item?.material}
-              placeholder="100% ноолуур"
+              placeholder="100% Mongolian cashmere"
+              className={input}
+            />
+          </div>
+          <div>
+            <label className={label} htmlFor="catalog-colors">
+              Өнгө
+            </label>
+            <input
+              id="catalog-colors"
+              name="colors"
+              defaultValue={item?.colors}
+              placeholder="Camel, Ivory, Grey, Black"
+              className={input}
+            />
+          </div>
+          <div>
+            <label className={label} htmlFor="catalog-sizes">
+              Хэмжээ
+            </label>
+            <input
+              id="catalog-sizes"
+              name="sizes"
+              defaultValue={item?.sizes}
+              placeholder="S / M / L / XL / 2XL"
               className={input}
             />
           </div>

@@ -15,7 +15,7 @@ const TURN_MS = 900;
  * after the last one the catalog underneath is revealed. Shown once per
  * browser session.
  */
-export function KatalogIntro() {
+export function KatalogIntro({ hint, nextLabel }: { hint: string; nextLabel: string }) {
   const [page, setPage] = useState(0);
   const [gone, setGone] = useState(false);
   const done = page >= PAGES.length;
@@ -56,7 +56,7 @@ export function KatalogIntro() {
       className={`katalog-intro ${done ? "is-done" : ""}`}
       role="button"
       tabIndex={0}
-      aria-label="Дараагийн хуудас"
+      aria-label={nextLabel}
       onClick={next}
       onKeyDown={(e) => {
         if (["Enter", " ", "ArrowRight", "ArrowDown"].includes(e.key)) {
@@ -77,7 +77,7 @@ export function KatalogIntro() {
         ))}
       </div>
       <div className="katalog-intro-hint" aria-hidden="true">
-        Дарж үргэлжлүүлнэ үү →
+        {hint}
       </div>
     </div>
   );

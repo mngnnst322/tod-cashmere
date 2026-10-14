@@ -29,6 +29,34 @@
       "when": 1791787436194,
       "tag": "0003_site_settings",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1791959986701,
+      "tag": "0004_catalog_gender",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1791960628854,
+      "tag": "0005_seed_women_catalog",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1791960676029,
+      "tag": "0006_seed_men_catalog",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1791960785197,
+      "tag": "0007_catalog_details",
+      "breakpoints": true
     }
   ]
 }

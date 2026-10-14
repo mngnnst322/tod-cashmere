@@ -1,45 +1,90 @@
 import Image from "next/image";
-import { CATALOG_GROUPS, CATALOG_TYPES, listCatalog } from "@/lib/catalog";
-import type { catalogItems } from "@/lib/db/schema";
+import { CATALOG_MENU_TYPES, CATALOG_TYPES, listCatalog } from "@/lib/catalog";
+import { catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
+import { getLang } from "@/lib/i18n-server";
 import { KatalogIntro } from "@/components/katalog-intro";
+import { CatalogGrid } from "@/components/catalog-grid";
 
-export const metadata = { title: "Онлайн каталог – Tod Cashmere" };
+export async function generateMetadata() {
+  const s = catalogStrings(await getLang());
+  return { title: `${s.eyebrow} – Tod Cashmere` };
+}
 
-type CatalogItem = typeof catalogItems.$inferSelect;
+const GENDERS = ["women", "men", "all"] as const;
+type MenuGender = (typeof GENDERS)[number];
+const isMenuGender = (v: unknown): v is MenuGender => GENDERS.includes(v as MenuGender);
 
 // Opens with two cover pages, then is laid out like the storefront home page.
-// With ?type= (picked from the header menu) it lists just that garment type.
+// The header leads to filtered lists: ?gender= (and &type=), ?q= search and
+// ?saved=1 for the items this browser has hearted.
 export default async function CatalogPage(props: PageProps<"/katalog">) {
-  const { type } = await props.searchParams;
-  const items = await listCatalog();
+  const [{ gender, type, q, saved }, items, lang] = await Promise.all([
+    props.searchParams,
+    listCatalog(),
+    getLang(),
+  ]);
+  const s = catalogStrings(lang);
 
-  if (typeof type === "string" && CATALOG_TYPES.includes(type)) {
-    const typeItems = items.filter((i) => i.type === type);
+  if (saved === "1") {
     return (
-      <section className="section">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{type}</div>
-            <div className="section-subtitle">{typeItems.length} загвар</div>
-          </div>
-        </div>
-        {typeItems.length > 0 ? (
-          <CatalogGrid items={typeItems} />
-        ) : (
-          <p className="katalog-empty">Энэ төрлийн бараа удахгүй нэмэгдэнэ.</p>
-        )}
-      </section>
+      <Listing title={s.saved}>
+        <CatalogGrid items={items} strings={s} savedOnly />
+      </Listing>
     );
   }
 
-  const groups = CATALOG_GROUPS.map((g) => ({
-    title: g.title,
-    items: items.filter((i) => g.types.includes(i.type)),
+  if (typeof q === "string" && q.trim()) {
+    const needle = q.trim().toLowerCase();
+    const matches = items.filter((i) =>
+      [i.name, i.code, i.material, i.colors, i.type, catalogTypeName(i.type, lang)].some((v) =>
+        v.toLowerCase().includes(needle),
+      ),
+    );
+    return (
+      <Listing title={`${s.searchResults}: “${q.trim()}”`} subtitle={`${matches.length} ${s.styles}`}>
+        {matches.length > 0 && <CatalogGrid items={matches} strings={s} />}
+      </Listing>
+    );
+  }
+
+  // A menu pick lists matching items; unisex items show under women and men.
+  if (isMenuGender(gender)) {
+    const pickedType = typeof type === "string" && CATALOG_TYPES.includes(type) ? type : null;
+    const matches = items.filter(
+      (i) =>
+        (gender === "all" || i.gender === gender || i.gender === "unisex") &&
+        (!pickedType || i.type === pickedType),
+    );
+    // Same order as that gender's dropdown, then any other types.
+    const menuTypes: string[] = gender === "all" ? [] : CATALOG_MENU_TYPES[gender];
+    const typeOrder = [...menuTypes, ...CATALOG_TYPES.filter((t) => !menuTypes.includes(t))];
+    const sections = (pickedType ? [pickedType] : typeOrder)
+      .map((t) => ({ type: t, items: matches.filter((i) => i.type === t) }))
+      .filter((sec) => pickedType || sec.items.length > 0);
+
+    return (
+      <>
+        {sections.map((sec) => (
+          <Listing
+            key={sec.type}
+            title={`${s[gender]} · ${catalogTypeName(sec.type, lang)}`}
+            subtitle={`${sec.items.length} ${s.styles}`}
+          >
+            {sec.items.length > 0 && <CatalogGrid items={sec.items} strings={s} />}
+          </Listing>
+        ))}
+      </>
+    );
+  }
+
+  const groups = CATALOG_TYPES.map((t) => ({
+    type: t,
+    items: items.filter((i) => i.type === t),
   })).filter((g) => g.items.length > 0);
 
   return (
     <>
-      <KatalogIntro />
+      <KatalogIntro hint={s.introHint} nextLabel={s.nextPage} />
       <section className="hero hero--video hero--photo">
         <Image
           className="hero-photo"
@@ -51,64 +96,50 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
         />
         <div className="hero-photo-shade" aria-hidden="true" />
         <div className="hero-photo-content">
-          <div className="editorial-eyebrow">Онлайн каталог</div>
+          <div className="editorial-eyebrow">{s.eyebrow}</div>
           <h1 className="editorial-title">
             <span className="line-reveal">
-              <span>Монгол говийн</span>
+              <span>{s.title1}</span>
             </span>
             <span className="line-reveal">
-              <span>ноолуур.</span>
+              <span>{s.title2}</span>
             </span>
           </h1>
-          <p className="editorial-lead">
-            Монголын хээр тал, нүүдэлчдийн соёлоос таны гарт.
-          </p>
+          <p className="editorial-lead">{s.lead}</p>
         </div>
       </section>
 
-      <div id="all">
-        {groups.map((g) => (
-          <section className="section" id={encodeURIComponent(g.title)} key={g.title}>
-            <div className="section-header">
-              <div>
-                <div className="section-title">{g.title}</div>
-                <div className="section-subtitle">{g.items.length} загвар</div>
-              </div>
-            </div>
-            <CatalogGrid items={g.items} showType />
-          </section>
-        ))}
-
-        {groups.length === 0 && (
-          <section className="section">
-            <p className="katalog-empty">Каталог удахгүй нэмэгдэнэ.</p>
-          </section>
-        )}
-      </div>
+      {groups.map((g) => (
+        <Listing
+          key={g.type}
+          title={catalogTypeName(g.type, lang)}
+          subtitle={`${g.items.length} ${s.styles}`}
+        >
+          <CatalogGrid items={g.items} strings={s} />
+        </Listing>
+      ))}
     </>
   );
 }
 
-function CatalogGrid({ items, showType }: { items: CatalogItem[]; showType?: boolean }) {
+function Listing({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children?: React.ReactNode;
+}) {
   return (
-    <div className="category-grid">
-      {items.map((item) => (
-        <article className="katalog-card" key={item.id}>
-          <div className="katalog-card-image">
-            {item.image && (
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 300px"
-              />
-            )}
-          </div>
-          {showType && <div className="katalog-card-type">{item.type}</div>}
-          <div className="katalog-card-name">{item.name}</div>
-          {item.material && <div className="katalog-card-material">{item.material}</div>}
-        </article>
-      ))}
-    </div>
+    <section className="section">
+      <div className="section-header">
+        <div>
+          <div className="section-title">{title}</div>
+          {subtitle && <div className="section-subtitle">{subtitle}</div>}
+        </div>
+      </div>
+      {children}
+    </section>
   );
 }

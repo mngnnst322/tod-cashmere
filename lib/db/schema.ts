@@ -167,7 +167,15 @@ export const catalogItems = sqliteTable("catalog_items", {
   id: text("id").primaryKey(),
   type: text("type").notNull(),
   name: text("name").notNull(),
+  // Style code, e.g. "12-10-335".
+  code: text("code").notNull().default(""),
   material: text("material").notNull().default(""),
+  // Free text as shown on the card, e.g. "Camel, Ivory, Grey, Black".
+  colors: text("colors").notNull().default(""),
+  // e.g. "S / M / L / XL / 2XL".
+  sizes: text("sizes").notNull().default(""),
+  // "women" | "men" | "unisex" (listed under both in the /katalog menu).
+  gender: text("gender").notNull().default("unisex"),
   image: text("image"),
   sortOrder: integer("sort_order").notNull().default(0),
 });
