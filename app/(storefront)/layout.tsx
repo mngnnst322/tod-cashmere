@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ComingSoon } from "@/components/coming-soon";
+import { CatalogHeader } from "@/components/catalog-header";
 import { RevealObserver } from "@/components/reveal-observer";
 import { getSessionUser, isStaffRole, staffHome } from "@/lib/auth-guard";
 import { isComingSoon } from "@/lib/site-settings";
@@ -24,12 +25,14 @@ export default async function StorefrontLayout({
 
   const path = requestHeaders.get("x-pathname") ?? "";
 
-  // The online catalog is its own public page with its own header, open even
+  // The online catalog is its own public page with its own menu, open even
   // before launch.
   if (path.startsWith("/katalog")) {
     return (
       <div className="page">
+        <CatalogHeader />
         <main>{children}</main>
+        <footer className="katalog-footer">© Tod Cashmere</footer>
         <RevealObserver />
       </div>
     );

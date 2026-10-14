@@ -1,35 +1,45 @@
 import Image from "next/image";
-import Link from "next/link";
-import { CATALOG_TYPES, listCatalog } from "@/lib/catalog";
+import { CATALOG_GROUPS, CATALOG_TYPES, listCatalog } from "@/lib/catalog";
+import type { catalogItems } from "@/lib/db/schema";
+import { KatalogIntro } from "@/components/katalog-intro";
 
 export const metadata = { title: "Онлайн каталог – Tod Cashmere" };
 
-// Laid out like the storefront home page: a full-screen photo hero, then one
-// section per garment type.
-export default async function CatalogPage() {
+type CatalogItem = typeof catalogItems.$inferSelect;
+
+// Opens with two cover pages, then is laid out like the storefront home page.
+// With ?type= (picked from the header menu) it lists just that garment type.
+export default async function CatalogPage(props: PageProps<"/katalog">) {
+  const { type } = await props.searchParams;
   const items = await listCatalog();
-  const groups = CATALOG_TYPES.map((type) => ({
-    type,
-    items: items.filter((i) => i.type === type),
+
+  if (typeof type === "string" && CATALOG_TYPES.includes(type)) {
+    const typeItems = items.filter((i) => i.type === type);
+    return (
+      <section className="section">
+        <div className="section-header">
+          <div>
+            <div className="section-title">{type}</div>
+            <div className="section-subtitle">{typeItems.length} загвар</div>
+          </div>
+        </div>
+        {typeItems.length > 0 ? (
+          <CatalogGrid items={typeItems} />
+        ) : (
+          <p className="katalog-empty">Энэ төрлийн бараа удахгүй нэмэгдэнэ.</p>
+        )}
+      </section>
+    );
+  }
+
+  const groups = CATALOG_GROUPS.map((g) => ({
+    title: g.title,
+    items: items.filter((i) => g.types.includes(i.type)),
   })).filter((g) => g.items.length > 0);
 
   return (
     <>
-      <header className="katalog-header">
-        <Link href="/katalog" className="katalog-brand">
-          TOD CASHMERE
-        </Link>
-        {groups.length > 0 && (
-          <nav className="katalog-nav">
-            {groups.map((g) => (
-              <a key={g.type} href={`#${encodeURIComponent(g.type)}`}>
-                {g.type}
-              </a>
-            ))}
-          </nav>
-        )}
-      </header>
-
+      <KatalogIntro />
       <section className="hero hero--video hero--photo">
         <Image
           className="hero-photo"
@@ -56,44 +66,49 @@ export default async function CatalogPage() {
         </div>
       </section>
 
-      {groups.map((g) => (
-        <section className="section" id={encodeURIComponent(g.type)} key={g.type}>
-          <div className="section-header">
-            <div>
-              <div className="section-title">{g.type}</div>
-              <div className="section-subtitle">{g.items.length} загвар</div>
+      <div id="all">
+        {groups.map((g) => (
+          <section className="section" id={encodeURIComponent(g.title)} key={g.title}>
+            <div className="section-header">
+              <div>
+                <div className="section-title">{g.title}</div>
+                <div className="section-subtitle">{g.items.length} загвар</div>
+              </div>
             </div>
-          </div>
-          <div className="category-grid">
-            {g.items.map((item) => (
-              <article className="katalog-card" key={item.id}>
-                <div className="katalog-card-image">
-                  {item.image && (
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 300px"
-                    />
-                  )}
-                </div>
-                <div className="katalog-card-name">{item.name}</div>
-                {item.material && (
-                  <div className="katalog-card-material">{item.material}</div>
-                )}
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+            <CatalogGrid items={g.items} showType />
+          </section>
+        ))}
 
-      {groups.length === 0 && (
-        <section className="section">
-          <p className="katalog-empty">Каталог удахгүй нэмэгдэнэ.</p>
-        </section>
-      )}
-
-      <footer className="katalog-footer">© Tod Cashmere</footer>
+        {groups.length === 0 && (
+          <section className="section">
+            <p className="katalog-empty">Каталог удахгүй нэмэгдэнэ.</p>
+          </section>
+        )}
+      </div>
     </>
+  );
+}
+
+function CatalogGrid({ items, showType }: { items: CatalogItem[]; showType?: boolean }) {
+  return (
+    <div className="category-grid">
+      {items.map((item) => (
+        <article className="katalog-card" key={item.id}>
+          <div className="katalog-card-image">
+            {item.image && (
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 300px"
+              />
+            )}
+          </div>
+          {showType && <div className="katalog-card-type">{item.type}</div>}
+          <div className="katalog-card-name">{item.name}</div>
+          {item.material && <div className="katalog-card-material">{item.material}</div>}
+        </article>
+      ))}
+    </div>
   );
 }

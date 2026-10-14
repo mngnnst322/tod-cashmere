@@ -1,25 +1,7 @@
 import { getDb } from "./db";
 import { catalogItems } from "./db/schema";
 
-// Garment types shown on the brand's "Онлайн каталог" page, in display order.
-export const CATALOG_TYPES = [
-  "Оймс",
-  "Түрий",
-  "Өвдөгөвч",
-  "Улавч",
-  "Бойтог",
-  "Малгай",
-  "Ороолт",
-  "Хүзүүвч",
-  "Бээлий",
-  "Цамц",
-  "Ханцуйгүй цамц, хүрэм",
-  "Нуруувч",
-  "Даашинз",
-  "Өмд",
-  "Богино өмд",
-  "Банзал (юбка)",
-];
+export { CATALOG_GROUPS, CATALOG_TYPES } from "./catalog-types";
 
 /** Public read of the online catalog for /katalog. */
 export async function listCatalog() {

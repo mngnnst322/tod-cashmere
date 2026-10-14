@@ -2923,49 +2923,11 @@ textarea {
   }
 }
 
-/* Public online catalog (/katalog): its own header floats over the hero */
-.katalog-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 28px clamp(16px, 4vw, 48px);
-  color: #fff;
-}
-
-.katalog-brand {
-  flex-shrink: 0;
-  color: #fff;
-  font-size: 18px;
-  letter-spacing: 0.12em;
-  text-decoration: none;
-}
-
-.katalog-nav {
-  display: flex;
-  gap: 24px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.katalog-nav a {
-  flex-shrink: 0;
-  color: #fff;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
+/* Public online catalog (/katalog) */
 .katalog-card-image {
   position: relative;
   aspect-ratio: 3 / 4;
+  margin-bottom: 14px;
   background: var(--color-bg-alt);
   overflow: hidden;
 }
@@ -2974,8 +2936,15 @@ textarea {
   object-fit: cover;
 }
 
+.katalog-card-type {
+  margin-bottom: 6px;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .katalog-card-name {
-  margin-top: 14px;
   font-size: 16px;
 }
 
@@ -2999,16 +2968,89 @@ textarea {
   text-align: center;
 }
 
-@media (max-width: 600px) {
-  .katalog-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-    padding-top: 20px;
+/* /katalog cover pages, turned like a book on click */
+.katalog-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ece8e3;
+  perspective: 2400px;
+  cursor: pointer;
+  transition: opacity 0.6s var(--ease-smooth) 0.35s, visibility 0s linear 0.95s;
+}
+
+.katalog-intro.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.katalog-intro:focus-visible {
+  outline: none;
+}
+
+.katalog-intro-book {
+  position: relative;
+  width: min(100vw, 100vh);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+}
+
+.katalog-intro-page {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #ece8e3;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1),
+    box-shadow 0.9s ease;
+}
+
+.katalog-intro-page img {
+  object-fit: cover;
+}
+
+.katalog-intro-page.is-turned {
+  transform: rotateY(-180deg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0);
+}
+
+.katalog-intro-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #111;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Phones: let the pages fill the screen instead of a small square. */
+@media (orientation: portrait) {
+  .katalog-intro-book {
+    width: 100vw;
+    height: 100%;
+    aspect-ratio: auto;
   }
-  .katalog-nav {
-    max-width: 100%;
-    gap: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .katalog-intro-page {
+    transition: opacity 0.3s ease;
+  }
+  .katalog-intro-page.is-turned {
+    transform: none;
+    opacity: 0;
   }
 }
 
