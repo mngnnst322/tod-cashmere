@@ -271,13 +271,9 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                 setLangOpen((o) => !o);
               }}
             >
-              <LangFlag lang={lang} />
               <span className="lang-current">{lang.toUpperCase()}</span>
-              <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M7 10l5 5 5-5z" />
-              </svg>
             </button>
-            <ul className="lang-menu" role="listbox">
+            <ul className="lang-menu lang-menu--flags" role="listbox">
               {LANGS.map((option) => (
                 <li key={option.code}>
                   <button
@@ -285,6 +281,8 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                     className={`lang-option ${lang === option.code ? "is-active" : ""}`}
                     role="option"
                     aria-selected={lang === option.code}
+                    aria-label={option.label}
+                    title={option.label}
                     onClick={() => {
                       setLang(option.code);
                       setLangOpen(false);
@@ -292,7 +290,6 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                   >
                     <LangFlag lang={option.code} />
                     <span className="lang-code">{option.code.toUpperCase()}</span>
-                    {option.label}
                   </button>
                 </li>
               ))}

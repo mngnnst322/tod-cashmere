@@ -3135,39 +3135,53 @@ body:has(.hero--video) .site-header:not(.is-solid) .katalog-logo img,
   flex: none;
 }
 
-/* Language picker: flag, two-letter code and name. */
+/* Language picker: a round code button and a rounded menu of flag + code. */
 .lang-flag {
   flex: none;
-  width: 22px;
-  height: 15px;
+  width: 24px;
+  height: 16px;
+  border-radius: 3px !important;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.lang-toggle {
-  gap: 8px;
+.site-header .lang-toggle {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
 }
 
-.lang-option:has(.lang-flag) {
+.lang-menu--flags {
+  left: 50%;
+  right: auto;
+  min-width: 0;
+  padding: 8px;
+  border-radius: 18px !important;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translate(-50%, -8px) scale(0.96);
+  transform-origin: top center;
+}
+
+.lang-select.open .lang-menu--flags {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.lang-menu--flags .lang-option {
   justify-content: flex-start;
-  gap: 12px;
+  gap: 16px;
+  padding: 12px 22px 12px 16px;
+  color: #9aa0ab;
+  font-size: 16px;
+  font-weight: 700;
 }
 
-.lang-option:has(.lang-flag)::after {
-  margin-left: auto;
+.lang-menu--flags .lang-option.is-active {
+  color: #111;
 }
 
-/* Phones: the header is tight, so the button keeps just the code. */
-@media (max-width: 480px) {
-  .lang-toggle .lang-flag {
-    display: none;
-  }
-}
-
-.lang-code {
-  min-width: 24px;
-  color: var(--color-muted);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+.lang-menu--flags .lang-option.is-active::after {
+  content: none;
 }
 
 .nav-pill {
@@ -3247,7 +3261,8 @@ body:has(.hero--video) .site-header:not(.is-solid) .nav-pill {
     min-width: 24px;
     height: 24px;
   }
-  .site-header .nav-icon-only {
+  .site-header .nav-icon-only,
+  .site-header .lang-toggle {
     width: 34px;
     height: 34px;
   }
