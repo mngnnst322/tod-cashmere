@@ -21,8 +21,8 @@ export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
   return { title: item ? `${catalogItemName(item.name, lang)} – Tod Cashmere` : "Tod Cashmere" };
 }
 
-// One catalog item: the details entered in Admin → Каталог on the left and a
-// large photo on the right (stacked, photo first, on phones).
+// One catalog item: a large photo on the left and the details entered in
+// Admin → Каталог centred on the right (stacked, photo first, on phones).
 export default async function CatalogItemPage(props: PageProps<"/catalog/[id]">) {
   const { id } = await props.params;
   const [item, lang] = await Promise.all([getCatalogItem(id), getLang()]);

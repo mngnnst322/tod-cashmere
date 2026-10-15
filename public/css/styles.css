@@ -2964,14 +2964,14 @@ textarea {
   width: 38px;
   height: 38px;
   border: 0;
-  background: rgba(255, 255, 255, 0.85);
+  background: transparent;
   color: #111;
   cursor: pointer;
 }
 
 .katalog-heart .icon-svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
@@ -3053,7 +3053,7 @@ body:has(.katalog-backdrop) {
   }
 }
 
-/* /catalog/[id]: one item, details on the left and a large photo on the right */
+/* /catalog/[id]: one item, a large photo on the left and its details on the right */
 .katalog-item {
   max-width: 1140px;
   margin: 0 auto;
@@ -3063,15 +3063,18 @@ body:has(.katalog-backdrop) {
 
 .katalog-item-layout {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(0, 640px);
+  grid-template-columns: minmax(0, 640px) minmax(240px, 1fr);
   gap: 56px;
-  align-items: start;
 }
 
+/* Photo on the left; the details sit centred in the column beside it. */
 .katalog-item-info {
-  order: -1;
-  position: sticky;
-  top: calc(var(--header-h) + 32px);
+  align-self: center;
+  text-align: center;
+}
+
+.katalog-item-info .katalog-swatches {
+  justify-content: center;
 }
 
 @media (max-width: 860px) {
@@ -3080,8 +3083,6 @@ body:has(.katalog-backdrop) {
     gap: 0;
   }
   .katalog-item-info {
-    order: 0;
-    position: static;
     margin-top: 24px;
   }
 }
