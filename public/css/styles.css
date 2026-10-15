@@ -3107,6 +3107,28 @@ body:has(.katalog-backdrop) {
   object-fit: cover;
 }
 
+/* Hover magnifier on the item photo (see components/zoom-image.tsx). */
+.zoom-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.zoom-image img {
+  transition: transform 0.25s ease;
+}
+
+.zoom-image.is-zoomed img {
+  transition: none;
+}
+
+@media (hover: none) {
+  .zoom-image {
+    cursor: default;
+  }
+}
+
 .katalog-item-type {
   color: var(--color-muted);
   font-size: 12px;

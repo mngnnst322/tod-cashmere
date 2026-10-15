@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCatalogItem } from "@/lib/catalog";
@@ -12,8 +11,8 @@ import {
 import { getLang } from "@/lib/i18n-server";
 import { findCashmereColor, splitColors } from "@/lib/catalog-colors";
 import { CatalogItemHeart } from "@/components/catalog-grid";
+import { ZoomImage } from "@/components/zoom-image";
 import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
-import { isUploadedImage } from "@/lib/format";
 
 export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
   const { id } = await props.params;
@@ -37,16 +36,7 @@ export default async function CatalogItemPage(props: PageProps<"/catalog/[id]">)
       </Link>
       <div className="katalog-item-layout">
         <div className="katalog-item-image">
-          {item.image && (
-            <Image
-              src={item.image}
-              unoptimized={isUploadedImage(item.image)}
-              alt={catalogItemName(item.name, lang)}
-              fill
-              priority
-              sizes="(max-width: 860px) 100vw, 640px"
-            />
-          )}
+          {item.image && <ZoomImage src={item.image} alt={catalogItemName(item.name, lang)} />}
           <CatalogItemHeart id={item.id} strings={s} />
         </div>
         <div className="katalog-item-info">
