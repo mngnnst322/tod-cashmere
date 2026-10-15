@@ -11,6 +11,20 @@ import { btnSoft, label } from "../ui";
 export function ImageField({ current, id = "imageFile" }: { current?: string | null; id?: string }) {
   const [preview, setPreview] = useState<string | null>(current ?? null);
   const [fileName, setFileName] = useState("");
+  const [zoomed, setZoomed] = useState(false);
+
+  // Esc closes the enlarged view.
+  useEffect(() => {
+    if (!zoomed) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        setZoomed(false);
+      }
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
+  }, [zoomed]);
 
   // Free the object URL of a previously chosen file.
   useEffect(() => {
@@ -23,12 +37,18 @@ export function ImageField({ current, id = "imageFile" }: { current?: string | n
     <div>
       <span className={label}>Зураг</span>
       <div className="flex items-center gap-4">
-        <div className="h-28 w-[84px] shrink-0 overflow-hidden rounded-lg bg-adm-paper">
+        <button
+          type="button"
+          disabled={!preview}
+          onClick={() => setZoomed(true)}
+          title={preview ? "Томруулж харах" : undefined}
+          className="h-28 w-[84px] shrink-0 cursor-zoom-in overflow-hidden rounded-lg bg-adm-paper disabled:cursor-default"
+        >
           {preview && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={preview} alt="" className="h-full w-full object-cover" />
           )}
-        </div>
+        </button>
         <div className="min-w-0 space-y-2">
           <label htmlFor={id} className={`${btnSoft} cursor-pointer`}>
             {preview ? "Зураг солих" : "Зураг оруулах"}
@@ -52,6 +72,24 @@ export function ImageField({ current, id = "imageFile" }: { current?: string | n
         </div>
       </div>
       <input type="hidden" name="imagePath" value={current ?? ""} />
+      {zoomed && preview && (
+        <div
+          role="dialog"
+          aria-label="Зураг"
+          className="fixed inset-0 z-[60] grid cursor-zoom-out place-items-center bg-black/80 p-6"
+          onClick={() => setZoomed(false)}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={preview} alt="" className="max-h-full max-w-full rounded-lg object-contain" />
+          <button
+            type="button"
+            aria-label="Хаах"
+            className="absolute right-5 top-4 text-3xl leading-none text-white/80 hover:text-white"
+          >
+            ×
+          </button>
+        </div>
+      )}
     </div>
   );
 }

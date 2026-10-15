@@ -22,7 +22,7 @@ export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
 }
 
 // One catalog item: a large photo on the left and the details entered in
-// Admin → Каталог centred on the right (stacked, photo first, on phones).
+// Admin → Каталог beside it on the right (stacked, photo first, on phones).
 export default async function CatalogItemPage(props: PageProps<"/catalog/[id]">) {
   const { id } = await props.params;
   const [item, lang] = await Promise.all([getCatalogItem(id), getLang()]);

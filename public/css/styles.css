@@ -3067,14 +3067,9 @@ body:has(.katalog-backdrop) {
   gap: 56px;
 }
 
-/* Photo on the left; the details sit centred in the column beside it. */
+/* Photo on the left; the details start right beside it, centred vertically. */
 .katalog-item-info {
   align-self: center;
-  text-align: center;
-}
-
-.katalog-item-info .katalog-swatches {
-  justify-content: center;
 }
 
 @media (max-width: 860px) {
