@@ -3,6 +3,7 @@ import Image from "next/image";
 import { categoryMeta, categoryName, fmt } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
 import type { categories } from "@/lib/db/schema";
+import { isUploadedImage } from "@/lib/format";
 
 type Category = typeof categories.$inferSelect;
 
@@ -24,6 +25,7 @@ export async function CategoryCard({
       <div className="category-image">
         <Image
           src={category.image}
+          unoptimized={isUploadedImage(category.image)}
           alt={name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"

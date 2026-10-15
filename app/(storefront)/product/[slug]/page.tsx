@@ -16,6 +16,7 @@ import {
   productTitle,
 } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
+import { isUploadedImage } from "@/lib/format";
 
 export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
@@ -43,6 +44,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
           <div className="product-detail-media">
             <Image
               src={product.image}
+              unoptimized={isUploadedImage(product.image)}
               alt={title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

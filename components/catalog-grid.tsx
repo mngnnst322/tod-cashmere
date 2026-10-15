@@ -6,6 +6,7 @@ import type { catalogItems } from "@/lib/db/schema";
 import { catalogItemName, type CatalogStrings } from "@/lib/catalog-i18n";
 import type { Lang } from "@/lib/i18n";
 import { useCatalogFavorites } from "./catalog-favorites";
+import { isUploadedImage } from "@/lib/format";
 
 export type CatalogItem = typeof catalogItems.$inferSelect;
 
@@ -38,6 +39,7 @@ export function CatalogGrid({
               {item.image && (
                 <Image
                   src={item.image}
+                  unoptimized={isUploadedImage(item.image)}
                   alt=""
                   fill
                   sizes="(max-width: 600px) 50vw, (max-width: 1100px) 33vw, 300px"

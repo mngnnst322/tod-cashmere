@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/components/cart-provider";
-import { formatPrice } from "@/lib/format";
+import { formatPrice, isUploadedImage } from "@/lib/format";
 import { createOrder } from "@/lib/actions";
 import { useLang } from "@/components/lang-provider";
 import { fmt } from "@/lib/i18n";
@@ -82,8 +82,21 @@ export default function CartPage() {
                   borderBottom: "1px solid var(--color-border)",
                 }}
               >
-                <div style={{ position: "relative", width: 72, height: 96, flexShrink: 0 }}>
-                  <Image src={line.image} alt={line.title} fill sizes="72px" />
+                <div
+                  style={{
+                    position: "relative",
+                    width: 72,
+                    height: 96,
+                    flexShrink: 0,
+                  }}
+                >
+                  <Image
+                    src={line.image}
+                    unoptimized={isUploadedImage(line.image)}
+                    alt={line.title}
+                    fill
+                    sizes="72px"
+                  />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div className="product-title">{line.title}</div>
@@ -123,13 +136,22 @@ export default function CartPage() {
             </div>
           </div>
 
-          <form className="card checkout-card" id="checkout-form" onSubmit={handleSubmit}>
+          <form
+            className="card checkout-card"
+            id="checkout-form"
+            onSubmit={handleSubmit}
+          >
             <div className="card-title">{dict.shippingInfo}</div>
             <div className="form-grid">
               <input name="customerName" placeholder={dict.fullName} required />
               <input name="phone" placeholder={dict.phone} required />
             </div>
-            <input name="address" placeholder={dict.address} required style={{ marginTop: 12 }} />
+            <input
+              name="address"
+              placeholder={dict.address}
+              required
+              style={{ marginTop: 12 }}
+            />
 
             <div className="card-title" style={{ marginTop: 16 }}>
               {dict.paymentMethod}

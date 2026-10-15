@@ -5,6 +5,7 @@ import { formatPrice, discountPercent, isSoldOut } from "@/lib/products";
 import { badgeLabel, productTitle } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
 import type { products } from "@/lib/db/schema";
+import { isUploadedImage } from "@/lib/format";
 
 type Product = typeof products.$inferSelect;
 
@@ -27,6 +28,7 @@ export async function ProductCard({ product }: { product: Product }) {
         <Link className="product-link" href={`/product/${product.slug}`}>
           <Image
             src={product.image}
+            unoptimized={isUploadedImage(product.image)}
             alt={title}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"

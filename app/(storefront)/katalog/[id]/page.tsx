@@ -12,6 +12,7 @@ import {
 import { getLang } from "@/lib/i18n-server";
 import { CatalogItemHeart } from "@/components/catalog-grid";
 import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
+import { isUploadedImage } from "@/lib/format";
 
 export async function generateMetadata(props: PageProps<"/katalog/[id]">) {
   const { id } = await props.params;
@@ -38,6 +39,7 @@ export default async function CatalogItemPage(props: PageProps<"/katalog/[id]">)
           {item.image && (
             <Image
               src={item.image}
+              unoptimized={isUploadedImage(item.image)}
               alt={catalogItemName(item.name, lang)}
               fill
               priority

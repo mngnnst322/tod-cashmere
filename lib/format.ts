@@ -12,3 +12,9 @@ export function discountPercent(price: number, compareAtPrice: number) {
 export function isSoldOut(p: { inStock: boolean; stock: number | null }) {
   return !p.inStock || (p.stock != null && p.stock <= 0);
 }
+
+/**
+ * Admin-uploaded photos are served from R2 via /api/images, which the image
+ * optimizer on Cloudflare can't fetch; show those as-is.
+ */
+export const isUploadedImage = (src: string) => src.startsWith("/api/images/");
