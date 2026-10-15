@@ -52,7 +52,6 @@ export default async function CatalogItemPage(props: PageProps<"/catalog/[id]">)
         <div className="katalog-item-info">
           <div className="katalog-item-type">{catalogTypeName(item.type, lang)}</div>
           <h1 className="katalog-item-name">{catalogItemName(item.name, lang)}</h1>
-          {item.code && <div className="katalog-item-code">{item.code}</div>}
           <div className="katalog-item-details">
             {item.material && <div>{catalogMaterial(item.material, lang)}</div>}
             {item.colors && (

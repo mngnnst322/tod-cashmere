@@ -49,7 +49,6 @@ export default async function CatalogPage(props: PageProps<"/catalog">) {
       [
         i.name,
         catalogItemName(i.name, lang),
-        i.code,
         i.material,
         i.colors,
         i.type,

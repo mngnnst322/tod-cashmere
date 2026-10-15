@@ -3117,12 +3117,6 @@ body:has(.katalog-backdrop) {
   font-size: clamp(24px, 2.6vw, 34px);
 }
 
-.katalog-item-code {
-  margin-top: 4px;
-  color: var(--color-muted);
-  font-size: 15px;
-}
-
 .katalog-swatches {
   display: flex;
   flex-wrap: wrap;
