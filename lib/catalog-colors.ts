@@ -90,6 +90,21 @@ export const CASHMERE_COLORS: CashmereColor[] = [
       zh: "灰褐色",
     },
   },
+  {
+    name: "Navy",
+    hex: "#1F2C55",
+    names: { mn: "Хар хөх", en: "Navy", ru: "Тёмно-синий", zh: "藏青色" },
+  },
+  {
+    name: "Red Brown",
+    hex: "#7A3E2E",
+    names: {
+      mn: "Улаан хүрэн",
+      en: "Red Brown",
+      ru: "Красно-коричневый",
+      zh: "红棕色",
+    },
+  },
 ];
 
 // Colours already on items from the printed catalog: not offered in the
