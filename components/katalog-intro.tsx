@@ -11,7 +11,7 @@ const SEEN_KEY = "katalog-intro-seen";
 const TURN_MS = 900;
 
 /**
- * Cover pages shown over /katalog like a book: each click turns a page, and
+ * Cover pages shown over /catalog like a book: each click turns a page, and
  * after the last one the catalog underneath is revealed. Shown once per
  * browser session.
  */

@@ -17,7 +17,7 @@ import { HeartIcon } from "./catalog-grid";
 const MENU = ["women", "men"] as const;
 
 const typeHref = (gender: string, type: string) =>
-  `/katalog?gender=${gender}&type=${encodeURIComponent(type)}`;
+  `/catalog?gender=${gender}&type=${encodeURIComponent(type)}`;
 
 export type MenuItem = {
   id: string;
@@ -85,7 +85,7 @@ export function CatalogHeader({
     >
       <div className="nav">
         <div className="nav-left">
-          <Link className="brand katalog-logo" href="/katalog" onClick={close}>
+          <Link className="brand katalog-logo" href="/catalog" onClick={close}>
             <Image
               src="/images/web-logo-trim.png"
               alt="Tod Cashmere"
@@ -107,7 +107,7 @@ export function CatalogHeader({
               >
                 <Link
                   className="nav-menu-link"
-                  href={`/katalog?gender=${gender}`}
+                  href={`/catalog?gender=${gender}`}
                   onClick={close}
                 >
                   {s[gender]}
@@ -182,7 +182,7 @@ export function CatalogHeader({
             <li className="nav-menu-item">
               <Link
                 className="nav-menu-link"
-                href="/katalog?gender=all"
+                href="/catalog?gender=all"
                 onClick={close}
               >
                 {s.all}
@@ -208,7 +208,7 @@ export function CatalogHeader({
 
           <Link
             className="nav-icon-button nav-icon-only nav-cart"
-            href="/katalog?saved=1"
+            href="/catalog?saved=1"
             aria-label={s.saved}
           >
             <HeartIcon />
@@ -286,7 +286,7 @@ export function CatalogHeader({
         <div className="nav-search" data-search-panel>
           <form
             role="search"
-            action="/katalog"
+            action="/catalog"
             method="GET"
             onSubmit={() => setSearchActive(false)}
           >

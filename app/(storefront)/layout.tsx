@@ -28,7 +28,7 @@ export default async function StorefrontLayout({
 
   // The online catalog is its own public page with its own menu, open even
   // before launch.
-  if (path.startsWith("/katalog")) {
+  if (path.startsWith("/catalog")) {
     const [items, types] = await Promise.all([listCatalog(), listCatalogTypes()]);
     return (
       <div className="page">

@@ -1,6 +1,7 @@
 import type { Lang } from "./i18n";
+import { findCashmereColor, splitColors } from "./catalog-colors";
 
-// Text for the /katalog page in each site language. Item names come from the
+// Text for the /catalog page in each site language. Item names come from the
 // admin as typed and are not translated.
 const strings = {
   mn: {
@@ -228,27 +229,13 @@ const materials: Record<string, Record<Lang, string>> = {
   },
 };
 
-const colors: Record<string, Record<Lang, string>> = {
-  beige: { mn: "Шаргал", en: "Beige", ru: "Бежевый", zh: "米色" },
-  brown: { mn: "Хүрэн", en: "Brown", ru: "Коричневый", zh: "棕色" },
-  oatmeal: { mn: "Цайвар бор", en: "Oatmeal", ru: "Овсяный", zh: "燕麦色" },
-  camel: { mn: "Тэмээн шаргал", en: "Camel", ru: "Кэмел", zh: "驼色" },
-  ivory: { mn: "Цайвар цагаан", en: "Ivory", ru: "Слоновая кость", zh: "象牙白" },
-  grey: { mn: "Саарал", en: "Grey", ru: "Серый", zh: "灰色" },
-  gray: { mn: "Саарал", en: "Grey", ru: "Серый", zh: "灰色" },
-  black: { mn: "Хар", en: "Black", ru: "Чёрный", zh: "黑色" },
-  white: { mn: "Цагаан", en: "White", ru: "Белый", zh: "白色" },
-};
 
 export function catalogMaterial(material: string, lang: Lang) {
   return materials[material.trim().toLowerCase()]?.[lang] ?? material;
 }
 
 export function catalogColors(list: string, lang: Lang) {
-  return list
-    .split(",")
-    .map((c) => c.trim())
-    .filter(Boolean)
-    .map((c) => colors[c.toLowerCase()]?.[lang] ?? c)
+  return splitColors(list)
+    .map((c) => findCashmereColor(c)?.names[lang] ?? c)
     .join(", ");
 }

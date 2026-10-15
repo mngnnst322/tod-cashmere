@@ -10,11 +10,12 @@ import {
   catalogTypeName,
 } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
+import { findCashmereColor, splitColors } from "@/lib/catalog-colors";
 import { CatalogItemHeart } from "@/components/catalog-grid";
 import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
 import { isUploadedImage } from "@/lib/format";
 
-export async function generateMetadata(props: PageProps<"/katalog/[id]">) {
+export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
   const { id } = await props.params;
   const [item, lang] = await Promise.all([getCatalogItem(id), getLang()]);
   return { title: item ? `${catalogItemName(item.name, lang)} – Tod Cashmere` : "Tod Cashmere" };
@@ -22,7 +23,7 @@ export async function generateMetadata(props: PageProps<"/katalog/[id]">) {
 
 // One catalog item: the details entered in Admin → Каталог on the left and a
 // large photo on the right (stacked, photo first, on phones).
-export default async function CatalogItemPage(props: PageProps<"/katalog/[id]">) {
+export default async function CatalogItemPage(props: PageProps<"/catalog/[id]">) {
   const { id } = await props.params;
   const [item, lang] = await Promise.all([getCatalogItem(id), getLang()]);
   if (!item) notFound();
@@ -31,7 +32,7 @@ export default async function CatalogItemPage(props: PageProps<"/katalog/[id]">)
   return (
     <section className="section katalog-item">
       <KatalogBackdrop index={backdropFor(item.id)} />
-      <Link href="/katalog?gender=all" className="katalog-item-back">
+      <Link href="/catalog?gender=all" className="katalog-item-back">
         ← {s.back}
       </Link>
       <div className="katalog-item-layout">
@@ -57,6 +58,19 @@ export default async function CatalogItemPage(props: PageProps<"/katalog/[id]">)
             {item.colors && (
               <div>
                 {s.color}: {catalogColors(item.colors, lang)}
+                <div className="katalog-swatches">
+                  {splitColors(item.colors).map((c) => {
+                    const color = findCashmereColor(c);
+                    return color ? (
+                      <span
+                        key={c}
+                        className="katalog-swatch"
+                        style={{ background: color.hex }}
+                        title={color.names[lang]}
+                      />
+                    ) : null;
+                  })}
+                </div>
               </div>
             )}
             {item.sizes && (

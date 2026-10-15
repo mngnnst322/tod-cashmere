@@ -34,7 +34,7 @@ export function CatalogGrid({
       {shown.map((item) => (
         <article className="katalog-card" id={item.id} key={item.id}>
           {/* Photo and name; the details are on the item page. */}
-          <Link href={`/katalog/${item.id}`} className="katalog-card-link">
+          <Link href={`/catalog/${item.id}`} className="katalog-card-link">
             <div className="katalog-card-image">
               {item.image && (
                 <Image

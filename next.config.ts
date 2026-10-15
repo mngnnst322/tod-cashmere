@@ -13,11 +13,16 @@ const nextConfig: NextConfig = {
   },
   // Common guesses for the sign-in URL all land on Clerk's /sign-in page.
   redirects() {
-    return ["/login", "/admin/login", "/account/login"].map((source) => ({
-      source,
-      destination: "/sign-in",
-      permanent: false,
-    }));
+    return [
+      ...["/login", "/admin/login", "/account/login"].map((source) => ({
+        source,
+        destination: "/sign-in",
+        permanent: false,
+      })),
+      // The catalog used to live at /katalog; keep old links working.
+      { source: "/katalog", destination: "/catalog", permanent: true },
+      { source: "/katalog/:id", destination: "/catalog/:id", permanent: true },
+    ];
   },
 };
 

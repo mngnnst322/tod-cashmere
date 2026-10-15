@@ -4,7 +4,7 @@ import { catalogItems, catalogTypes } from "./db/schema";
 
 export { CATALOG_GENDERS, isCatalogGender, type CatalogGender } from "./catalog-types";
 
-/** Public read of the online catalog for /katalog. */
+/** Public read of the online catalog for /catalog. */
 export async function listCatalog() {
   const db = await getDb();
   return db.select().from(catalogItems).orderBy(catalogItems.sortOrder);

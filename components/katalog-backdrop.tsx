@@ -1,4 +1,4 @@
-// The pencil-sketch strips from the printed catalog, one behind each /katalog
+// The pencil-sketch strips from the printed catalog, one behind each /catalog
 // page; it stays put while the page scrolls over it.
 const BACKDROPS = 5;
 

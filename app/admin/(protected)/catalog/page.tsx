@@ -13,7 +13,7 @@ import { EmptyRow, PageBody, PageHeader, btnDark, btnSoft, input, panel, th } fr
 import { CatalogItemButton } from "./catalog-item-button";
 
 // Women's and men's catalogs, each with its own garment types that admins
-// add, rename and delete here; the /katalog menu follows them.
+// add, rename and delete here; the /catalog menu follows them.
 export default async function AdminCatalogPage(props: PageProps<"/admin/catalog">) {
   await guardPage("admin");
   const [{ gender: genderParam, type: typeParam }, all, allTypes] = await Promise.all([

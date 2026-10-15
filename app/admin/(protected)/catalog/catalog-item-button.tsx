@@ -5,6 +5,7 @@ import { saveCatalogItem } from "@/lib/admin-actions";
 import type { catalogItems } from "@/lib/db/schema";
 import { Modal } from "../modal";
 import { ImageField } from "../image-field";
+import { ColorPicker } from "./color-picker";
 import { btnDark, icons, input, label } from "../../ui";
 
 type Item = typeof catalogItems.$inferSelect;
@@ -71,18 +72,7 @@ export function CatalogItemButton({
               className={input}
             />
           </div>
-          <div>
-            <label className={label} htmlFor="catalog-colors">
-              Өнгө
-            </label>
-            <input
-              id="catalog-colors"
-              name="colors"
-              defaultValue={item?.colors}
-              placeholder="Camel, Ivory, Grey, Black"
-              className={input}
-            />
-          </div>
+          <ColorPicker defaultValue={item?.colors} />
           <div>
             <label className={label} htmlFor="catalog-sizes">
               Хэмжээ

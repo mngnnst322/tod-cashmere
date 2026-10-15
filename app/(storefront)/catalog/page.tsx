@@ -18,7 +18,7 @@ const isMenuGender = (v: unknown): v is MenuGender => GENDERS.includes(v as Menu
 // Opens with two cover pages, then is laid out like the storefront home page.
 // The header leads to filtered lists: ?gender= (and &type=), ?q= search and
 // ?saved=1 for the items this browser has hearted.
-export default async function CatalogPage(props: PageProps<"/katalog">) {
+export default async function CatalogPage(props: PageProps<"/catalog">) {
   const [{ gender, type, name, q, saved }, items, types, lang] = await Promise.all([
     props.searchParams,
     listCatalog(),
