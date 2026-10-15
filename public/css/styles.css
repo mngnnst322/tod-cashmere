@@ -2943,6 +2943,12 @@ textarea {
 
 .katalog-card-image img {
   object-fit: cover;
+  transition: transform 0.6s var(--ease-smooth);
+}
+
+/* Photo zooms in gently on hover. */
+.katalog-card-link:hover .katalog-card-image img {
+  transform: scale(1.06);
 }
 
 .katalog-card-name {
