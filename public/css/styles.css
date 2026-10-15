@@ -3069,11 +3069,16 @@ body:has(.katalog-backdrop) {
   padding-top: 32px;
 }
 
+/* Catalog photos sit close together. */
+.category-grid.katalog-grid {
+  gap: 28px 12px;
+}
+
 /* Phones: catalog lists stay two across (the shop grid drops to one). */
 @media (max-width: 600px) {
   .category-grid.katalog-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 12px;
+    gap: 20px 8px;
   }
   .katalog-grid .katalog-card-name {
     margin-top: 8px;
