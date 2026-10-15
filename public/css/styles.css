@@ -2978,12 +2978,6 @@ textarea {
     0 0 0 3px #8a8580;
 }
 
-/* Swatches on one row, the colour names on the line below. */
-.katalog-card-colors span:not(.katalog-card-swatch) {
-  flex-basis: 100%;
-  margin-top: 2px;
-}
-
 .katalog-card-link:hover .katalog-card-name {
   text-decoration: underline;
 }

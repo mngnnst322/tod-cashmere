@@ -5,6 +5,7 @@ import { findCashmereColor, splitColors } from "./catalog-colors";
 // admin as typed and are not translated.
 const strings = {
   mn: {
+    similar: "Төстэй бараа",
     admin: "Админ",
     back: "Каталог руу буцах",
     color: "Өнгө",
@@ -31,6 +32,7 @@ const strings = {
     nextPage: "Дараагийн хуудас",
   },
   en: {
+    similar: "You may also like",
     admin: "Admin",
     back: "Back to catalog",
     color: "Color",
@@ -57,6 +59,7 @@ const strings = {
     nextPage: "Next page",
   },
   ru: {
+    similar: "Похожие модели",
     admin: "Админ",
     back: "Назад к каталогу",
     color: "Цвет",
@@ -83,6 +86,7 @@ const strings = {
     nextPage: "Следующая страница",
   },
   zh: {
+    similar: "相似款式",
     admin: "管理",
     back: "返回目录",
     color: "颜色",

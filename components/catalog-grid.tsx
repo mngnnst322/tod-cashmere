@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { catalogItems } from "@/lib/db/schema";
-import { catalogColors, catalogItemName, type CatalogStrings } from "@/lib/catalog-i18n";
+import { catalogItemName, type CatalogStrings } from "@/lib/catalog-i18n";
 import { findCashmereColor, splitColors } from "@/lib/catalog-colors";
 import type { Lang } from "@/lib/i18n";
 import { useCatalogFavorites } from "./catalog-favorites";
@@ -53,10 +53,14 @@ export function CatalogGrid({
                 {splitColors(item.colors).map((c) => {
                   const color = findCashmereColor(c);
                   return color ? (
-                    <span key={c} className="katalog-card-swatch" style={{ background: color.hex }} />
+                    <span
+                      key={c}
+                      className="katalog-card-swatch"
+                      style={{ background: color.hex }}
+                      title={color.names[lang]}
+                    />
                   ) : null;
                 })}
-                <span>{catalogColors(item.colors, lang)}</span>
               </div>
             )}
           </Link>
