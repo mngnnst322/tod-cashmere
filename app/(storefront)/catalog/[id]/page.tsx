@@ -42,32 +42,47 @@ export default async function CatalogItemPage(props: PageProps<"/catalog/[id]">)
         <div className="katalog-item-info">
           <div className="katalog-item-type">{catalogTypeName(item.type, lang)}</div>
           <h1 className="katalog-item-name">{catalogItemName(item.name, lang)}</h1>
-          <div className="katalog-item-details">
-            {item.material && <div>{catalogMaterial(item.material, lang)}</div>}
-            {item.colors && (
-              <div>
-                {s.color}: {catalogColors(item.colors, lang)}
-                <div className="katalog-swatches">
-                  {splitColors(item.colors).map((c) => {
-                    const color = findCashmereColor(c);
-                    return color ? (
-                      <span
-                        key={c}
-                        className="katalog-swatch"
-                        style={{ background: color.hex }}
-                        title={color.names[lang]}
-                      />
-                    ) : null;
-                  })}
-                </div>
+          {item.material && (
+            <div className="katalog-item-material">{catalogMaterial(item.material, lang)}</div>
+          )}
+          <hr className="katalog-item-rule" />
+          {item.colors && (
+            <div className="katalog-item-option">
+              <div className="katalog-item-label">
+                {s.color}
+                <span>— {catalogColors(item.colors, lang)}</span>
               </div>
-            )}
-            {item.sizes && (
-              <div>
-                {s.size}: {item.sizes}
+              <div className="katalog-swatches">
+                {splitColors(item.colors).map((c) => {
+                  const color = findCashmereColor(c);
+                  return color ? (
+                    <span
+                      key={c}
+                      className="katalog-swatch"
+                      style={{ background: color.hex }}
+                      title={color.names[lang]}
+                    />
+                  ) : null;
+                })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+          {item.sizes && (
+            <div className="katalog-item-option">
+              <div className="katalog-item-label">{s.size}</div>
+              <div className="katalog-sizes">
+                {item.sizes
+                  .split("/")
+                  .map((z) => z.trim())
+                  .filter(Boolean)
+                  .map((z) => (
+                    <span key={z} className="katalog-size">
+                      {z}
+                    </span>
+                  ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

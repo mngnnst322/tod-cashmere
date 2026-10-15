@@ -3163,22 +3163,74 @@ body:has(.katalog-backdrop) {
 }
 
 .katalog-item-type {
-  color: var(--color-muted);
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  color: #9a958f;
+  font-size: 13px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
 }
 
-.katalog-item-name {
-  margin-top: 6px;
-  font-size: clamp(24px, 2.6vw, 34px);
+/* Light, large name — overrides the site-wide bold. */
+.katalog-item-info .katalog-item-name {
+  margin-top: 14px;
+  font-size: clamp(32px, 3.6vw, 52px);
+  font-weight: 300 !important;
+  line-height: 1.1;
+}
+
+.katalog-item-info .katalog-item-material {
+  margin-top: 14px;
+  color: #8a857f;
+  font-size: 17px;
+  font-weight: 400 !important;
+}
+
+.katalog-item-rule {
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.katalog-item-option + .katalog-item-option {
+  margin-top: 28px;
+}
+
+.katalog-item-label {
+  color: #6f6a65;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.katalog-item-info .katalog-item-label span {
+  margin-left: 10px;
+  color: #9a958f;
+  font-weight: 400 !important;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.katalog-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.katalog-size {
+  min-width: 56px;
+  padding: 12px 14px;
+  border: 1px solid #b9a48c;
+  border-radius: 6px !important;
+  color: #3a3531;
+  font-size: 16px;
+  text-align: center;
 }
 
 .katalog-swatches {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 10px 0 6px;
+  margin-top: 14px;
 }
 
 /* Colour dot inside a thin ring, with a gap of page colour between. */
@@ -3191,12 +3243,6 @@ body:has(.katalog-backdrop) {
     inset 0 0 0 1px rgba(0, 0, 0, 0.12),
     0 0 0 3px #efe8df,
     0 0 0 4.5px #8a8580;
-}
-
-.katalog-item-details {
-  margin-top: 14px;
-  font-size: 17px;
-  line-height: 1.6;
 }
 
 /* Header logo (shop and catalog): black on the white header, white over the
