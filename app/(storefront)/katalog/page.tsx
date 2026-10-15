@@ -4,6 +4,7 @@ import { catalogItemName, catalogStrings, catalogTypeName } from "@/lib/catalog-
 import { getLang } from "@/lib/i18n-server";
 import { KatalogIntro } from "@/components/katalog-intro";
 import { CatalogGrid } from "@/components/catalog-grid";
+import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
 
 export async function generateMetadata() {
   const s = catalogStrings(await getLang());
@@ -36,6 +37,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
   if (saved === "1") {
     return (
       <Listing title={s.saved}>
+        <KatalogBackdrop index={3} />
         <CatalogGrid items={items} strings={s} lang={lang} savedOnly />
       </Listing>
     );
@@ -56,6 +58,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
     );
     return (
       <Listing title={`${s.searchResults}: “${q.trim()}”`} subtitle={`${matches.length} ${s.styles}`}>
+        <KatalogBackdrop index={backdropFor(q)} />
         {matches.length > 0 && <CatalogGrid items={matches} strings={s} lang={lang} />}
       </Listing>
     );
@@ -76,6 +79,10 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
 
     return (
       <>
+        {/* Each type gets its own strip (by its place among all types). */}
+        <KatalogBackdrop
+          index={pickedType ? typeNames("all").indexOf(pickedType) : gender === "men" ? 1 : 2}
+        />
         {sections.map((sec) => (
           <Listing
             key={sec.type}
@@ -121,6 +128,7 @@ export default async function CatalogPage(props: PageProps<"/katalog">) {
         </div>
       </section>
 
+      <KatalogBackdrop index={0} />
       {groups.map((g) => (
         <Listing
           key={g.type}
@@ -144,7 +152,7 @@ function Listing({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="section">
+    <section className="section katalog-section">
       <div className="section-header">
         <div>
           <div className="section-title">{title}</div>

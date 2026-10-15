@@ -11,6 +11,7 @@ import {
 } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
 import { CatalogItemHeart } from "@/components/catalog-grid";
+import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
 
 export async function generateMetadata(props: PageProps<"/katalog/[id]">) {
   const { id } = await props.params;
@@ -28,6 +29,7 @@ export default async function CatalogItemPage(props: PageProps<"/katalog/[id]">)
 
   return (
     <section className="section katalog-item">
+      <KatalogBackdrop index={backdropFor(item.id)} />
       <Link href="/katalog?gender=all" className="katalog-item-back">
         ← {s.back}
       </Link>

@@ -2996,6 +2996,45 @@ textarea {
   overflow-y: auto;
 }
 
+/* /katalog pages: the printed catalog's paper colour, with one pencil-sketch
+   strip fixed along the bottom of the screen behind the content. */
+body:has(.katalog-backdrop) {
+  background: #efe8df;
+}
+
+.katalog-backdrop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  /* The strips are about 4:1; show the whole one across the width. */
+  height: calc(100vw * 0.26);
+  max-height: 45vh;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 100% auto;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Fade the strip's top edge into the paper. */
+.katalog-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 30%;
+  background: linear-gradient(#efe8df, rgba(239, 232, 223, 0));
+}
+
+.katalog-section {
+  background: transparent;
+}
+
+.katalog-section + .katalog-section {
+  padding-top: 32px;
+}
+
 /* Phones: catalog lists stay two across (the shop grid drops to one). */
 @media (max-width: 600px) {
   .category-grid.katalog-grid {
