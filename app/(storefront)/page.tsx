@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   getFeaturedProducts,
-  getSaleProducts,
   getArrivalProducts,
 } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
@@ -48,9 +47,8 @@ const storyImages = [
 ];
 
 export default async function HomePage() {
-  const [featured, sale, arrivals, { lang, dict }] = await Promise.all([
+  const [featured, arrivals, { lang, dict }] = await Promise.all([
     getFeaturedProducts(),
-    getSaleProducts(),
     getArrivalProducts(),
     getDict(),
   ]);
@@ -116,27 +114,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-
-      <section className="section" id="sale">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.saleTitle}</div>
-            <div className="section-subtitle">{dict.saleSubtitle}</div>
-          </div>
-          <div className="section-actions">
-            <Link href="/sale" className="section-link">
-              {dict.viewAll}
-            </Link>
-          </div>
-        </div>
-        <div className="product-row">
-          <div className="product-list">
-            {sale.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="section section-muted" id="arrivals">
         <div className="section-header">
