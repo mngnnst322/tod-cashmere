@@ -161,36 +161,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section craftsmanship" id="craftsmanship">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.craftTitle}</div>
-            <div className="section-subtitle">{dict.craftSubtitle}</div>
-          </div>
-          <div className="section-actions">
-            <Link href="/craftsmanship" className="section-link">
-              {dict.craftCta}
-            </Link>
-          </div>
-        </div>
-        <div className="container craftsmanship-inner">
-          <div>
-            <p className="craftsmanship-text">{dict.craftText}</p>
-            <a className="btn btn-outline" href="#categories">
-              {dict.craftCta}
-            </a>
-          </div>
-          <div className="craftsmanship-list">
-            {dict.craftItems.map((item) => (
-              <div className="craftsmanship-item" key={item.label}>
-                <div className="craftsmanship-label">{item.label}</div>
-                <p className="craftsmanship-desc">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="section faq" id="faq">
         <div className="section-header">
           <div>
