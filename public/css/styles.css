@@ -2932,12 +2932,18 @@ footer .footer-bottom.container {
   padding-bottom: 14px;
 }
 
-/* Compact list on the gutter, not stretched across the screen. */
+/* Compact list centred on the page, its heading centred above it. */
 main .section > .faq-list.container {
   max-width: 760px;
-  margin-left: var(--grid-gutter);
+  margin-left: auto;
+  margin-right: auto;
   padding-left: 0;
   padding-right: 0;
+}
+
+main .faq > .section-header {
+  justify-content: center;
+  text-align: center;
 }
 
 @media (max-width: 720px) {
