@@ -349,12 +349,12 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               )}
             </ul>
           </div>
-          <Link className="nav-icon-button nav-pill nav-cart-pill" href="/cart" aria-label={t("cart")}>
-            <svg className="icon-svg nav-pill-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 4h-2l-1 2h2l2.6 9h8.8l2.1-7H9.1l-.6-2h12.5V4H7Zm3 18a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z" />
+          <Link className="nav-icon-button nav-icon-only nav-cart nav-bag" href="/cart" aria-label={t("cart")}>
+            <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8" />
+              <path d="M5 8h14l-1 12H6Z" />
             </svg>
-            <span className="nav-pill-text">{t("cart")}</span>
-            <span className="cart-count-inline">{count}</span>
+            {count > 0 && <span className="cart-count">{count}</span>}
           </Link>
         </div>
 

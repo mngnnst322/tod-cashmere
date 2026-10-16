@@ -3970,6 +3970,26 @@ main .section--centered-title > .section-header {
   text-align: center;
 }
 
+/* Cart as an outline bag icon. */
+.site-header .nav-bag .icon-svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+/* The menu is centred on the page, whatever sits either side of it. */
+@media (min-width: 1025px) {
+  .site-header .nav {
+    position: relative;
+  }
+  .site-header .nav-menu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
