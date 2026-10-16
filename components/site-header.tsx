@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
 import { useLang } from "./lang-provider";
 import { LangFlag } from "./lang-flag";
+import { SearchDropdown, rememberSearch } from "./search-dropdown";
 import { AccountSignOutButton } from "./account-sign-out-button";
 import { LANGS, type Dict } from "@/lib/i18n";
 
@@ -82,6 +83,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
   const headerRef = useRef<HTMLElement>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [langOpen, setLangOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -417,7 +419,10 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
             role="search"
             action="/search"
             method="GET"
-            onSubmit={() => setSearchActive(false)}
+            onSubmit={() => {
+              rememberSearch(searchQuery);
+              setSearchActive(false);
+            }}
           >
             <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l4.25 4.25 1.49-1.49L15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z" />
@@ -428,6 +433,8 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               placeholder={t("searchPlaceholder")}
               autoComplete="off"
               ref={searchInputRef}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button
               type="button"
@@ -437,6 +444,17 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               {t("close")} ✕
             </button>
           </form>
+          {searchActive && (
+            <SearchDropdown
+              query={searchQuery}
+              lang={lang}
+              onPick={() => setSearchActive(false)}
+              onRecent={(term) => {
+                setSearchQuery(term);
+                searchInputRef.current?.focus();
+              }}
+            />
+          )}
         </div>
       </div>
     </header>
