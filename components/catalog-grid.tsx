@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { catalogItems } from "@/lib/db/schema";
 import { catalogItemName, type CatalogStrings } from "@/lib/catalog-i18n";
-import { findCashmereColor, splitColors } from "@/lib/catalog-colors";
+import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
 import type { Lang } from "@/lib/i18n";
 import { useCatalogFavorites } from "./catalog-favorites";
 import { isUploadedImage } from "@/lib/format";
@@ -56,9 +56,11 @@ export function CatalogGrid({
                     <span
                       key={c}
                       className="katalog-card-swatch"
-                      style={{ background: color.hex }}
+                      style={{ background: color.hex, color: numberColorOn(color.hex) }}
                       title={color.names[lang]}
-                    />
+                    >
+                      {color.code}
+                    </span>
                   ) : null;
                 })}
               </div>

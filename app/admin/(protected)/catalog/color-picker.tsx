@@ -46,6 +46,7 @@ export function ColorPicker({ defaultValue }: { defaultValue?: string }) {
                 className="h-5 w-5 rounded-full border border-black/10"
                 style={{ background: c.hex }}
               />
+              <span className="font-semibold">{c.code}</span>
               {c.names.mn}
             </button>
           );

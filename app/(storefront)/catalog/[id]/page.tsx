@@ -9,7 +9,7 @@ import {
   catalogTypeName,
 } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
-import { findCashmereColor, splitColors } from "@/lib/catalog-colors";
+import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
 import { CatalogGrid, CatalogItemHeart } from "@/components/catalog-grid";
 import { ZoomImage } from "@/components/zoom-image";
 import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
@@ -84,10 +84,12 @@ export default async function CatalogItemPage(
                     return color ? (
                       <span
                         key={c}
-                        className="katalog-swatch"
-                        style={{ background: color.hex }}
+                        className="katalog-swatch katalog-swatch--code"
+                        style={{ background: color.hex, color: numberColorOn(color.hex) }}
                         title={color.names[lang]}
-                      />
+                      >
+                        {color.code}
+                      </span>
                     ) : null;
                   })}
                 </div>
