@@ -9,47 +9,9 @@ import { LangFlag } from "./lang-flag";
 import { SearchDropdown, rememberSearch } from "./search-dropdown";
 import { AccountSignOutButton } from "./account-sign-out-button";
 import { LANGS, type Dict } from "@/lib/i18n";
+import { shopMenu } from "@/lib/shop-menu";
 
-const megaColumns = (gender: "women" | "men", d: Dict) => [
-  {
-    title: gender === "women" ? d.women : d.men,
-    links: [
-      { label: d.megaNew, href: "/arrivals" },
-      { label: d.megaEssentials, href: `/categories#${gender}` },
-      { label: d.megaBestsellers, href: `/categories#${gender}` },
-    ],
-  },
-  {
-    title: d.megaTops,
-    links: [
-      { label: d.megaSweaters, href: `/categories#${gender}` },
-      { label: d.megaCardigans, href: `/categories#${gender}` },
-      { label: d.megaHoodies, href: `/categories#${gender}` },
-      ...(gender === "women"
-        ? [{ label: d.megaDresses, href: `/categories#${gender}` }]
-        : []),
-    ],
-  },
-  {
-    title: d.megaAccessories,
-    links: [
-      { label: d.megaBeanies, href: `/categories#${gender}` },
-      { label: d.megaScarves, href: `/categories#${gender}` },
-      { label: d.megaGloves, href: `/categories#${gender}` },
-      { label: d.megaShoes, href: "/categories#shoes" },
-    ],
-  },
-  {
-    title: d.megaOuterwear,
-    links: [
-      { label: d.megaCoats, href: "/categories#outerwear" },
-      { label: d.megaBlazers, href: "/categories#outerwear" },
-      { label: d.megaJackets, href: "/categories#outerwear" },
-    ],
-  },
-];
-
-const megaFeatures = (gender: "women" | "men", d: Dict) => [
+const megaFeatures = (gender: string, d: Dict) => [
   {
     href: "/arrivals",
     image:
@@ -66,7 +28,8 @@ const megaFeatures = (gender: "women" | "men", d: Dict) => [
         ? "/images/smiley-woman-beach-front-view_23-2150100099.avif"
         : "/images/woman-walking-beach-side-view.jpg",
     title: d.megaSale,
-    caption: gender === "women" ? d.megaSaleWomen : d.megaSaleMen,
+    caption:
+      gender === "women" ? d.megaSaleWomen : gender === "men" ? d.megaSaleMen : d.megaSale,
   },
 ];
 
@@ -152,80 +115,74 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
 
         <nav className="nav-menu" id="primary-nav" aria-label="Primary">
           <ul className="nav-menu-list">
-            {(["women", "men"] as const).map((gender) => (
-              <li
-                key={gender}
-                className="nav-menu-item has-mega"
-                onMouseEnter={() => setMegaOpen(true)}
-                onMouseLeave={() => setMegaOpen(false)}
-              >
-                <Link
-                  className="nav-menu-link"
-                  href={`/categories#${gender}`}
-                  onClick={() => setNavOpen(false)}
+            {shopMenu(lang).map((entry) =>
+              entry.columns ? (
+                <li
+                  key={entry.key}
+                  className="nav-menu-item has-mega"
+                  onMouseEnter={() => setMegaOpen(true)}
+                  onMouseLeave={() => setMegaOpen(false)}
                 >
-                  {gender === "women" ? t("women") : t("men")}
-                  <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7 10l5 5 5-5z" />
-                  </svg>
-                </Link>
-                <div className="mega-menu">
-                  <div className="mega-inner">
-                    <div className="mega-columns">
-                      {megaColumns(gender, dict).map((col) => (
-                        <div className="mega-col" key={col.title}>
-                          <div className="mega-col-title">{col.title}</div>
-                          <ul>
-                            {col.links.map((link) => (
-                              <li key={link.label}>
-                                <Link href={link.href} onClick={() => setNavOpen(false)}>
-                                  {link.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mega-features">
-                      {megaFeatures(gender, dict).map((feature) => (
-                        <Link
-                          className="mega-feature"
-                          href={feature.href}
-                          key={feature.title + feature.caption}
-                          onClick={() => setNavOpen(false)}
-                        >
-                          <div className="mega-feature-image">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={feature.image} alt={feature.title} loading="lazy" />
+                  <Link className="nav-menu-link" href={entry.href} onClick={() => setNavOpen(false)}>
+                    {entry.label}
+                    <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                  </Link>
+                  <div className="mega-menu">
+                    <div className="mega-inner">
+                      <div className="mega-columns">
+                        {entry.columns.map((col) => (
+                          <div className="mega-col" key={col.title}>
+                            <div className="mega-col-title">{col.title}</div>
+                            <ul>
+                              {col.links.map((link) => (
+                                <li key={link.label}>
+                                  <Link href={link.href} onClick={() => setNavOpen(false)}>
+                                    {link.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          <div className="mega-feature-title">{feature.title}</div>
-                          <div className="mega-feature-caption">{feature.caption}</div>
-                        </Link>
-                      ))}
+                        ))}
+                      </div>
+                      <div className="mega-features">
+                        {megaFeatures(entry.key, dict).map((feature) => (
+                          <Link
+                            className="mega-feature"
+                            href={feature.href}
+                            key={feature.title + feature.caption}
+                            onClick={() => setNavOpen(false)}
+                          >
+                            <div className="mega-feature-image">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={feature.image} alt={feature.title} loading="lazy" />
+                            </div>
+                            <div className="mega-feature-title">{feature.title}</div>
+                            <div className="mega-feature-caption">{feature.caption}</div>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              ) : (
+                <li className="nav-menu-item" key={entry.key}>
+                  <Link className="nav-menu-link" href={entry.href} onClick={() => setNavOpen(false)}>
+                    {entry.label}
+                  </Link>
+                </li>
+              ),
+            )}
             <li className="nav-menu-item">
               <Link className="nav-menu-link" href="/sale" onClick={() => setNavOpen(false)}>
                 {t("sale")}
               </Link>
             </li>
             <li className="nav-menu-item">
-              <Link className="nav-menu-link" href="/arrivals" onClick={() => setNavOpen(false)}>
-                {t("newArrivals")}
-              </Link>
-            </li>
-            <li className="nav-menu-item">
               <Link className="nav-menu-link" href="/lookbook" onClick={() => setNavOpen(false)}>
                 {t("lookbook")}
-              </Link>
-            </li>
-            <li className="nav-menu-item">
-              <Link className="nav-menu-link" href="/lookbook#bundle" onClick={() => setNavOpen(false)}>
-                {t("bundle")}
               </Link>
             </li>
           </ul>
