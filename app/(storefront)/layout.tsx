@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { NewsStrip } from "@/components/news-strip";
 import { ComingSoon } from "@/components/coming-soon";
 import { CatalogHeader } from "@/components/catalog-header";
 import { RevealObserver } from "@/components/reveal-observer";
@@ -66,6 +67,7 @@ export default async function StorefrontLayout({
         }
       />
       <main>{children}</main>
+      <NewsStrip />
       <SiteFooter />
       <RevealObserver />
     </div>

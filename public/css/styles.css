@@ -4078,6 +4078,81 @@ main .section--centered-title > .section-header {
   transform: none;
 }
 
+/* "Мэдээ, мэдээлэл" news cards above the footer. */
+.news-strip {
+  padding: 64px 0 72px;
+  background: var(--color-bg);
+}
+
+.news-strip-title {
+  margin: 0 var(--grid-gutter) 28px;
+  font-size: clamp(26px, 2.2vw, 38px);
+  font-weight: 400 !important;
+}
+
+.news-strip .carousel-track {
+  gap: 24px;
+  grid-auto-columns: calc((100% - 72px) / 4);
+}
+
+.news-card {
+  overflow: hidden;
+  border: 1px solid #e3ded8;
+  border-radius: 8px !important;
+  background: #fff;
+}
+
+.news-card-image {
+  position: relative;
+  aspect-ratio: 5 / 2;
+  background: #ece8e3;
+}
+
+.news-card-image img {
+  object-fit: cover;
+}
+
+.news-card-body {
+  min-height: 150px;
+  padding: 20px 24px 28px;
+}
+
+.news-card-date {
+  color: #77716b;
+  font-size: 13px;
+  font-weight: 400 !important;
+}
+
+.news-card-title {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 400 !important;
+  line-height: 1.45;
+}
+
+.news-strip .carousel-arrow {
+  top: calc(50% - 24px);
+  width: 48px;
+  height: 48px;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.news-strip .carousel-arrow.is-prev {
+  left: calc(var(--grid-gutter) / 2);
+}
+
+.news-strip .carousel-arrow.is-next {
+  right: calc(var(--grid-gutter) / 2);
+}
+
+@media (max-width: 860px) {
+  .news-strip .carousel-track {
+    grid-auto-columns: 80%;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
