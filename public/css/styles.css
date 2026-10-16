@@ -4200,18 +4200,16 @@ body:has(.hero--video) .site-header:not(.is-solid) .nav-pill {
   color: rgba(255, 255, 255, 0.86);
 }
 
-/* Intro copy sits on the right side of the photo, right-aligned. */
+/* Intro copy sits on the left of the photo, on the page gutter. */
 .hero-photo-content {
   max-width: none;
   margin: 0;
   padding-left: var(--grid-gutter);
   padding-right: var(--grid-gutter);
-  text-align: right;
 }
 
 .hero-photo-content .editorial-lead {
   max-width: 560px;
-  margin-left: auto;
 }
 
 .hero-photo-content .editorial-title {

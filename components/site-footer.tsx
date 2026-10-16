@@ -27,7 +27,7 @@ const columns: Record<Lang, Column[]> = {
     {
       title: "Хэрэглэгчийн үйлчилгээ",
       links: [
-        { label: "Түгээмэл асуулт, хариулт", href: "/#faq" },
+        { label: "Түгээмэл асуулт, хариулт", href: "/faq" },
         { label: "Бэлгийн карт", href: "#" },
         { label: "Санал хүсэлт", href: `mailto:${EMAIL}` },
         { label: "Миний захиалгууд", href: "/account" },
@@ -46,7 +46,7 @@ const columns: Record<Lang, Column[]> = {
     {
       title: "Customer service",
       links: [
-        { label: "FAQ", href: "/#faq" },
+        { label: "FAQ", href: "/faq" },
         { label: "Gift card", href: "#" },
         { label: "Feedback", href: `mailto:${EMAIL}` },
         { label: "My orders", href: "/account" },
@@ -65,7 +65,7 @@ const columns: Record<Lang, Column[]> = {
     {
       title: "Обслуживание",
       links: [
-        { label: "Частые вопросы", href: "/#faq" },
+        { label: "Частые вопросы", href: "/faq" },
         { label: "Подарочная карта", href: "#" },
         { label: "Отзывы и предложения", href: `mailto:${EMAIL}` },
         { label: "Мои заказы", href: "/account" },
@@ -84,7 +84,7 @@ const columns: Record<Lang, Column[]> = {
     {
       title: "客户服务",
       links: [
-        { label: "常见问题", href: "/#faq" },
+        { label: "常见问题", href: "/faq" },
         { label: "礼品卡", href: "#" },
         { label: "意见反馈", href: `mailto:${EMAIL}` },
         { label: "我的订单", href: "/account" },

@@ -9,7 +9,6 @@ import {
 import { CategoryCard } from "@/components/category-card";
 import { ProductCard } from "@/components/product-card";
 import { ArrivalCard } from "@/components/arrival-card";
-import { FaqAccordion } from "@/components/faq-accordion";
 import { getDict } from "@/lib/i18n-server";
 
 const storyImages = [
@@ -159,16 +158,6 @@ export default async function HomePage() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="section faq" id="faq">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.faqTitle}</div>
-            <div className="section-subtitle">{dict.faqSubtitle}</div>
-          </div>
-        </div>
-        <FaqAccordion />
       </section>
     </>
   );
