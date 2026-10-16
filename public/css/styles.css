@@ -3552,6 +3552,109 @@ main .story-grid {
   letter-spacing: -0.01em;
 }
 
+/* Footer top strip: logo, email sign-up, social links. */
+.footer-signup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 0 var(--grid-gutter);
+  padding: 28px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.footer-signup-logo {
+  width: auto;
+  height: 52px;
+}
+
+.footer-signup-form {
+  display: flex;
+  width: min(420px, 100%);
+  height: 48px;
+}
+
+.footer-signup-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 16px;
+  border: 1px solid #d8d4cf;
+  border-right: 0;
+  border-radius: 8px 0 0 8px !important;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  font-weight: 400 !important;
+  outline: none;
+}
+
+.footer-signup-form input:focus {
+  border-color: #111;
+}
+
+.footer-signup-form button {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  border: 0;
+  border-radius: 0 8px 8px 0 !important;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.footer-signup-form svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.footer-signup-thanks {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.footer-signup-social {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.footer-signup-social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #cfcac4;
+  border-radius: 999px !important;
+  color: #222;
+}
+
+.footer-signup-social svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.footer-signup-social svg.filled,
+.footer-signup-social .fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+@media (max-width: 640px) {
+  .footer-signup {
+    flex-wrap: wrap;
+  }
+  .footer-signup-form {
+    order: 3;
+    width: 100%;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
