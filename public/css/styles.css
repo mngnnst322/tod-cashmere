@@ -460,9 +460,9 @@ body:has(.hero--video) .site-header:not(.is-solid) {
 }
 
 .mega-inner {
-  max-width: var(--max-width);
+  max-width: none;
   margin: 0 auto;
-  padding: 32px 16px 36px;
+  padding: 36px var(--grid-gutter) 40px;
   display: flex;
   gap: 40px;
   align-items: flex-start;
@@ -3983,10 +3983,16 @@ main .section--centered-title > .section-header {
   .site-header .nav {
     position: relative;
   }
+  /* Centred by spanning the bar (no transform, which would trap the
+     full-width dropdowns inside the menu box). */
   .site-header .nav-menu {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    pointer-events: none;
+  }
+  .site-header .nav-menu-list {
+    pointer-events: auto;
   }
 }
 
