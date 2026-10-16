@@ -3896,7 +3896,13 @@ footer {
 }
 
 .shop-split-cat {
-  aspect-ratio: 3 / 4;
+  height: min(100vh, 45vw);
+}
+
+@media (max-width: 760px) {
+  .shop-split-cat {
+    height: 68vw;
+  }
 }
 
 .shop-split-tile img,

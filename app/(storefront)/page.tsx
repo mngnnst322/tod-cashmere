@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  listCategories,
   getFeaturedProducts,
   getSaleProducts,
   getArrivalProducts,
@@ -9,7 +8,6 @@ import {
 import { ProductCard } from "@/components/product-card";
 import { ArrivalCard } from "@/components/arrival-card";
 import { getDict } from "@/lib/i18n-server";
-import { categoryName } from "@/lib/i18n";
 
 const shopLabels = {
   mn: { women: "Эмэгтэй дэлгүүр", men: "Эрэгтэй дэлгүүр" },
@@ -18,12 +16,28 @@ const shopLabels = {
   zh: { women: "女士系列", men: "男士系列" },
 };
 
-// Photos for the category tiles (the categories share one stock photo).
-const tileImages = [
-  "/images/front-view-woman-posing-beach_23-2150100135.jpg",
-  "/images/woman-walking-beach-side-view.jpg",
-  "/images/full-shot-woman-taking-walk-nature_23-2150100065.jpg",
-  "/images/woman-holding-coffee-cup-front-view.jpg",
+// Garment-type tiles under the gender pair.
+const shopTiles = [
+  {
+    href: "/search?q=цамц",
+    image: "/images/front-view-woman-posing-beach_23-2150100135.jpg",
+    label: { mn: "Цамц", en: "Sweaters", ru: "Свитеры", zh: "毛衣" },
+  },
+  {
+    href: "/categories",
+    image: "/images/smiley-woman-beach-front-view_23-2150100099.avif",
+    label: { mn: "Аксессуар", en: "Accessories", ru: "Аксессуары", zh: "配饰" },
+  },
+  {
+    href: "/search?q=кардиган",
+    image: "/images/woman-walking-beach-side-view.jpg",
+    label: { mn: "Кардиган", en: "Cardigans", ru: "Кардиганы", zh: "开衫" },
+  },
+  {
+    href: "/search?q=пальто",
+    image: "/images/full-shot-woman-taking-walk-nature_23-2150100065.jpg",
+    label: { mn: "Пальто", en: "Coats", ru: "Пальто", zh: "大衣" },
+  },
 ];
 
 const storyImages = [
@@ -34,8 +48,7 @@ const storyImages = [
 ];
 
 export default async function HomePage() {
-  const [categories, featured, sale, arrivals, { lang, dict }] = await Promise.all([
-    listCategories(),
+  const [featured, sale, arrivals, { lang, dict }] = await Promise.all([
     getFeaturedProducts(),
     getSaleProducts(),
     getArrivalProducts(),
@@ -82,15 +95,10 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="shop-split-cats">
-          {categories.slice(0, 4).map((category, i) => (
-            <Link key={category.id} href={`/categories#${category.slug}`} className="shop-split-cat">
-              <Image
-                src={tileImages[i % tileImages.length]}
-                alt=""
-                fill
-                sizes="(max-width: 760px) 50vw, 25vw"
-              />
-              <span className="shop-split-pill">{categoryName(category, lang)}</span>
+          {shopTiles.map((tile) => (
+            <Link key={tile.href} href={tile.href} className="shop-split-cat">
+              <Image src={tile.image} alt="" fill sizes="(max-width: 760px) 50vw, 25vw" />
+              <span className="shop-split-pill">{tile.label[lang]}</span>
             </Link>
           ))}
         </div>
