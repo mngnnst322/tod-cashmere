@@ -82,6 +82,22 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="section section--centered-title" id="featured">
+        <div className="section-header">
+          <div>
+            <div className="section-title">{dict.featuredTitle}</div>
+            <div className="section-subtitle">{dict.featuredSubtitle}</div>
+          </div>
+        </div>
+        <div className="product-row">
+          <div className="product-list">
+            {featured.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Shop by gender, then by category: full-bleed photo tiles. */}
       <section className="shop-split" id="categories">
         <div className="shop-split-pair">
@@ -104,21 +120,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section" id="featured">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.featuredTitle}</div>
-            <div className="section-subtitle">{dict.featuredSubtitle}</div>
-          </div>
-        </div>
-        <div className="product-row">
-          <div className="product-list">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="section" id="sale">
         <div className="section-header">
