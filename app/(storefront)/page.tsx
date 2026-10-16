@@ -9,7 +9,6 @@ import {
 import { CategoryCard } from "@/components/category-card";
 import { ProductCard } from "@/components/product-card";
 import { ArrivalCard } from "@/components/arrival-card";
-import { BundleConfigurator } from "@/components/bundle-configurator";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { getDict } from "@/lib/i18n-server";
 
@@ -29,8 +28,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <link rel="stylesheet" href="/css/bundle.css" />
-
       {/* `hero--video` lets the header float transparently over the photo. */}
       <section className="hero hero--video hero--photo" id="intro">
         <Image
@@ -55,8 +52,6 @@ export default async function HomePage() {
           <p className="editorial-lead">{dict.introLead}</p>
         </div>
       </section>
-
-      <BundleConfigurator />
 
       <section className="section" id="categories">
         <div className="section-header">

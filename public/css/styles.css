@@ -3210,9 +3210,17 @@ body:has(.katalog-backdrop) {
   padding-top: 32px;
 }
 
-/* Catalog photos sit close together. */
+/* Catalog lists run edge to edge, four across with hairline gaps, like the
+   shop rows; headings line up with the first photo. */
 .category-grid.katalog-grid {
-  gap: 28px 12px;
+  max-width: none;
+  padding: 0 clamp(8px, 1.2vw, 20px);
+  gap: 24px 6px;
+}
+
+.katalog-section > .section-header {
+  max-width: none;
+  padding: 0 clamp(8px, 1.2vw, 20px);
 }
 
 /* Phones: catalog lists stay two across (the shop grid drops to one). */

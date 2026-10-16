@@ -224,7 +224,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               </Link>
             </li>
             <li className="nav-menu-item">
-              <Link className="nav-menu-link" href="/#bundle" onClick={() => setNavOpen(false)}>
+              <Link className="nav-menu-link" href="/lookbook#bundle" onClick={() => setNavOpen(false)}>
                 {t("bundle")}
               </Link>
             </li>
