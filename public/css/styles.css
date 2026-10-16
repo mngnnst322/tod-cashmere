@@ -312,10 +312,12 @@ body:has(.hero--video) .site-header:not(.is-solid) {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
 }
 
+/* The header spans the full screen width: logo at the left edge, buttons
+   at the right. */
 .nav {
-  max-width: var(--max-width);
+  max-width: none;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 clamp(16px, 3vw, 48px);
   min-height: var(--header-h);
   display: flex;
   align-items: center;
