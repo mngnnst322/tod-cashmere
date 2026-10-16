@@ -3945,12 +3945,14 @@ footer {
   bottom: clamp(16px, 2.6vw, 48px);
   z-index: 1;
   transform: translateX(-50%);
-  padding: 10px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 999px !important;
-  background: rgba(30, 26, 23, 0.82);
+  padding: 6px 4px;
+  border: 0;
+  background: transparent;
   font-size: 15px;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
   white-space: nowrap;
 }
 
@@ -4066,13 +4068,6 @@ main .section--centered-title > .section-header {
   stroke: currentColor;
   stroke-width: 2;
   transition: width 0.35s var(--ease-smooth);
-}
-
-.shop-split-cat:hover .shop-split-pill {
-  border-color: transparent;
-  background: transparent;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .shop-split-cat:hover .shop-split-pill svg {
