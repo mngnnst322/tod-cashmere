@@ -78,7 +78,6 @@ export default async function HomePage() {
         <div className="section-header">
           <div>
             <div className="section-title">{dict.featuredTitle}</div>
-            <div className="section-subtitle">{dict.featuredSubtitle}</div>
           </div>
         </div>
         <div className="product-row">
