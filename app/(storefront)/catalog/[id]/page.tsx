@@ -114,7 +114,7 @@ export default async function CatalogItemPage(
               <div className="section-title">{s.similar}</div>
             </div>
           </div>
-          <CatalogGrid items={similar} strings={s} lang={lang} />
+          <CatalogGrid items={similar} strings={s} lang={lang} carousel />
         </section>
       )}
     </>

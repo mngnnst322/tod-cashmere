@@ -3655,6 +3655,138 @@ main .story-grid {
   }
 }
 
+/* Sideways row (similar items): four in view, arrows at the edges. */
+.carousel-row {
+  position: relative;
+  padding: 0 var(--grid-gutter);
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 18px) / 4);
+  gap: 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track > * {
+  scroll-snap-align: start;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 40%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 64px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.85);
+  color: #111;
+  cursor: pointer;
+}
+
+.carousel-arrow.is-prev {
+  left: 0;
+}
+
+.carousel-arrow.is-next {
+  right: 0;
+}
+
+.carousel-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+@media (max-width: 860px) {
+  .carousel-track {
+    grid-auto-columns: calc((100% - 6px) / 2);
+  }
+}
+
+/* Footer link columns and the black bottom bar. */
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  padding: 36px var(--grid-gutter) 40px;
+}
+
+.footer-columns .footer-column-title {
+  margin-bottom: 16px;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer-columns .footer-links {
+  display: grid;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.footer-columns .footer-links a {
+  font-weight: 400 !important;
+}
+
+.footer-bar {
+  padding: 18px var(--grid-gutter);
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400 !important;
+}
+
+.scroll-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 10px !important;
+  background: #fff;
+  color: #111;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scroll-top svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+@media (max-width: 760px) {
+  .footer-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

@@ -4,9 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import type { catalogItems } from "@/lib/db/schema";
 import { catalogItemName, type CatalogStrings } from "@/lib/catalog-i18n";
-import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
+import {
+  findCashmereColor,
+  numberColorOn,
+  splitColors,
+} from "@/lib/catalog-colors";
 import type { Lang } from "@/lib/i18n";
 import { useCatalogFavorites } from "./catalog-favorites";
+import { CarouselRow } from "./carousel-row";
 import { isUploadedImage } from "@/lib/format";
 
 export type CatalogItem = typeof catalogItems.$inferSelect;
@@ -16,10 +21,13 @@ export function CatalogGrid({
   strings,
   lang,
   savedOnly,
+  carousel,
 }: {
   items: CatalogItem[];
   strings: CatalogStrings;
   lang: Lang;
+  /** One sideways-scrolling row instead of a grid. */
+  carousel?: boolean;
   /** Show only the items this browser has hearted (the "saved" page). */
   savedOnly?: boolean;
 }) {
@@ -30,8 +38,8 @@ export function CatalogGrid({
     return <p className="katalog-saved-empty">{strings.savedEmpty}</p>;
   }
 
-  return (
-    <div className="category-grid katalog-grid">
+  const cards = (
+    <>
       {shown.map((item) => (
         <article className="katalog-card" id={item.id} key={item.id}>
           {/* Photo and name; the details are on the item page. */}
@@ -47,7 +55,9 @@ export function CatalogGrid({
                 />
               )}
             </div>
-            <div className="katalog-card-name">{catalogItemName(item.name, lang)}</div>
+            <div className="katalog-card-name">
+              {catalogItemName(item.name, lang)}
+            </div>
             {item.colors && (
               <div className="katalog-card-colors">
                 {splitColors(item.colors).map((c) => {
@@ -56,7 +66,10 @@ export function CatalogGrid({
                     <span
                       key={c}
                       className="katalog-card-swatch"
-                      style={{ background: color.hex, color: numberColorOn(color.hex) }}
+                      style={{
+                        background: color.hex,
+                        color: numberColorOn(color.hex),
+                      }}
                       title={color.names[lang]}
                     >
                       {color.code}
@@ -73,14 +86,32 @@ export function CatalogGrid({
           />
         </article>
       ))}
-    </div>
+    </>
+  );
+
+  return carousel ? (
+    <CarouselRow>{cards}</CarouselRow>
+  ) : (
+    <div className="category-grid katalog-grid">{cards}</div>
   );
 }
 
 /** The heart for a single item (the item page), wired to saved items. */
-export function CatalogItemHeart({ id, strings }: { id: string; strings: CatalogStrings }) {
+export function CatalogItemHeart({
+  id,
+  strings,
+}: {
+  id: string;
+  strings: CatalogStrings;
+}) {
   const { ids, toggle } = useCatalogFavorites();
-  return <HeartButton saved={ids.includes(id)} onToggle={() => toggle(id)} strings={strings} />;
+  return (
+    <HeartButton
+      saved={ids.includes(id)}
+      onToggle={() => toggle(id)}
+      strings={strings}
+    />
+  );
 }
 
 export function HeartButton({
