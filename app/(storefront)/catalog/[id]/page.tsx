@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCatalogItem, listCatalog } from "@/lib/catalog";
+import { getCatalogItem, itemImages, listCatalog } from "@/lib/catalog";
 import {
   catalogItemName,
   catalogMaterial,
@@ -10,7 +10,7 @@ import {
 import { getLang } from "@/lib/i18n-server";
 import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
 import { CatalogGrid, CatalogItemHeart } from "@/components/catalog-grid";
-import { ZoomImage } from "@/components/zoom-image";
+import { CatalogGallery } from "@/components/catalog-gallery";
 import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
 
 export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
@@ -35,6 +35,7 @@ export default async function CatalogItemPage(
     listCatalog(),
   ]);
   if (!item) notFound();
+  const gallery = itemImages(item);
   // Similar items: same type for the same gender, shown below the item.
   const similar = all.filter(
     (i) => i.id !== item.id && i.type === item.type && i.gender === item.gender,
@@ -49,15 +50,9 @@ export default async function CatalogItemPage(
           ← {s.back}
         </Link>
         <div className="katalog-item-layout">
-          <div className="katalog-item-image">
-            {item.image && (
-              <ZoomImage
-                src={item.image}
-                alt={catalogItemName(item.name, lang)}
-              />
-            )}
-            <CatalogItemHeart id={item.id} strings={s} />
-          </div>
+          <CatalogGallery images={gallery} alt={catalogItemName(item.name, lang)}>
+          <CatalogItemHeart id={item.id} strings={s} />
+        </CatalogGallery>
           <div className="katalog-item-info">
             <div className="katalog-item-type">
               {catalogTypeName(item.type, lang)}

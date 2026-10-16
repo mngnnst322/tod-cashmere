@@ -4,11 +4,23 @@ import { useState } from "react";
 import { saveCatalogItem } from "@/lib/admin-actions";
 import type { catalogItems } from "@/lib/db/schema";
 import { Modal } from "../modal";
-import { ImageField } from "../image-field";
+import { GalleryField } from "./gallery-field";
 import { ColorPicker } from "./color-picker";
 import { btnDark, icons, input, label } from "../../ui";
 
 type Item = typeof catalogItems.$inferSelect;
+
+/** The item's photos; older items only have the single cover `image`. */
+function parseImages(item?: Item): string[] {
+  if (!item) return [];
+  try {
+    const list = JSON.parse(item.images) as string[];
+    if (list.length) return list;
+  } catch {
+    // fall through to the cover
+  }
+  return item.image ? [item.image] : [];
+}
 
 /** "+ Каталог нэмэх" (no item) or the row's "Засах" link (with item). */
 export function CatalogItemButton({
@@ -97,7 +109,7 @@ export function CatalogItemButton({
               className={input}
             />
           </div>
-          <ImageField current={item?.image} id={`catalog-image-${item?.id ?? "new"}`} />
+          <GalleryField images={parseImages(item)} cover={item?.image} />
           <button type="submit" className={`${btnDark} w-full`}>
             Хадгалах
           </button>

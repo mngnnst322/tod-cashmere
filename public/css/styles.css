@@ -9,6 +9,8 @@
   --color-ink: #0f0c0a;
   --color-header-bg: #ffffff;
   --max-width: 1280px;
+  /* Side margin of the edge-to-edge product grids (shop and catalog). */
+  --grid-gutter: clamp(12px, 2.2vw, 44px);
   --header-h: 66px;
   --radius-lg: 0;
   --radius-md: 0;
@@ -1651,13 +1653,13 @@ body:has(.hero--video) .site-header:not(.is-solid) .nav-icon-button:hover {
    heading lines up with the first product. */
 .section:has(> .product-row) > .section-header {
   max-width: none;
-  padding: 0 clamp(8px, 1.2vw, 20px);
+  padding: 0 var(--grid-gutter);
 }
 /* Product rows run edge to edge, five across with hairline gaps. */
 .product-row {
   max-width: none;
   margin: 0 auto;
-  padding: 0 clamp(8px, 1.2vw, 20px);
+  padding: 0 var(--grid-gutter);
 }
 
 .product-list {
@@ -2401,10 +2403,11 @@ footer {
   margin-top: auto;
 }
 
+/* The footer spans the full width, on the same side margin as the grids. */
 .footer-inner {
-  max-width: var(--max-width);
+  max-width: none;
   margin: 0 auto;
-  padding: 20px 16px 16px;
+  padding: 20px var(--grid-gutter) 16px;
   display: grid;
   grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
   gap: 24px;
@@ -2441,10 +2444,17 @@ footer {
   margin-top: 4px;
 }
 
+footer .footer-bottom.container {
+  width: auto;
+  max-width: none;
+  margin-left: var(--grid-gutter);
+  margin-right: var(--grid-gutter);
+}
+
 .footer-bottom {
   border-top: 1px solid var(--color-border);
   margin-top: 12px;
-  padding: 10px 16px 0;
+  padding: 10px 0 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -3214,13 +3224,13 @@ body:has(.katalog-backdrop) {
    shop rows; headings line up with the first photo. */
 .category-grid.katalog-grid {
   max-width: none;
-  padding: 0 clamp(8px, 1.2vw, 20px);
+  padding: 0 var(--grid-gutter);
   gap: 24px 6px;
 }
 
 .katalog-section > .section-header {
   max-width: none;
-  padding: 0 clamp(8px, 1.2vw, 20px);
+  padding: 0 var(--grid-gutter);
 }
 
 /* Phones: catalog lists stay two across (the shop grid drops to one). */
@@ -3253,6 +3263,65 @@ body:has(.katalog-backdrop) {
   display: grid;
   grid-template-columns: minmax(0, 640px) minmax(240px, 1fr);
   gap: 56px;
+}
+
+/* With several photos, thumbnails take a column left of the large one. */
+.katalog-item-layout:has(.katalog-gallery.has-thumbs) {
+  grid-template-columns: minmax(0, 740px) minmax(240px, 1fr);
+}
+
+.katalog-gallery.has-thumbs {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.katalog-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.katalog-thumb {
+  display: block;
+  padding: 0;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.katalog-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.katalog-thumb:hover,
+.katalog-thumb.is-active {
+  opacity: 1;
+}
+
+.katalog-thumb.is-active {
+  border-color: #3a2f28;
+}
+
+@media (max-width: 860px) {
+  .katalog-item-layout:has(.katalog-gallery.has-thumbs),
+  .katalog-gallery.has-thumbs {
+    grid-template-columns: 1fr;
+  }
+  .katalog-thumbs {
+    order: 2;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .katalog-thumb {
+    flex: 0 0 64px;
+  }
 }
 
 /* Photo on the left; the details start beside it, level with its top. */
@@ -3444,6 +3513,15 @@ body:has(.katalog-backdrop) {
   color: #8a857f;
   font-size: 14px;
   font-weight: 400 !important;
+}
+
+/* Grid section headings (shop and catalog): large, light, on the gutter. */
+.section:has(> .product-row) .section-title,
+.katalog-section .section-title {
+  color: #3a2f28;
+  font-size: clamp(28px, 2.4vw, 44px);
+  font-weight: 400 !important;
+  letter-spacing: -0.01em;
 }
 
 /* Header logo (shop and catalog): black on the white header, white over the

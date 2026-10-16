@@ -174,6 +174,9 @@ export const catalogItems = sqliteTable("catalog_items", {
   colors: text("colors").notNull().default(""),
   // e.g. "S / M / L / XL / 2XL".
   sizes: text("sizes").notNull().default(""),
+  // Every photo of the item (JSON array of paths, different angles); `image`
+  // is the one picked as the cover for cards.
+  images: text("images").notNull().default("[]"),
   // "women" | "men"; set from the admin tab the item is added under.
   gender: text("gender").notNull().default("unisex"),
   image: text("image"),

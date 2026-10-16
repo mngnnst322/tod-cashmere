@@ -20,17 +20,20 @@ import {
 import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
 import { isCatalogGender } from "./catalog-types";
 
+/** Stores an uploaded photo in R2 and returns its public path. */
+async function uploadImage(file: File) {
+  const { env } = await getCloudflareContext({ async: true });
+  const ext = file.name.split(".").pop() || "jpg";
+  const key = `${crypto.randomUUID()}.${ext}`;
+  await env.PRODUCT_IMAGES.put(key, await file.arrayBuffer(), {
+    httpMetadata: { contentType: file.type },
+  });
+  return `/api/images/${key}`;
+}
+
 async function requireImagePath(formData: FormData, fallback?: string | null) {
   const file = formData.get("imageFile");
-  if (file instanceof File && file.size > 0) {
-    const { env } = await getCloudflareContext({ async: true });
-    const ext = file.name.split(".").pop() || "jpg";
-    const key = `${crypto.randomUUID()}.${ext}`;
-    await env.PRODUCT_IMAGES.put(key, await file.arrayBuffer(), {
-      httpMetadata: { contentType: file.type },
-    });
-    return `/api/images/${key}`;
-  }
+  if (file instanceof File && file.size > 0) return uploadImage(file);
   const pasted = String(formData.get("imagePath") || "").trim();
   return pasted || fallback || "";
 }
@@ -357,9 +360,6 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
   await requireAdmin();
   const db = await getDb();
   const type = String(formData.get("type"));
-  const existing = id
-    ? await db.query.catalogItems.findFirst({ where: eq(catalogItems.id, id) })
-    : undefined;
   const values = {
     type,
     name: String(formData.get("name")),
@@ -369,7 +369,7 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     sizes: String(formData.get("sizes") || "").trim(),
     gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "women",
     sortOrder: Number(formData.get("sortOrder") || 0),
-    image: (await requireImagePath(formData, existing?.image)) || null,
+    ...(await catalogPhotos(formData)),
   };
   if (id) {
     await db.update(catalogItems).set(values).where(eq(catalogItems.id, id));
@@ -385,6 +385,23 @@ export async function deleteCatalogItem(id: string) {
   const db = await getDb();
   await db.delete(catalogItems).where(eq(catalogItems.id, id));
   revalidatePath("/admin", "layout");
+}
+
+/**
+ * The gallery from the catalog form: photos kept (`keep`), new uploads
+ * (`galleryFiles`), and the cover (`cover`: a kept path or "new:<n>").
+ */
+async function catalogPhotos(formData: FormData) {
+  const kept = formData.getAll("keep").map(String).filter(Boolean);
+  const files = formData
+    .getAll("galleryFiles")
+    .filter((f): f is File => f instanceof File && f.size > 0);
+  const uploaded = await Promise.all(files.map(uploadImage));
+  const images = [...kept, ...uploaded];
+  const cover = String(formData.get("cover") || "");
+  const picked = cover.startsWith("new:") ? uploaded[Number(cover.slice(4))] : cover;
+  const image = images.includes(picked) ? picked : (images[0] ?? null);
+  return { images: JSON.stringify(images), image };
 }
 
 const catalogAdminHref = (gender: string, type?: string) =>
