@@ -3411,6 +3411,41 @@ body:has(.katalog-backdrop) {
     0 0 0 4.5px #8a8580;
 }
 
+/* Shop product page: reuses the catalog item layout, plus price and cart. */
+.product-page .katalog-item-image .product-tag {
+  z-index: 3;
+}
+
+.product-page-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.product-page-price {
+  font-size: 30px;
+}
+
+.product-page-old {
+  color: #9a958f;
+  font-size: 17px;
+}
+
+.product-page-cart {
+  min-width: 240px;
+  padding: 16px 28px;
+}
+
+.product-page-meta {
+  display: grid;
+  gap: 4px;
+  margin-top: 22px;
+  color: #8a857f;
+  font-size: 14px;
+  font-weight: 400 !important;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import {
   getProductBySlug,
   getRelatedProducts,
@@ -16,7 +15,7 @@ import {
   productTitle,
 } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
-import { isUploadedImage } from "@/lib/format";
+import { ZoomImage } from "@/components/zoom-image";
 
 export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
@@ -24,7 +23,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   if (!product) notFound();
 
   const [related, categories, { lang, dict }] = await Promise.all([
-    getRelatedProducts(product.slug, 4),
+    getRelatedProducts(product.slug, 5),
     listCategories(),
     getDict(),
   ]);
@@ -39,45 +38,28 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
 
   return (
     <>
-      <section className="section">
-        <div className="container product-detail-grid">
-          <div className="product-detail-media">
-            <Image
-              src={product.image}
-              unoptimized={isUploadedImage(product.image)}
-              alt={title}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+      {/* Same layout as a catalog item: large photo left, details right. */}
+      <section className="section katalog-item product-page">
+        <div className="katalog-item-layout">
+          <div className="katalog-item-image">
+            <ZoomImage src={product.image} alt={title} />
             {product.badge && (
-              <span className="product-tag">
-                {badgeLabel(product.badge, dict)}
-              </span>
+              <span className="product-tag">{badgeLabel(product.badge, dict)}</span>
             )}
           </div>
-          <div className="product-detail-info">
-            <div className="pill-row">
-              {product.badge === "Онцлох" && (
-                <span className="pill">{badgeLabel(product.badge, dict)}</span>
-              )}
-              <span className="pill">
-                {category ? categoryName(category, lang) : product.categorySlug}
-              </span>
+          <div className="katalog-item-info">
+            <div className="katalog-item-type">
+              {category ? categoryName(category, lang) : product.categorySlug}
             </div>
-            <h1 className="product-detail-title">{title}</h1>
-            <div className="product-detail-color">
-              {productColor(product, lang)}
-            </div>
-            <div className="product-detail-prices">
-              <div className="product-price-current">
-                {formatPrice(product.price)}
-              </div>
+            <h1 className="katalog-item-name">{title}</h1>
+            <div className="katalog-item-material">{productColor(product, lang)}</div>
+            <div className="product-page-prices">
+              <span className="product-page-price">{formatPrice(product.price)}</span>
               {product.compareAtPrice != null && (
-                <div className="product-price-old">
-                  {formatPrice(product.compareAtPrice)}
-                </div>
+                <s className="product-page-old">{formatPrice(product.compareAtPrice)}</s>
               )}
             </div>
+            <hr className="katalog-item-rule" />
             <div className="product-detail-actions">
               {!isSoldOut(product) ? (
                 <AddToCartButton
@@ -85,15 +67,15 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
                   title={title}
                   price={product.price}
                   image={product.image}
-                  className="btn btn-primary"
+                  className="btn btn-primary product-page-cart"
                 />
               ) : (
                 <div className="out-of-stock-text">{dict.outOfStock}</div>
               )}
             </div>
-            <div className="product-detail-meta">
+            <div className="product-page-meta">
               <div>
-                {dict.productCode}: <strong>{product.code}</strong>
+                {dict.productCode}: {product.code}
               </div>
               <div>
                 {dict.collection}: {collectionLabel}
