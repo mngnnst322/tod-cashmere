@@ -6,10 +6,25 @@ import {
   getSaleProducts,
   getArrivalProducts,
 } from "@/lib/products";
-import { CategoryCard } from "@/components/category-card";
 import { ProductCard } from "@/components/product-card";
 import { ArrivalCard } from "@/components/arrival-card";
 import { getDict } from "@/lib/i18n-server";
+import { categoryName } from "@/lib/i18n";
+
+const shopLabels = {
+  mn: { women: "Эмэгтэй дэлгүүр", men: "Эрэгтэй дэлгүүр" },
+  en: { women: "Shop women", men: "Shop men" },
+  ru: { women: "Женщинам", men: "Мужчинам" },
+  zh: { women: "女士系列", men: "男士系列" },
+};
+
+// Photos for the category tiles (the categories share one stock photo).
+const tileImages = [
+  "/images/front-view-woman-posing-beach_23-2150100135.jpg",
+  "/images/woman-walking-beach-side-view.jpg",
+  "/images/full-shot-woman-taking-walk-nature_23-2150100065.jpg",
+  "/images/woman-holding-coffee-cup-front-view.jpg",
+];
 
 const storyImages = [
   "/images/front-view-woman-enjoying-time-beach.jpg",
@@ -19,7 +34,7 @@ const storyImages = [
 ];
 
 export default async function HomePage() {
-  const [categories, featured, sale, arrivals, { dict }] = await Promise.all([
+  const [categories, featured, sale, arrivals, { lang, dict }] = await Promise.all([
     listCategories(),
     getFeaturedProducts(),
     getSaleProducts(),
@@ -54,21 +69,29 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section" id="categories">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.categoriesTitle}</div>
-            <div className="section-subtitle">{dict.categoriesSubtitle}</div>
-          </div>
-          <div className="section-actions">
-            <Link href="/categories" className="section-link">
-              {dict.viewAll}
-            </Link>
-          </div>
+      {/* Shop by gender, then by category: full-bleed photo tiles. */}
+      <section className="shop-split" id="categories">
+        <div className="shop-split-pair">
+          <Link href="/categories#women" className="shop-split-tile">
+            <Image src="/images/emegtei.png" alt="" fill sizes="50vw" />
+            <span className="shop-split-label">{shopLabels[lang].women}</span>
+          </Link>
+          <Link href="/categories#men" className="shop-split-tile">
+            <Image src="/images/eregtei.png" alt="" fill sizes="50vw" />
+            <span className="shop-split-label">{shopLabels[lang].men}</span>
+          </Link>
         </div>
-        <div className="category-grid">
-          {categories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
+        <div className="shop-split-cats">
+          {categories.slice(0, 4).map((category, i) => (
+            <Link key={category.id} href={`/categories#${category.slug}`} className="shop-split-cat">
+              <Image
+                src={tileImages[i % tileImages.length]}
+                alt=""
+                fill
+                sizes="(max-width: 760px) 50vw, 25vw"
+              />
+              <span className="shop-split-pill">{categoryName(category, lang)}</span>
+            </Link>
           ))}
         </div>
       </section>

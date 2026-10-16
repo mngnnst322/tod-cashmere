@@ -3859,6 +3859,105 @@ footer {
   }
 }
 
+/* Home: shop-by-gender pair and category tiles, edge to edge. */
+.shop-split-pair,
+.shop-split-cats {
+  display: grid;
+}
+
+.shop-split-pair {
+  grid-template-columns: 1fr 1fr;
+}
+
+.shop-split-cats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.shop-split-tile,
+.shop-split-cat {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+}
+
+.shop-split-tile {
+  height: min(100vh, 62vw);
+}
+
+@media (max-width: 760px) {
+  .shop-split-tile {
+    height: 75vw;
+  }
+  .shop-split-label {
+    font-size: 15px;
+  }
+}
+
+.shop-split-cat {
+  aspect-ratio: 3 / 4;
+}
+
+.shop-split-tile img,
+.shop-split-cat img {
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-smooth);
+}
+
+.shop-split-tile:hover img,
+.shop-split-cat:hover img {
+  transform: scale(1.04);
+}
+
+.shop-split-tile::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 30%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.35));
+}
+
+.shop-split-label {
+  position: absolute;
+  left: clamp(16px, 2vw, 40px);
+  bottom: clamp(20px, 3vw, 44px);
+  z-index: 1;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  font-size: clamp(20px, 1.8vw, 30px);
+  font-weight: 400 !important;
+}
+
+.shop-split-tile:hover .shop-split-label {
+  border-color: #fff;
+}
+
+.shop-split-pill {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 2.6vw, 48px);
+  z-index: 1;
+  transform: translateX(-50%);
+  padding: 10px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px !important;
+  background: rgba(30, 26, 23, 0.82);
+  font-size: 15px;
+  font-weight: 400 !important;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .shop-split-cats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .shop-split-pill {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
