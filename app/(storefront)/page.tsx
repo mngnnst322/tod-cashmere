@@ -105,7 +105,12 @@ export default async function HomePage() {
           {shopTiles.map((tile) => (
             <Link key={tile.href} href={tile.href} className="shop-split-cat">
               <Image src={tile.image} alt="" fill sizes="(max-width: 760px) 50vw, 25vw" />
-              <span className="shop-split-pill">{tile.label[lang]}</span>
+              <span className="shop-split-pill">
+                {tile.label[lang]}
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
             </Link>
           ))}
         </div>

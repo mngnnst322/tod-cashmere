@@ -4038,6 +4038,51 @@ main .section--centered-title > .section-header {
   color: inherit;
 }
 
+/* Category tiles: on hover the photo dims and the label turns into plain
+   white text with an arrow. */
+.shop-split-cat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 16, 0);
+  transition: background 0.35s var(--ease-smooth);
+}
+
+.shop-split-cat:hover::after {
+  background: rgba(20, 18, 16, 0.5);
+}
+
+.shop-split-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.35s var(--ease-smooth), border-color 0.35s var(--ease-smooth);
+}
+
+.shop-split-pill svg {
+  width: 0;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  transition: width 0.35s var(--ease-smooth);
+}
+
+.shop-split-cat:hover .shop-split-pill {
+  border-color: transparent;
+  background: transparent;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.shop-split-cat:hover .shop-split-pill svg {
+  width: 18px;
+}
+
+.shop-split-cat:hover img {
+  transform: none;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
