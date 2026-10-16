@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Changes on every build so /css/*.css links (see app/layout.tsx) bust the
+  // browser cache after each deploy.
+  env: { NEXT_PUBLIC_ASSET_VERSION: Date.now().toString(36) },
   images: {
     // Every photo is served at 90% (the default 75 softened clothing detail);
     // with one allowed value, all <Image> quality requests resolve to it.

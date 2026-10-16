@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="/css/styles.css" />
+        <link rel="stylesheet" href={`/css/styles.css?v=${process.env.NEXT_PUBLIC_ASSET_VERSION}`} />
       </head>
       <body>
         <ClerkProvider localization={clerkLocalizations[lang]}>
