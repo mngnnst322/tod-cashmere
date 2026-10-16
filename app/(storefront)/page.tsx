@@ -70,14 +70,6 @@ export default async function HomePage() {
         <div className="hero-photo-shade" aria-hidden="true" />
         <div className="hero-photo-content">
           <div className="editorial-eyebrow">{dict.introEyebrow}</div>
-          <h1 className="editorial-title">
-            <span className="line-reveal">
-              <span>{dict.introTitle1}</span>
-            </span>
-            <span className="line-reveal">
-              <span>{dict.introTitle2}</span>
-            </span>
-          </h1>
           <p className="editorial-lead">{dict.introLead}</p>
         </div>
       </section>
