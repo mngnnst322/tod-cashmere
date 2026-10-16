@@ -199,7 +199,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
             }}
           >
             <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l4.25 4.25 1.49-1.49L15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z" />
+              <g className="line-icon"><circle cx="10.5" cy="10.5" r="6" /><path d="m15 15 5 5" /></g>
             </svg>
           </button>
 
@@ -260,7 +260,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
           >
             <button
               type="button"
-              className={`nav-icon-button ${user ? "nav-icon-only" : "nav-pill"}`}
+              className="nav-icon-button nav-icon-only"
               aria-haspopup="menu"
               aria-expanded={profileOpen}
               aria-label={user ? t("profile") : t("login")}
@@ -273,17 +273,14 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               {user ? (
                 <>
                   <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
+                    <g className="line-icon"><circle cx="12" cy="8" r="3.6" /><path d="M5 20.5c.6-3.6 3.4-5.8 7-5.8s6.4 2.2 7 5.8Z" /></g>
                   </svg>
                   <span className="profile-dot" aria-hidden="true"></span>
                 </>
               ) : (
-                <>
-                  <svg className="icon-svg nav-pill-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.33 0-8 1.67-8 5v1h16v-1c0-3.33-4.67-5-8-5Z" />
-                  </svg>
-                  <span className="nav-pill-text">{t("login")}</span>
-                </>
+                <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <g className="line-icon"><circle cx="12" cy="8" r="3.6" /><path d="M5 20.5c.6-3.6 3.4-5.8 7-5.8s6.4 2.2 7 5.8Z" /></g>
+                </svg>
               )}
             </button>
             <ul className="lang-menu profile-menu" role="menu">
@@ -382,7 +379,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
             }}
           >
             <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l4.25 4.25 1.49-1.49L15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z" />
+              <g className="line-icon"><circle cx="10.5" cy="10.5" r="6" /><path d="m15 15 5 5" /></g>
             </svg>
             <input
               type="search"

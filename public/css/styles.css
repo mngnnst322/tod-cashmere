@@ -3996,6 +3996,48 @@ main .section--centered-title > .section-header {
   }
 }
 
+/* Header icons: plain outline icons, no circle, underline on hover. */
+.site-header .nav-right .nav-icon-only {
+  position: relative;
+  border: 0;
+  background: transparent;
+}
+
+.site-header .nav-right .nav-icon-only .icon-svg {
+  width: 24px;
+  height: 24px;
+}
+
+.site-header .line-icon,
+.site-header .nav-cart .icon-svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-header .nav-right .nav-icon-only::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 2px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform 0.25s var(--ease-smooth);
+}
+
+.site-header .nav-right .nav-icon-only:hover::after,
+.site-header .nav-right .nav-icon-only[aria-expanded="true"]::after {
+  transform: scaleX(1);
+}
+
+.site-header .nav-right .nav-icon-only:hover {
+  color: inherit;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
