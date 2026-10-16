@@ -200,26 +200,6 @@ export default async function HomePage() {
         </div>
         <FaqAccordion />
       </section>
-
-      <section className="newsletter" id="newsletter">
-        <div className="section-header container">
-          <div>
-            <div className="section-title">{dict.newsletterTitle}</div>
-            <div className="section-subtitle">{dict.newsletterSubtitle}</div>
-          </div>
-        </div>
-        <div className="newsletter-inner">
-          <div>
-            <p className="newsletter-text">{dict.newsletterText}</p>
-          </div>
-          <form className="newsletter-form">
-            <input type="email" name="email" placeholder={dict.emailPlaceholder} required />
-            <button className="btn btn-primary" type="submit">
-              {dict.subscribe}
-            </button>
-          </form>
-        </div>
-      </section>
     </>
   );
 }
