@@ -3800,6 +3800,64 @@ main .story-grid {
   }
 }
 
+/* Footer spacing and type, matched to the reference layout. */
+footer {
+  --footer-gutter: clamp(16px, 4.8vw, 96px);
+  border-top: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.footer-signup {
+  margin: 0 var(--footer-gutter);
+  padding: 44px 0 38px;
+}
+
+.footer-signup-logo {
+  height: 58px;
+}
+
+.footer-signup-form {
+  width: min(420px, 100%);
+}
+
+.footer-signup-form input::placeholder {
+  color: #9a9590;
+}
+
+.footer-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 48px var(--footer-gutter) 44px;
+}
+
+.footer-columns .footer-column-title {
+  margin-bottom: 22px;
+  color: #3d3a37;
+  font-size: 15px;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+}
+
+.footer-columns .footer-links {
+  gap: 16px;
+  color: #4a4744;
+  font-size: 15px;
+}
+
+.footer-columns .footer-links a {
+  color: #4a4744;
+}
+
+.footer-bar {
+  padding: 22px var(--footer-gutter);
+}
+
+@media (max-width: 760px) {
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

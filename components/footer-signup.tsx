@@ -46,7 +46,6 @@ export function FooterSignup() {
         height={932}
         className="footer-signup-logo"
       />
-      <p className="footer-signup-note">{t.note}</p>
       {done ? (
         <p className="footer-signup-thanks">{t.thanks}</p>
       ) : (
@@ -60,7 +59,7 @@ export function FooterSignup() {
           <input
             type="email"
             required
-            placeholder={t.placeholder}
+            placeholder={t.note}
             aria-label={t.placeholder}
           />
           <button type="submit" aria-label={t.send}>
