@@ -23,7 +23,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   if (!product) notFound();
 
   const [related, categories, { lang, dict }] = await Promise.all([
-    getRelatedProducts(product.slug, 5),
+    getRelatedProducts(product.slug, 4),
     listCategories(),
     getDict(),
   ]);

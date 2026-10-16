@@ -1664,14 +1664,8 @@ body:has(.hero--video) .site-header:not(.is-solid) .nav-icon-button:hover {
 
 .product-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px 6px;
-}
-
-@media (max-width: 1200px) {
-  .product-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 960px) {
@@ -3513,6 +3507,26 @@ body:has(.katalog-backdrop) {
   color: #8a857f;
   font-size: 14px;
   font-weight: 400 !important;
+}
+
+/* Storefront sections all span the screen on the shared side gutter, like
+   the catalog. */
+main .section > .section-header,
+main .section > .container,
+main .section > .category-grid,
+main .section > .info-grid,
+main .newsletter .section-header,
+main .newsletter-inner {
+  width: auto;
+  max-width: none;
+  padding-left: var(--grid-gutter);
+  padding-right: var(--grid-gutter);
+}
+
+main .category-grid,
+main .arrivals-grid,
+main .story-grid {
+  gap: 24px 6px;
 }
 
 /* Grid section headings (shop and catalog): large, light, on the gutter. */

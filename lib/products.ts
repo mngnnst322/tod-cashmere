@@ -28,7 +28,7 @@ export async function getProductBySlug(slug: string) {
 
 export async function getFeaturedProducts() {
   const all = await listProducts();
-  return all.filter((p) => p.badge !== "Хямдрал").slice(0, 5);
+  return all.filter((p) => p.badge !== "Хямдрал").slice(0, 4);
 }
 
 export async function getSaleProducts() {

@@ -134,7 +134,7 @@ const mn = {
       link: "Арчилгааны заавар →",
     },
   ],
-  craftTitle: "Ноолуурын ур дүй",
+  craftTitle: "Ноолуурын үр дүй",
   craftSubtitle: "Чанар, арчилгааны тухай товч",
   craftCta: "Каталог үзэх",
   craftText:

@@ -14,51 +14,19 @@ export async function SiteFooter() {
             {dict.footerFindStore}
           </a>
         </div>
-        <div>
-          <div className="footer-column-title">{dict.footerCompany}</div>
-          <ul className="footer-links">
-            <li>
-              <a href="#">{dict.footerAbout}</a>
-            </li>
-            <li>
-              <a href="#">{dict.footerCareers}</a>
-            </li>
-            <li>
-              <a href="#">{dict.footerPress}</a>
-            </li>
-            <li>
-              <a href="#">{dict.footerStores}</a>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="footer-column-title">{dict.footerHelp}</div>
-          <ul className="footer-links">
-            <li>
-              <a href="#">{dict.footerShipping}</a>
-            </li>
-            <li>
-              <a href="#">{dict.footerReturns}</a>
-            </li>
-            <li>
-              <a href="#">{dict.footerContact}</a>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="footer-column-title">{dict.footerLegal}</div>
-          <ul className="footer-links">
-            <li>
-              <a href="#">{dict.footerTerms}</a>
-            </li>
-            <li>
-              <a href="/privacy">{dict.footerPrivacy}</a>
-            </li>
-            <li>
-              <a href="#">{dict.footerCookies}</a>
-            </li>
-          </ul>
-        </div>
+        {/* The help links that used to be a home page section. */}
+        {dict.infoColumns.map((col) => (
+          <div key={col.title}>
+            <div className="footer-column-title">{col.title}</div>
+            <ul className="footer-links">
+              {col.links.map((link) => (
+                <li key={link}>
+                  <a href={/нууцлал|privacy|конфиденц|隐私/i.test(link) ? "/privacy" : "#"}>{link}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
       <div className="footer-bottom container">
         <div>© 2026 Tod Cashmere</div>

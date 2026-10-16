@@ -189,34 +189,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section" id="info">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.infoTitle}</div>
-            <div className="section-subtitle">{dict.infoSubtitle}</div>
-          </div>
-          <div className="section-actions">
-            <Link href="/info" className="section-link">
-              {dict.viewAll}
-            </Link>
-          </div>
-        </div>
-        <div className="info-grid">
-          {dict.infoColumns.map((col) => (
-            <div className="info-card" key={col.title}>
-              <div className="info-title">{col.title}</div>
-              <ul className="info-list">
-                {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#">{link}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section className="section faq" id="faq">
         <div className="section-header">
           <div>
