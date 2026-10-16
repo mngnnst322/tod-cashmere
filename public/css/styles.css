@@ -3610,6 +3610,19 @@ main .story-grid {
   stroke-width: 1.6;
 }
 
+.footer-signup-note {
+  max-width: 300px;
+  color: var(--color-muted);
+  font-size: 14px;
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+
+.footer-columns .footer-links li {
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+
 .footer-signup-thanks {
   color: var(--color-muted);
   font-size: 14px;
@@ -3718,7 +3731,7 @@ main .story-grid {
 /* Footer link columns and the black bottom bar. */
 .footer-columns {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 32px;
   padding: 36px var(--grid-gutter) 40px;
 }

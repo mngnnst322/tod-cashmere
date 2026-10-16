@@ -5,142 +5,113 @@ import { ScrollTopButton } from "./scroll-top-button";
 
 type Column = { title: string; links: { label: string; href: string }[] };
 
+const ADDRESS = {
+  mn: "“ТОД кашмер” үйлдвэрийн байр, 20-р хороо, Баянгол дүүрэг, Улаанбаатар хот",
+  en: "“TOD Cashmere” factory building, 20th khoroo, Bayangol district, Ulaanbaatar",
+  ru: "Фабрика «ТОД кашмер», 20-й хороо, Баянгольский район, Улан-Батор",
+  zh: "“TOD 羊绒”工厂大楼，乌兰巴托市巴音高勒区第20分区",
+};
+const PHONE = "+976 80310023";
+const EMAIL = "todcashmere@gmail.com";
+
 const columns: Record<Lang, Column[]> = {
   mn: [
     {
-      title: "Мэдээ, мэдээлэл",
+      title: "Бидний тухай",
       links: [
         { label: "Бидний тухай", href: "#" },
-        { label: "Мэдээ", href: "#" },
-        { label: "Ажлын байр", href: "#" },
+        { label: "Дэлгүүрийн байршил — Тод оймсын төв салбар", href: "#" },
+        { label: "Ноолуур арчилгаа", href: "#" },
       ],
     },
     {
-      title: "Үйлчилгээ",
-      links: [
-        { label: "Үйлчилгээний нөхцөл", href: "#" },
-        { label: "Нууцлалын бодлого", href: "/privacy" },
-        { label: "Хүргэлт, буцаалтын нөхцөл", href: "#" },
-        { label: "Бэлгийн карт", href: "#" },
-      ],
-    },
-    {
-      title: "Хэрэглэгчийн туслах",
+      title: "Хэрэглэгчийн үйлчилгээ",
       links: [
         { label: "Түгээмэл асуулт, хариулт", href: "/#faq" },
-        { label: "Бүтээгдэхүүний арчилгаа", href: "#" },
-        { label: "Сэтгэгдэл илгээх", href: "mailto:todcashmere@gmail.com" },
-        { label: "Онлайн захиалгын заавар", href: "#" },
+        { label: "Бэлгийн карт", href: "#" },
+        { label: "Санал хүсэлт", href: `mailto:${EMAIL}` },
+        { label: "Миний захиалгууд", href: "/account" },
       ],
     },
   ],
   en: [
     {
-      title: "News & info",
+      title: "About us",
       links: [
         { label: "About us", href: "#" },
-        { label: "News", href: "#" },
-        { label: "Careers", href: "#" },
+        { label: "Store — Tod socks main branch", href: "#" },
+        { label: "Cashmere care", href: "#" },
       ],
     },
     {
-      title: "Service",
-      links: [
-        { label: "Terms of service", href: "#" },
-        { label: "Privacy policy", href: "/privacy" },
-        { label: "Delivery & returns", href: "#" },
-        { label: "Gift card", href: "#" },
-      ],
-    },
-    {
-      title: "Customer help",
+      title: "Customer service",
       links: [
         { label: "FAQ", href: "/#faq" },
-        { label: "Product care", href: "#" },
-        { label: "Send feedback", href: "mailto:todcashmere@gmail.com" },
-        { label: "How to order online", href: "#" },
+        { label: "Gift card", href: "#" },
+        { label: "Feedback", href: `mailto:${EMAIL}` },
+        { label: "My orders", href: "/account" },
       ],
     },
   ],
   ru: [
     {
-      title: "Новости",
+      title: "О нас",
       links: [
         { label: "О нас", href: "#" },
-        { label: "Новости", href: "#" },
-        { label: "Вакансии", href: "#" },
+        { label: "Магазин — главный филиал Tod", href: "#" },
+        { label: "Уход за кашемиром", href: "#" },
       ],
     },
     {
-      title: "Сервис",
-      links: [
-        { label: "Условия обслуживания", href: "#" },
-        { label: "Политика конфиденциальности", href: "/privacy" },
-        { label: "Доставка и возврат", href: "#" },
-        { label: "Подарочная карта", href: "#" },
-      ],
-    },
-    {
-      title: "Покупателям",
+      title: "Обслуживание",
       links: [
         { label: "Частые вопросы", href: "/#faq" },
-        { label: "Уход за изделиями", href: "#" },
-        { label: "Оставить отзыв", href: "mailto:todcashmere@gmail.com" },
-        { label: "Как заказать онлайн", href: "#" },
+        { label: "Подарочная карта", href: "#" },
+        { label: "Отзывы и предложения", href: `mailto:${EMAIL}` },
+        { label: "Мои заказы", href: "/account" },
       ],
     },
   ],
   zh: [
     {
-      title: "新闻资讯",
+      title: "关于我们",
       links: [
         { label: "关于我们", href: "#" },
-        { label: "新闻", href: "#" },
-        { label: "招聘", href: "#" },
+        { label: "门店 — Tod 袜子总店", href: "#" },
+        { label: "羊绒护理", href: "#" },
       ],
     },
     {
-      title: "服务",
-      links: [
-        { label: "服务条款", href: "#" },
-        { label: "隐私政策", href: "/privacy" },
-        { label: "配送与退货", href: "#" },
-        { label: "礼品卡", href: "#" },
-      ],
-    },
-    {
-      title: "客户帮助",
+      title: "客户服务",
       links: [
         { label: "常见问题", href: "/#faq" },
-        { label: "产品护理", href: "#" },
-        { label: "发送反馈", href: "mailto:todcashmere@gmail.com" },
-        { label: "在线订购指南", href: "#" },
+        { label: "礼品卡", href: "#" },
+        { label: "意见反馈", href: `mailto:${EMAIL}` },
+        { label: "我的订单", href: "/account" },
       ],
     },
   ],
 };
 
-const contact: Record<Lang, { title: string; stores: string; rights: string }> =
-  {
-    mn: {
-      title: "Холбоо барих",
-      stores: "Салбар дэлгүүрийн байршил",
-      rights: "Бүх эрх хуулиар хамгаалагдсан.",
-    },
-    en: {
-      title: "Contact",
-      stores: "Store locations",
-      rights: "All rights reserved.",
-    },
-    ru: {
-      title: "Контакты",
-      stores: "Адреса магазинов",
-      rights: "Все права защищены.",
-    },
-    zh: { title: "联系我们", stores: "门店位置", rights: "版权所有。" },
-  };
+const contact: Record<Lang, { title: string; rights: string }> = {
+  mn: {
+    title: "Холбоо барих",
+    rights: "© 2026 Тод кашмер ХХК. Бүх эрх хуулиар хамгаалагдсан.",
+  },
+  en: {
+    title: "Contact",
+    rights: "© 2026 Tod Cashmere LLC. All rights reserved.",
+  },
+  ru: {
+    title: "Контакты",
+    rights: "© 2026 ООО «Тод кашмер». Все права защищены.",
+  },
+  zh: {
+    title: "联系我们",
+    rights: "© 2026 Tod Cashmere 有限责任公司。版权所有。",
+  },
+};
 
-// TODO(owner): add the shop's phone number and address to the contact column.
 export async function SiteFooter() {
   const lang = await getLang();
   const c = contact[lang];
@@ -163,16 +134,17 @@ export async function SiteFooter() {
         <div>
           <div className="footer-column-title">{c.title}</div>
           <ul className="footer-links">
+            <li>{ADDRESS[lang]}</li>
             <li>
-              <a href="mailto:todcashmere@gmail.com">todcashmere@gmail.com</a>
+              <a href={`tel:${PHONE.replace(/\s/g, "")}`}>{PHONE}</a>
             </li>
             <li>
-              <a href="#">{c.stores}</a>
+              <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             </li>
           </ul>
         </div>
       </div>
-      <div className="footer-bar">© 2026 Tod Cashmere. {c.rights}</div>
+      <div className="footer-bar">{c.rights}</div>
       <ScrollTopButton />
     </footer>
   );
