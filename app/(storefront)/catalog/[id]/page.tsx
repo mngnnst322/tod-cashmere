@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCatalogItem, listCatalog } from "@/lib/catalog";
 import {
-  catalogColors,
   catalogItemName,
   catalogMaterial,
   catalogStrings,
@@ -76,7 +75,6 @@ export default async function CatalogItemPage(
               <div className="katalog-item-option">
                 <div className="katalog-item-label">
                   {s.color}
-                  <span>— {catalogColors(item.colors, lang)}</span>
                 </div>
                 <div className="katalog-swatches">
                   {splitColors(item.colors).map((c) => {
