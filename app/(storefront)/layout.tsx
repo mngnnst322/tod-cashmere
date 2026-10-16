@@ -45,7 +45,9 @@ export default async function StorefrontLayout({
 
   // Before launch, visitors only see the logo; staff browse the real site and
   // the sign-in pages stay open so they can log in.
-  const isAuthPage = path.startsWith("/sign-in") || path.startsWith("/sign-up");
+  // The privacy policy stays public too: Google sign-in links to it.
+  const isAuthPage =
+    path.startsWith("/sign-in") || path.startsWith("/sign-up") || path === "/privacy";
   if (comingSoon && !isStaff && !isAuthPage) {
     return <ComingSoon />;
   }

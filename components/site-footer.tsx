@@ -52,7 +52,7 @@ export async function SiteFooter() {
               <a href="#">{dict.footerTerms}</a>
             </li>
             <li>
-              <a href="#">{dict.footerPrivacy}</a>
+              <a href="/privacy">{dict.footerPrivacy}</a>
             </li>
             <li>
               <a href="#">{dict.footerCookies}</a>
