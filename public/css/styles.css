@@ -2038,7 +2038,7 @@ body:has(.hero--video) .site-header:not(.is-solid) .nav-icon-button:hover {
 /* Stories */
 .story-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
 }
 

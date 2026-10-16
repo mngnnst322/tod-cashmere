@@ -133,6 +133,18 @@ const mn = {
         "Ус хэмнэх шинэ будаглах технологи нь өнгийг удаан хадгалж, арьсанд зөөлөн мэдрэмж төрүүлдэг.",
       link: "Арчилгааны заавар →",
     },
+    {
+      title: "Гар аргаар сүлжсэн",
+      excerpt:
+        "Туршлагатай урчууд хэсэг бүрийг гараар дуусгаж, ноолуурын уян зөөлөн чанарыг хадгалдаг.",
+      link: "Үйлдвэрлэл →",
+    },
+    {
+      title: "Нүүдэлчдийн өв",
+      excerpt:
+        "Монгол малчдын олон үеийн уламжлалаас төрсөн дулаан, хөнгөн, удаан эдэлгээтэй хувцас.",
+      link: "Бидний түүх →",
+    },
   ],
   craftTitle: "Ноолуурын үр дүй",
   craftSubtitle: "Чанар, арчилгааны тухай товч",
@@ -413,6 +425,18 @@ const en: Dict = {
         "A new water-saving dyeing process keeps colors lasting longer and feels gentle on the skin.",
       link: "Care guide →",
     },
+    {
+      title: "Finished by hand",
+      excerpt:
+        "Skilled artisans finish every piece by hand, keeping cashmere's soft, supple feel.",
+      link: "How it's made →",
+    },
+    {
+      title: "A nomadic heritage",
+      excerpt:
+        "Warm, light, lasting pieces born from generations of Mongolian herding tradition.",
+      link: "Our story →",
+    },
   ],
   craftTitle: "Cashmere craftsmanship",
   craftSubtitle: "A short note on quality and care",
@@ -686,6 +710,18 @@ const ru: Dict = {
         "Новая водосберегающая технология окрашивания дольше сохраняет цвет и бережна к коже.",
       link: "Руководство по уходу →",
     },
+    {
+      title: "Ручная работа",
+      excerpt:
+        "Мастера вручную завершают каждое изделие, сохраняя мягкость и упругость кашемира.",
+      link: "Производство →",
+    },
+    {
+      title: "Наследие кочевников",
+      excerpt:
+        "Тёплые, лёгкие и долговечные вещи, рождённые многовековой традицией монгольских скотоводов.",
+      link: "Наша история →",
+    },
   ],
   craftTitle: "Мастерство кашемира",
   craftSubtitle: "Коротко о качестве и уходе",
@@ -955,6 +991,16 @@ const zh: Dict = {
       title: "环保染料，自然色彩",
       excerpt: "全新节水染色工艺，色彩更持久，触感更柔和。",
       link: "护理指南 →",
+    },
+    {
+      title: "手工完成",
+      excerpt: "经验丰富的工匠手工完成每一件作品，保留羊绒柔软而有弹性的质感。",
+      link: "制作工艺 →",
+    },
+    {
+      title: "游牧传承",
+      excerpt: "源自蒙古牧民世代传统，温暖、轻盈、经久耐穿。",
+      link: "我们的故事 →",
     },
   ],
   craftTitle: "羊绒工艺",
