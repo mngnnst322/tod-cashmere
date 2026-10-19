@@ -60,19 +60,14 @@ export function ProductForm({
   return (
     <form action={action} className="grid max-w-5xl gap-6 lg:grid-cols-2">
       <div className="space-y-6">
-        <Section title="Нэр (4 хэл)">
+        <Section title="Нэр">
           <Field name="titleMn" title="Монгол" defaultValue={product?.titleMn} required />
-          <Field name="titleEn" title="English" defaultValue={product?.titleEn} />
-          <Field name="titleRu" title="Русский (заавал биш)" defaultValue={product?.titleRu} />
-          <Field name="titleZh" title="中文 (заавал биш)" defaultValue={product?.titleZh} />
         </Section>
-        <Section title="Өнгө (4 хэл)">
+        <Section title="Өнгө">
           <Field name="color" title="Монгол" defaultValue={product?.color} required />
-          <div className="grid grid-cols-3 gap-3">
-            <Field name="colorEn" title="EN" defaultValue={product?.colorEn} />
-            <Field name="colorRu" title="RU" defaultValue={product?.colorRu} />
-            <Field name="colorZh" title="ZH" defaultValue={product?.colorZh} />
-          </div>
+          <p className="text-xs text-adm-mute">
+            Монголоор бичихэд англи, орос, хятад хэл рүү автоматаар орчуулагдана.
+          </p>
         </Section>
       </div>
 

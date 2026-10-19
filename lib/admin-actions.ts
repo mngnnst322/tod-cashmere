@@ -19,6 +19,7 @@ import {
 } from "./db/schema";
 import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
 import { isCatalogGender } from "./catalog-types";
+import { translateFromMongolian } from "./translate";
 
 /** Stores an uploaded photo in R2 and returns its public path. */
 async function uploadImage(file: File) {
@@ -49,19 +50,37 @@ function optionalInt(formData: FormData, key: string) {
   return value == null ? null : Math.max(0, Math.round(Number(value)));
 }
 
-function productFields(formData: FormData) {
+/**
+ * Product form fields. Only the Mongolian name and colour are entered; the
+ * English, Russian and Chinese ones are machine-translated when the
+ * Mongolian text is new or changed (otherwise the stored ones are kept).
+ */
+async function productFields(
+  formData: FormData,
+  existing?: { titleMn: string; titleEn: string; titleRu: string | null; titleZh: string | null; color: string; colorEn: string | null; colorRu: string | null; colorZh: string | null },
+) {
+  const titleMn = String(formData.get("titleMn")).trim();
+  const color = String(formData.get("color")).trim();
+  const [title, colour] = await Promise.all([
+    existing && existing.titleMn === titleMn
+      ? { en: existing.titleEn, ru: existing.titleRu ?? "", zh: existing.titleZh ?? "" }
+      : translateFromMongolian(titleMn),
+    existing && existing.color === color
+      ? { en: existing.colorEn ?? "", ru: existing.colorRu ?? "", zh: existing.colorZh ?? "" }
+      : translateFromMongolian(color),
+  ]);
   return {
     slug: String(formData.get("slug")),
-    titleMn: String(formData.get("titleMn")),
-    titleEn: String(formData.get("titleEn") || formData.get("titleMn")),
-    titleRu: optional(formData, "titleRu"),
-    titleZh: optional(formData, "titleZh"),
+    titleMn,
+    titleEn: title.en || titleMn,
+    titleRu: title.ru || null,
+    titleZh: title.zh || null,
     price: Number(formData.get("price")),
     compareAtPrice: optionalInt(formData, "compareAtPrice"),
-    color: String(formData.get("color")),
-    colorEn: optional(formData, "colorEn"),
-    colorRu: optional(formData, "colorRu"),
-    colorZh: optional(formData, "colorZh"),
+    color,
+    colorEn: colour.en || null,
+    colorRu: colour.ru || null,
+    colorZh: colour.zh || null,
     categorySlug: String(formData.get("categorySlug")),
     collection: String(formData.get("collection") || "catalog"),
     badge: optional(formData, "badge"),
@@ -91,7 +110,7 @@ function categoryFields(formData: FormData) {
 export async function createProduct(formData: FormData) {
   await requireAdmin();
   const db = await getDb();
-  const fields = productFields(formData);
+  const fields = await productFields(formData);
   await db.insert(products).values({
     id: crypto.randomUUID(),
     ...fields,
@@ -112,7 +131,7 @@ export async function updateProduct(id: string, formData: FormData) {
   await db
     .update(products)
     .set({
-      ...productFields(formData),
+      ...(await productFields(formData, existing)),
       images: photos.images,
       image: photos.image || existing?.image || "",
     })

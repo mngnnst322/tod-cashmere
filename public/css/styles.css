@@ -4225,6 +4225,35 @@ a.story-card:hover .story-title {
   line-height: 1.7;
 }
 
+/* "Сагсанд хийх" buttons in the brand brown. */
+.product-actions button,
+.arrival-actions button,
+.product-page-cart {
+  border-color: #6b4f3c;
+  background: #6b4f3c;
+  color: #fff;
+}
+
+.product-actions button:hover,
+.arrival-actions button:hover,
+.product-page-cart:hover {
+  border-color: #5a4232;
+  background: #5a4232;
+  color: #fff;
+}
+
+/* Phones: new products two across, smaller. */
+@media (max-width: 760px) {
+  main .arrivals-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 6px;
+  }
+  main .arrivals-grid .product-title,
+  main .arrivals-grid .arrival-title {
+    font-size: 13px;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

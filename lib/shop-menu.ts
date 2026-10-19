@@ -74,7 +74,24 @@ export function shopMenu(lang: Lang): MenuEntry[] {
   return [
     { key: "women", label: L("Эмэгтэй", "Women", "Женщинам", "女士")[lang], href: "/categories#women", columns: genderColumns(lang, "women") },
     { key: "men", label: L("Эрэгтэй", "Men", "Мужчинам", "男士")[lang], href: "/categories#men", columns: genderColumns(lang, "men") },
-    { key: "kids", label: L("Хүүхэд", "Kids", "Детям", "儿童")[lang], href: "/categories" },
+    {
+      key: "kids",
+      label: L("Хүүхэд", "Kids", "Детям", "儿童")[lang],
+      href: "/categories",
+      columns: [
+        {
+          title: T.category[lang],
+          links: [
+            T.trousers,
+            T.tops,
+            L("Бойтог", "Booties", "Пинетки", "婴儿鞋"),
+            L("Малгай", "Hats", "Шапки", "帽子"),
+            L("Ороолт", "Scarves", "Шарфы", "围巾"),
+            L("Бээлий", "Gloves", "Перчатки", "手套"),
+          ].map((c) => ({ label: c[lang], href: "/categories" })),
+        },
+      ],
+    },
     {
       key: "accessories",
       label: L("Аксессуар", "Accessories", "Аксессуары", "配饰")[lang],

@@ -29,6 +29,10 @@
       "migrations_dir": "drizzle",
     },
   ],
+  "ai": {
+    // Workers AI: translates admin-entered Mongolian names into EN/RU/ZH.
+    "binding": "AI",
+  },
   "r2_buckets": [
     {
       // Stores product images uploaded from the admin panel.
