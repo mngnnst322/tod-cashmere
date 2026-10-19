@@ -20,7 +20,7 @@ const columns: Record<Lang, Column[]> = {
       title: "Бидний тухай",
       links: [
         { label: "Бидний тухай", href: "#" },
-        { label: "Дэлгүүрийн байршил — Тод оймсын төв салбар", href: "#" },
+        { label: "Дэлгүүрийн байршил", href: "#" },
         { label: "Ноолуур арчилгаа", href: "#" },
       ],
     },
@@ -39,7 +39,7 @@ const columns: Record<Lang, Column[]> = {
       title: "About us",
       links: [
         { label: "About us", href: "#" },
-        { label: "Store — Tod socks main branch", href: "#" },
+        { label: "Store locations", href: "#" },
         { label: "Cashmere care", href: "#" },
       ],
     },
@@ -58,7 +58,7 @@ const columns: Record<Lang, Column[]> = {
       title: "О нас",
       links: [
         { label: "О нас", href: "#" },
-        { label: "Магазин — главный филиал Tod", href: "#" },
+        { label: "Адреса магазинов", href: "#" },
         { label: "Уход за кашемиром", href: "#" },
       ],
     },
@@ -77,7 +77,7 @@ const columns: Record<Lang, Column[]> = {
       title: "关于我们",
       links: [
         { label: "关于我们", href: "#" },
-        { label: "门店 — Tod 袜子总店", href: "#" },
+        { label: "门店位置", href: "#" },
         { label: "羊绒护理", href: "#" },
       ],
     },
