@@ -89,7 +89,7 @@ export default async function HomePage() {
       </section>
 
 
-      <section className="section section-muted" id="arrivals">
+      <section className="section section-muted section--centered-title" id="arrivals">
         <div className="section-header">
           <div>
             <div className="section-title">{dict.arrivalsTitle}</div>
@@ -108,7 +108,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section" id="lookbook">
+      <section className="section section--centered-title" id="lookbook">
         <div className="section-header">
           <div>
             <div className="section-title">{dict.lookbookTitle}</div>

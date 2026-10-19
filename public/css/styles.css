@@ -3968,7 +3968,10 @@ footer {
 
 /* Section with its heading centred above the grid. */
 main .section--centered-title > .section-header {
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 14px;
   text-align: center;
 }
 
