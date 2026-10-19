@@ -96,7 +96,7 @@ export async function createProduct(formData: FormData) {
     id: crypto.randomUUID(),
     ...fields,
     code: fields.slug,
-    image: await requireImagePath(formData),
+    ...(await galleryPhotos(formData, true)),
   });
   revalidatePath("/admin", "layout");
   redirect("/admin/products");
@@ -108,11 +108,13 @@ export async function updateProduct(id: string, formData: FormData) {
   const existing = await db.query.products.findFirst({
     where: eq(products.id, id),
   });
+  const photos = await galleryPhotos(formData, true);
   await db
     .update(products)
     .set({
       ...productFields(formData),
-      image: await requireImagePath(formData, existing?.image),
+      images: photos.images,
+      image: photos.image || existing?.image || "",
     })
     .where(eq(products.id, id));
   revalidatePath("/admin", "layout");
@@ -369,7 +371,7 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     sizes: String(formData.get("sizes") || "").trim(),
     gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "women",
     sortOrder: Number(formData.get("sortOrder") || 0),
-    ...(await catalogPhotos(formData)),
+    ...(await galleryPhotos(formData)),
   };
   if (id) {
     await db.update(catalogItems).set(values).where(eq(catalogItems.id, id));
@@ -388,10 +390,12 @@ export async function deleteCatalogItem(id: string) {
 }
 
 /**
- * The gallery from the catalog form: photos kept (`keep`), new uploads
+ * The photo gallery from a product or catalog form: photos kept (`keep`), new uploads
  * (`galleryFiles`), and the cover (`cover`: a kept path or "new:<n>").
  */
-async function catalogPhotos(formData: FormData) {
+async function galleryPhotos(formData: FormData, required: true): Promise<{ images: string; image: string }>;
+async function galleryPhotos(formData: FormData): Promise<{ images: string; image: string | null }>;
+async function galleryPhotos(formData: FormData, required?: boolean) {
   const kept = formData.getAll("keep").map(String).filter(Boolean);
   const files = formData
     .getAll("galleryFiles")
@@ -400,7 +404,7 @@ async function catalogPhotos(formData: FormData) {
   const images = [...kept, ...uploaded];
   const cover = String(formData.get("cover") || "");
   const picked = cover.startsWith("new:") ? uploaded[Number(cover.slice(4))] : cover;
-  const image = images.includes(picked) ? picked : (images[0] ?? null);
+  const image = images.includes(picked) ? picked : (images[0] ?? (required ? "" : null));
   return { images: JSON.stringify(images), image };
 }
 

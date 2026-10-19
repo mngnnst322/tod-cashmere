@@ -13,7 +13,7 @@ export async function NewsStrip() {
   return (
     <section className="news-strip">
       <h2 className="news-strip-title">{heading[lang]}</h2>
-      <CarouselRow>
+      <CarouselRow auto>
         {posts.map((n) => (
           <article key={n.id} className="news-card">
             <div className="news-card-image">

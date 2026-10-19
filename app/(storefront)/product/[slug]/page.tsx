@@ -15,7 +15,8 @@ import {
   productTitle,
 } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
-import { ZoomImage } from "@/components/zoom-image";
+import { CatalogGallery } from "@/components/catalog-gallery";
+import { itemImages } from "@/lib/catalog";
 
 export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
@@ -41,12 +42,11 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
       {/* Same layout as a catalog item: large photo left, details right. */}
       <section className="section katalog-item product-page">
         <div className="katalog-item-layout">
-          <div className="katalog-item-image">
-            <ZoomImage src={product.image} alt={title} />
+          <CatalogGallery images={itemImages(product)} alt={title}>
             {product.badge && (
               <span className="product-tag">{badgeLabel(product.badge, dict)}</span>
             )}
-          </div>
+          </CatalogGallery>
           <div className="katalog-item-info">
             <div className="katalog-item-type">
               {category ? categoryName(category, lang) : product.categorySlug}

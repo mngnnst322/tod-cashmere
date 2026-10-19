@@ -35,6 +35,8 @@ export const products = sqliteTable("products", {
   collection: text("collection").notNull(),
   badge: text("badge"),
   image: text("image").notNull(),
+  // Every photo (JSON array, different angles); `image` is the cover.
+  images: text("images").notNull().default("[]"),
   inStock: integer("in_stock", { mode: "boolean" }).notNull().default(true),
   // Units on hand; null means stock isn't tracked for this product.
   stock: integer("stock"),

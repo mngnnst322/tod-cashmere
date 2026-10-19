@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { getDict } from "@/lib/i18n-server";
+import { STORY_IMAGES } from "@/lib/stories";
 import { BundleConfigurator } from "@/components/bundle-configurator";
 
 export async function generateMetadata() {
@@ -6,12 +8,6 @@ export async function generateMetadata() {
   return { title: `${dict.lookbookTitle} – Tod Cashmere` };
 }
 
-const storyImages = [
-  "/images/front-view-woman-enjoying-time-beach.jpg",
-  "/images/woman-holding-coffee-cup-front-view.jpg",
-  "/images/woman-walking-beach-side-view.jpg",
-  "/images/full-shot-woman-taking-walk-nature_23-2150100065.jpg",
-];
 
 export default async function LookbookPage() {
   const { dict } = await getDict();
@@ -29,19 +25,17 @@ export default async function LookbookPage() {
         </div>
         <div className="story-grid container">
           {dict.stories.map((story, i) => (
-            <article className="story-card" key={storyImages[i]}>
+            <Link href={`/lookbook/${i + 1}`} className="story-card" key={STORY_IMAGES[i]}>
               <div className="story-image">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={storyImages[i]} alt={story.title} loading="lazy" />
+                <img src={STORY_IMAGES[i]} alt={story.title} loading="lazy" />
               </div>
               <div className="story-body">
                 <div className="story-title">{story.title}</div>
                 <p className="story-excerpt">{story.excerpt}</p>
-                <a className="story-link" href="#">
-                  {story.link}
-                </a>
+                <span className="story-link">{story.link}</span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>

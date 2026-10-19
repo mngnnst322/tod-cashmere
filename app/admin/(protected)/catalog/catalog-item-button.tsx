@@ -4,7 +4,7 @@ import { useState } from "react";
 import { saveCatalogItem } from "@/lib/admin-actions";
 import type { catalogItems } from "@/lib/db/schema";
 import { Modal } from "../modal";
-import { GalleryField } from "./gallery-field";
+import { GalleryField } from "../gallery-field";
 import { ColorPicker } from "./color-picker";
 import { btnDark, icons, input, label } from "../../ui";
 

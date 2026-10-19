@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { btnSoft, label } from "../../ui";
+import { btnSoft, label } from "../ui";
 
 type Photo = { key: string; src: string; file?: File };
 
@@ -93,7 +93,7 @@ export function GalleryField({ images, cover }: { images: string[]; cover?: stri
         </label>
       </div>
       <p className="mt-2 text-xs text-adm-mute">
-        Олон өнцгөөс авсан зургуудыг нэг дор сонгож болно. ★ тэмдэгтэй нь каталогийн нүүрэнд харагдана.
+        Олон өнцгөөс авсан зургуудыг нэг дор сонгож болно. ★ тэмдэгтэй нь нүүр зураг болж жагсаалтад харагдана.
       </p>
       <input ref={filesRef} type="file" name="galleryFiles" multiple className="hidden" />
       <input type="hidden" name="cover" value={coverValue} />

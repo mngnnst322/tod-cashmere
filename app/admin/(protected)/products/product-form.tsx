@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { categories, products } from "@/lib/db/schema";
 import { btnDark, btnSoft, input, label, panel } from "../../ui";
+import { GalleryField } from "../gallery-field";
 
 type Category = typeof categories.$inferSelect;
 type Product = typeof products.$inferSelect;
@@ -143,13 +144,7 @@ export function ProductForm({
         </Section>
 
         <Section title="Зураг">
-          <Field name="imagePath" title="Зургийн зам" defaultValue={product?.image} placeholder="/images/example.jpg" />
-          <div>
-            <label className={label} htmlFor="imageFile">
-              Эсвэл шинэ зураг оруулах
-            </label>
-            <input id="imageFile" type="file" name="imageFile" accept="image/*" className="w-full text-sm" />
-          </div>
+          <GalleryField images={productImages(product)} cover={product?.image} />
         </Section>
       </div>
 
@@ -163,4 +158,16 @@ export function ProductForm({
       </div>
     </form>
   );
+}
+
+/** A product's photos; older products only have the single cover `image`. */
+function productImages(product?: { image: string; images: string } | null): string[] {
+  if (!product) return [];
+  try {
+    const list = JSON.parse(product.images) as string[];
+    if (list.length) return list;
+  } catch {
+    // fall through to the cover
+  }
+  return product.image ? [product.image] : [];
 }

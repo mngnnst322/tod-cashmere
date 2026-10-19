@@ -3756,7 +3756,7 @@ main .story-grid {
 
 .footer-bar {
   padding: 18px var(--grid-gutter);
-  background: #000;
+  background: #6b4f3c;
   color: #fff;
   font-size: 14px;
   font-weight: 400 !important;
@@ -4153,16 +4153,29 @@ main .section--centered-title > .section-header {
   }
 }
 
-/* Footer top strip: social icons beside the logo, email box on the right. */
+/* Footer top strip: social icons on the left; the logo and then the email
+   box on the right. */
 .footer-signup-social {
-  order: 1;
+  order: 0;
   margin-left: 0;
+}
+
+.footer-signup-logo {
+  order: 1;
+  margin-left: auto;
 }
 
 .footer-signup-form,
 .footer-signup-thanks {
   order: 2;
-  margin-left: auto;
+}
+
+.footer-signup-form button {
+  background: #6b4f3c;
+}
+
+.footer-signup-form button:hover {
+  background: #5a4232;
 }
 
 @media (max-width: 640px) {
@@ -4170,6 +4183,25 @@ main .section--centered-title > .section-header {
     order: 3;
     margin-left: 0;
   }
+}
+
+/* Lookbook story cards link to their own page. */
+a.story-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+a.story-card:hover .story-title {
+  text-decoration: underline;
+}
+
+.story-page-text {
+  max-width: 520px;
+  color: #4a4744;
+  font-size: 18px;
+  font-weight: 400 !important;
+  line-height: 1.7;
 }
 
 /* Header logo (shop and catalog): black on the white header, white over the
