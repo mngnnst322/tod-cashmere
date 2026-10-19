@@ -12,7 +12,7 @@ export async function NewsStrip() {
   const [posts, lang] = await Promise.all([listPublicNews(), getLang()]);
   if (posts.length === 0) return null;
   return (
-    <section className="news-strip">
+    <section className="news-strip" id="news">
       <h2 className="news-strip-title">{heading[lang]}</h2>
       <CarouselRow auto>
         {posts.map((n) => (
