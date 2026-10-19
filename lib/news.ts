@@ -1,4 +1,4 @@
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { getDb } from "./db";
 import { news } from "./db/schema";
 import type { Lang } from "./i18n";
@@ -16,4 +16,16 @@ export function newsTitle(n: NewsRow, lang: Lang) {
   if (lang === "ru") return n.titleRu || n.titleEn || n.titleMn;
   if (lang === "zh") return n.titleZh || n.titleEn || n.titleMn;
   return n.titleMn;
+}
+
+export async function getNews(id: string) {
+  const db = await getDb();
+  return db.query.news.findFirst({ where: eq(news.id, id) });
+}
+
+export function newsBody(n: NewsRow, lang: Lang) {
+  if (lang === "en") return n.bodyEn || n.bodyMn;
+  if (lang === "ru") return n.bodyRu || n.bodyEn || n.bodyMn;
+  if (lang === "zh") return n.bodyZh || n.bodyEn || n.bodyMn;
+  return n.bodyMn;
 }

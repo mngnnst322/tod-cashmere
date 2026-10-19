@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { listPublicNews, newsTitle } from "@/lib/news";
 import { getLang } from "@/lib/i18n-server";
 import { isUploadedImage } from "@/lib/format";
@@ -15,7 +16,7 @@ export async function NewsStrip() {
       <h2 className="news-strip-title">{heading[lang]}</h2>
       <CarouselRow auto>
         {posts.map((n) => (
-          <article key={n.id} className="news-card">
+          <Link key={n.id} href={`/news/${n.id}`} className="news-card">
             <div className="news-card-image">
               {n.image && (
                 <Image
@@ -31,7 +32,7 @@ export async function NewsStrip() {
               <time className="news-card-date">{n.createdAt.toISOString().slice(0, 10)}</time>
               <h3 className="news-card-title">{newsTitle(n, lang)}</h3>
             </div>
-          </article>
+          </Link>
         ))}
       </CarouselRow>
     </section>

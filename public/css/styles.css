@@ -3826,7 +3826,7 @@ footer {
 }
 
 .footer-columns {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 48px var(--footer-gutter) 44px;
 }
 
@@ -4114,6 +4114,9 @@ main .section--centered-title > .section-header .section-actions {
 }
 
 .news-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
   overflow: hidden;
   border: 1px solid #e3ded8;
   border-radius: 8px !important;

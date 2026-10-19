@@ -1,4 +1,5 @@
 import { getLang } from "@/lib/i18n-server";
+import { listPublicNews, newsTitle } from "@/lib/news";
 import type { Lang } from "@/lib/i18n";
 import { FooterSignup } from "./footer-signup";
 import { ScrollTopButton } from "./scroll-top-button";
@@ -93,6 +94,13 @@ const columns: Record<Lang, Column[]> = {
   ],
 };
 
+const newsHeading: Record<Lang, string> = {
+  mn: "Мэдээ, мэдээлэл",
+  en: "News",
+  ru: "Новости",
+  zh: "新闻资讯",
+};
+
 const contact: Record<Lang, { title: string; rights: string }> = {
   mn: {
     title: "Холбоо барих",
@@ -113,7 +121,7 @@ const contact: Record<Lang, { title: string; rights: string }> = {
 };
 
 export async function SiteFooter() {
-  const lang = await getLang();
+  const [lang, posts] = await Promise.all([getLang(), listPublicNews()]);
   const c = contact[lang];
   return (
     <footer>
@@ -131,6 +139,18 @@ export async function SiteFooter() {
             </ul>
           </div>
         ))}
+        {posts.length > 0 && (
+          <div>
+            <div className="footer-column-title">{newsHeading[lang]}</div>
+            <ul className="footer-links">
+              {posts.slice(0, 4).map((n) => (
+                <li key={n.id}>
+                  <a href={`/news/${n.id}`}>{newsTitle(n, lang)}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div>
           <div className="footer-column-title">{c.title}</div>
           <ul className="footer-links">
