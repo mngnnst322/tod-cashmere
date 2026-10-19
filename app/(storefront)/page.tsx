@@ -62,9 +62,6 @@ export default async function HomePage() {
           sizes="100vw"
         />
         <div className="hero-photo-shade" aria-hidden="true" />
-        <div className="hero-photo-content">
-          <div className="editorial-eyebrow">{dict.introEyebrow}</div>
-        </div>
       </section>
 
       <section className="section section--centered-title" id="featured">
