@@ -1,10 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  getFeaturedProducts,
   getArrivalProducts,
 } from "@/lib/products";
-import { ProductCard } from "@/components/product-card";
 import { ArrivalCard } from "@/components/arrival-card";
 import { getDict } from "@/lib/i18n-server";
 import { STORY_IMAGES } from "@/lib/stories";
@@ -43,8 +41,7 @@ const shopTiles = [
 
 
 export default async function HomePage() {
-  const [featured, arrivals, { lang, dict }] = await Promise.all([
-    getFeaturedProducts(),
+  const [arrivals, { lang, dict }] = await Promise.all([
     getArrivalProducts(),
     getDict(),
   ]);
@@ -62,21 +59,6 @@ export default async function HomePage() {
           sizes="100vw"
         />
         <div className="hero-photo-shade" aria-hidden="true" />
-      </section>
-
-      <section className="section section--centered-title" id="featured">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.featuredTitle}</div>
-          </div>
-        </div>
-        <div className="product-row">
-          <div className="product-list">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* Shop by gender, then by category: full-bleed photo tiles. */}
