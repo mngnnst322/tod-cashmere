@@ -4153,6 +4153,25 @@ main .section--centered-title > .section-header {
   }
 }
 
+/* Footer top strip: social icons beside the logo, email box on the right. */
+.footer-signup-social {
+  order: 1;
+  margin-left: 0;
+}
+
+.footer-signup-form,
+.footer-signup-thanks {
+  order: 2;
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .footer-signup-form {
+    order: 3;
+    margin-left: 0;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
