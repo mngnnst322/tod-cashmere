@@ -5,7 +5,6 @@ import {
 } from "@/lib/products";
 import { ArrivalCard } from "@/components/arrival-card";
 import { getDict } from "@/lib/i18n-server";
-import { STORY_IMAGES } from "@/lib/stories";
 import { NewsStrip } from "@/components/news-strip";
 
 const shopLabels = {
@@ -107,34 +106,7 @@ export default async function HomePage() {
       </section>
 
 
-      <section className="section section--centered-title" id="lookbook">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.lookbookTitle}</div>
-          </div>
-          <div className="section-actions">
-            <Link href="/lookbook" className="section-link">
-              {dict.viewAll}
-            </Link>
-          </div>
-        </div>
-        <div className="story-grid container">
-          {dict.stories.map((story, i) => (
-            <Link href={`/lookbook/${i + 1}`} className="story-card" key={STORY_IMAGES[i]}>
-              <div className="story-image">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={STORY_IMAGES[i]} alt={story.title} loading="lazy" />
-              </div>
-              <div className="story-body">
-                <div className="story-title">{story.title}</div>
-                <p className="story-excerpt">{story.excerpt}</p>
-                <span className="story-link">{story.link}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <NewsStrip />
+     <NewsStrip />
     </>
   );
 }
