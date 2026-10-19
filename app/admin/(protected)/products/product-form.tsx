@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { categories, products } from "@/lib/db/schema";
 import { btnDark, btnSoft, input, label, panel } from "../../ui";
 import { GalleryField } from "../gallery-field";
+import { SizePicker } from "../size-picker";
 
 type Category = typeof categories.$inferSelect;
 type Product = typeof products.$inferSelect;
@@ -136,6 +137,10 @@ export function ProductForm({
               Сайтаас нуух
             </label>
           </div>
+        </Section>
+
+        <Section title="Хэмжээ">
+          <SizePicker defaultValue={product?.sizes} />
         </Section>
 
         <Section title="Зураг">

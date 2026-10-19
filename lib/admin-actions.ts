@@ -81,6 +81,7 @@ async function productFields(
     colorEn: colour.en || null,
     colorRu: colour.ru || null,
     colorZh: colour.zh || null,
+    sizes: String(formData.get("sizes") || "").trim(),
     categorySlug: String(formData.get("categorySlug")),
     collection: String(formData.get("collection") || "catalog"),
     badge: optional(formData, "badge"),

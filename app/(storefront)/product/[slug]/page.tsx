@@ -6,7 +6,7 @@ import {
   formatPrice,
   isSoldOut,
 } from "@/lib/products";
-import { AddToCartButton } from "@/components/add-to-cart-button";
+import { SizeBuyBox } from "@/components/size-buy-box";
 import { ProductCard } from "@/components/product-card";
 import {
   badgeLabel,
@@ -60,19 +60,17 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
               )}
             </div>
             <hr className="katalog-item-rule" />
-            <div className="product-detail-actions">
-              {!isSoldOut(product) ? (
-                <AddToCartButton
-                  id={product.slug}
-                  title={title}
-                  price={product.price}
-                  image={product.image}
-                  className="btn btn-primary product-page-cart"
-                />
-              ) : (
-                <div className="out-of-stock-text">{dict.outOfStock}</div>
-              )}
-            </div>
+            {!isSoldOut(product) ? (
+              <SizeBuyBox
+                slug={product.slug}
+                title={title}
+                price={product.price}
+                image={product.image}
+                sizes={product.sizes}
+              />
+            ) : (
+              <div className="out-of-stock-text">{dict.outOfStock}</div>
+            )}
             <div className="product-page-meta">
               <div>
                 {dict.productCode}: {product.code}

@@ -1,0 +1,1 @@
+ALTER TABLE `products` ADD `sizes` text DEFAULT '' NOT NULL;

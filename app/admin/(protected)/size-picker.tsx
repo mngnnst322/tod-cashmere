@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { label } from "../../ui";
+import { label } from "../ui";
 
 const GROUPS = [
   { title: "Том хүн", sizes: ["S", "M", "L", "XL", "2XL"] },

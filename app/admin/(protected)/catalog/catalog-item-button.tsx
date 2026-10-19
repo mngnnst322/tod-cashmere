@@ -6,7 +6,7 @@ import type { catalogItems } from "@/lib/db/schema";
 import { Modal } from "../modal";
 import { GalleryField } from "../gallery-field";
 import { ColorPicker } from "./color-picker";
-import { SizePicker } from "./size-picker";
+import { SizePicker } from "../size-picker";
 import { btnDark, icons, input, label } from "../../ui";
 
 type Item = typeof catalogItems.$inferSelect;

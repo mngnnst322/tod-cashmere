@@ -4254,6 +4254,33 @@ a.story-card:hover .story-title {
   }
 }
 
+/* Product page size choice. */
+button.katalog-size {
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+button.katalog-size:hover {
+  border-color: #6b4f3c;
+}
+
+button.katalog-size.is-picked {
+  border-color: #6b4f3c;
+  background: #6b4f3c;
+  color: #fff;
+}
+
+.size-warn {
+  margin-top: 10px;
+  color: #b3261e;
+  font-size: 14px;
+}
+
+.size-buy-actions {
+  margin-top: 28px;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
