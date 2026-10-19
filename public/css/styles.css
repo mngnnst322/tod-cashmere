@@ -3968,11 +3968,26 @@ footer {
 
 /* Section with its heading centred above the grid. */
 main .section--centered-title > .section-header {
-  flex-direction: column;
-  align-items: center;
+  position: relative;
   justify-content: center;
-  gap: 14px;
   text-align: center;
+}
+
+/* "Бүгдийг харах" stays in the right corner, level with the subtitle. */
+main .section--centered-title > .section-header .section-actions {
+  position: absolute;
+  right: var(--grid-gutter);
+  bottom: 0;
+}
+
+@media (max-width: 640px) {
+  main .section--centered-title > .section-header {
+    flex-direction: column;
+    align-items: center;
+  }
+  main .section--centered-title > .section-header .section-actions {
+    position: static;
+  }
 }
 
 /* Cart as an outline bag icon. */
