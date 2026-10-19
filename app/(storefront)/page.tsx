@@ -93,7 +93,6 @@ export default async function HomePage() {
         <div className="section-header">
           <div>
             <div className="section-title">{dict.arrivalsTitle}</div>
-            <div className="section-subtitle">{dict.arrivalsSubtitle}</div>
           </div>
           <div className="section-actions">
             <Link href="/arrivals" className="section-link">
@@ -112,7 +111,6 @@ export default async function HomePage() {
         <div className="section-header">
           <div>
             <div className="section-title">{dict.lookbookTitle}</div>
-            <div className="section-subtitle">{dict.lookbookSubtitle}</div>
           </div>
           <div className="section-actions">
             <Link href="/lookbook" className="section-link">
