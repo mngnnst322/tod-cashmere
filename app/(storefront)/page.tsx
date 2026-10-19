@@ -61,6 +61,24 @@ export default async function HomePage() {
         <div className="hero-photo-shade" aria-hidden="true" />
       </section>
 
+      <section className="section section-muted section--centered-title" id="arrivals">
+        <div className="section-header">
+          <div>
+            <div className="section-title">{dict.arrivalsTitle}</div>
+          </div>
+          <div className="section-actions">
+            <Link href="/arrivals" className="section-link">
+              {dict.viewAll}
+            </Link>
+          </div>
+        </div>
+        <div className="arrivals-grid container">
+          {arrivals.map((product) => (
+            <ArrivalCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+
       {/* Shop by gender, then by category: full-bleed photo tiles. */}
       <section className="shop-split" id="categories">
         <div className="shop-split-pair">
@@ -88,24 +106,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-
-      <section className="section section-muted section--centered-title" id="arrivals">
-        <div className="section-header">
-          <div>
-            <div className="section-title">{dict.arrivalsTitle}</div>
-          </div>
-          <div className="section-actions">
-            <Link href="/arrivals" className="section-link">
-              {dict.viewAll}
-            </Link>
-          </div>
-        </div>
-        <div className="arrivals-grid container">
-          {arrivals.map((product) => (
-            <ArrivalCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
 
       <section className="section section--centered-title" id="lookbook">
         <div className="section-header">
