@@ -22,7 +22,7 @@ const columns: Record<Lang, Column[]> = {
         { label: "Бидний тухай", href: "#" },
         { label: "Дэлгүүрийн байршил", href: "#" },
         { label: "Ноолуур арчилгаа", href: "#" },
-        { label: "Мэдээ, мэдээлэл", href: "/#news" },
+        { label: "Мэдээ, мэдээлэл", href: "/news" },
       ],
     },
     {
@@ -42,7 +42,7 @@ const columns: Record<Lang, Column[]> = {
         { label: "About us", href: "#" },
         { label: "Store locations", href: "#" },
         { label: "Cashmere care", href: "#" },
-        { label: "News", href: "/#news" },
+        { label: "News", href: "/news" },
       ],
     },
     {
@@ -62,7 +62,7 @@ const columns: Record<Lang, Column[]> = {
         { label: "О нас", href: "#" },
         { label: "Адреса магазинов", href: "#" },
         { label: "Уход за кашемиром", href: "#" },
-        { label: "Новости", href: "/#news" },
+        { label: "Новости", href: "/news" },
       ],
     },
     {
@@ -82,7 +82,7 @@ const columns: Record<Lang, Column[]> = {
         { label: "关于我们", href: "#" },
         { label: "门店位置", href: "#" },
         { label: "羊绒护理", href: "#" },
-        { label: "新闻资讯", href: "/#news" },
+        { label: "新闻资讯", href: "/news" },
       ],
     },
     {

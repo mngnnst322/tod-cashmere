@@ -5,7 +5,6 @@ import {
 } from "@/lib/products";
 import { ArrivalCard } from "@/components/arrival-card";
 import { getDict } from "@/lib/i18n-server";
-import { NewsStrip } from "@/components/news-strip";
 
 const shopLabels = {
   mn: { women: "Эмэгтэй дэлгүүр", men: "Эрэгтэй дэлгүүр" },
@@ -104,9 +103,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
-
-     <NewsStrip />
     </>
   );
 }
