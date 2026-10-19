@@ -5,8 +5,8 @@ import { getDb } from "@/lib/db";
 import { products } from "@/lib/db/schema";
 import { listCategories } from "@/lib/products";
 import { updateProduct } from "@/lib/admin-actions";
-import { PageBody, PageHeader } from "../../../../ui";
 import { ProductForm } from "../../product-form";
+import AdminProductsPage from "../../page";
 
 export default async function EditProductPage(
   props: PageProps<"/admin/products/[id]/edit">,
@@ -20,16 +20,11 @@ export default async function EditProductPage(
   ]);
   if (!product) notFound();
 
+  // The form opens as a drawer over the product list.
   return (
     <>
-      <PageHeader title="Бараа засах" subtitle={product.titleMn} />
-      <PageBody>
-        <ProductForm
-          action={updateProduct.bind(null, id)}
-          categories={categories}
-          product={product}
-        />
-      </PageBody>
+      <AdminProductsPage />
+      <ProductForm action={updateProduct.bind(null, id)} categories={categories} product={product} />
     </>
   );
 }

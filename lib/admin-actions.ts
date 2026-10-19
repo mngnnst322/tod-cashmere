@@ -61,10 +61,24 @@ async function productFields(
 ) {
   const titleMn = String(formData.get("titleMn")).trim();
   const color = String(formData.get("color")).trim();
+  // Names typed in the EN/RU/ZH tabs win; empty ones (or ones left as they
+  // were while the Mongolian name changed) are translated.
+  const typed = (key: string) => String(formData.get(key) || "").trim();
+  const nameChanged = !existing || existing.titleMn !== titleMn;
+  const keepTyped = (key: "titleEn" | "titleRu" | "titleZh") => {
+    const v = typed(key);
+    return v && !(nameChanged && existing && v === (existing[key] ?? "")) ? v : "";
+  };
+  const typedTitle = { en: keepTyped("titleEn"), ru: keepTyped("titleRu"), zh: keepTyped("titleZh") };
+  const needsTranslation = !typedTitle.en || !typedTitle.ru || !typedTitle.zh;
   const [title, colour] = await Promise.all([
-    existing && existing.titleMn === titleMn
-      ? { en: existing.titleEn, ru: existing.titleRu ?? "", zh: existing.titleZh ?? "" }
-      : translateFromMongolian(titleMn),
+    needsTranslation
+      ? translateFromMongolian(titleMn).then((t) => ({
+          en: typedTitle.en || t.en,
+          ru: typedTitle.ru || t.ru,
+          zh: typedTitle.zh || t.zh,
+        }))
+      : typedTitle,
     existing && existing.color === color
       ? { en: existing.colorEn ?? "", ru: existing.colorRu ?? "", zh: existing.colorZh ?? "" }
       : translateFromMongolian(color),

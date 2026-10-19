@@ -1,54 +1,30 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import type { categories, products } from "@/lib/db/schema";
-import { btnDark, btnSoft, input, label, panel } from "../../ui";
+import { input } from "../../ui";
 import { GalleryField } from "../gallery-field";
 import { SizePicker } from "../size-picker";
 
 type Category = typeof categories.$inferSelect;
 type Product = typeof products.$inferSelect;
 
-function Field({
-  name,
-  title,
-  defaultValue,
-  required,
-  type = "text",
-  placeholder,
-}: {
-  name: string;
-  title: string;
-  defaultValue?: string | number | null;
-  required?: boolean;
-  type?: string;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label className={label} htmlFor={name}>
-        {title}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        defaultValue={defaultValue ?? ""}
-        required={required}
-        placeholder={placeholder}
-        className={input}
-      />
-    </div>
-  );
-}
+const LANGS = [
+  { code: "mn", label: "MN", field: "titleMn" },
+  { code: "en", label: "EN", field: "titleEn" },
+  { code: "ru", label: "RU", field: "titleRu" },
+  { code: "zh", label: "ZH", field: "titleZh" },
+] as const;
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className={`${panel} p-7`}>
-      <h2 className="mb-5 text-base font-medium">{title}</h2>
-      <div className="space-y-4">{children}</div>
-    </section>
-  );
-}
+const cap = "mb-2 block text-[11px] font-semibold uppercase tracking-[0.14em] text-adm-mute";
+const group = "mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-adm-mute";
 
+/**
+ * Add / edit product, shown as a drawer from the right over the product list.
+ * The name has MN/EN/RU/ZH tabs: only Mongolian is required, and any other
+ * language left empty is translated automatically on save.
+ */
 export function ProductForm({
   action,
   categories,
@@ -58,66 +34,171 @@ export function ProductForm({
   categories: Category[];
   product?: Product;
 }) {
-  return (
-    <form action={action} className="grid max-w-5xl gap-6 lg:grid-cols-2">
-      <div className="space-y-6">
-        <Section title="Нэр">
-          <Field name="titleMn" title="Монгол" defaultValue={product?.titleMn} required />
-        </Section>
-        <Section title="Өнгө">
-          <Field name="color" title="Монгол" defaultValue={product?.color} required />
-          <p className="text-xs text-adm-mute">
-            Монголоор бичихэд англи, орос, хятад хэл рүү автоматаар орчуулагдана.
-          </p>
-        </Section>
-      </div>
+  const [tab, setTab] = useState<(typeof LANGS)[number]["code"]>("mn");
+  const editing = !!product;
 
-      <div className="space-y-6">
-        <Section title="Үндсэн мэдээлэл">
-          <Field name="slug" title="Slug (URL)" defaultValue={product?.slug} required placeholder="cashmere-coat-1" />
+  return (
+    <div className="fixed inset-0 z-40 flex justify-end">
+      <Link href="/admin/products" aria-label="Хаах" className="flex-1 bg-black/40" />
+      <form
+        action={action}
+        className="flex h-full w-full max-w-[760px] flex-col bg-white shadow-2xl"
+      >
+        <header className="flex items-center justify-between border-b border-adm-line px-8 py-6">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.16em]">
+            {editing ? "Бүтээгдэхүүн засах" : "Бүтээгдэхүүн нэмэх"}
+          </h2>
+          <Link href="/admin/products" aria-label="Хаах" className="text-2xl leading-none text-adm-ink">
+            ×
+          </Link>
+        </header>
+
+        <div className="flex-1 space-y-8 overflow-y-auto px-8 py-7">
+          {/* Name in four languages */}
           <div>
-            <label className={label} htmlFor="categorySlug">
-              Ангилал
-            </label>
-            <select id="categorySlug" name="categorySlug" defaultValue={product?.categorySlug} className={input}>
-              {categories.map((c) => (
-                <option key={c.id} value={c.slug}>
-                  {c.nameMn}
-                </option>
+            <span className={cap}>Хэл</span>
+            <div className="flex gap-2">
+              {LANGS.map((l) => (
+                <button
+                  key={l.code}
+                  type="button"
+                  onClick={() => setTab(l.code)}
+                  className={`rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wider transition ${
+                    tab === l.code
+                      ? "border-adm-ink bg-adm-ink text-white"
+                      : "border-adm-line bg-white text-adm-ink hover:bg-adm-cream"
+                  }`}
+                >
+                  {l.label}
+                  {l.code === "mn" && <span className="ml-0.5 text-red-500">*</span>}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+
+          {LANGS.map((l) => (
+            <div key={l.code} className={tab === l.code ? "" : "hidden"}>
+              <label className={cap} htmlFor={l.field}>
+                Нэр ({l.label}) {l.code === "mn" && <span className="text-red-500">*</span>}
+              </label>
+              <input
+                id={l.field}
+                name={l.field}
+                defaultValue={(product?.[l.field] as string | null | undefined) ?? ""}
+                required={l.code === "mn"}
+                placeholder={l.code === "mn" ? "Бүтээгдэхүүний нэр" : "Хоосон бол автоматаар орчуулна"}
+                className={`${input} ${l.code === "mn" ? "invalid:border-red-300 invalid:bg-red-50" : ""}`}
+              />
+            </div>
+          ))}
+
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className={label} htmlFor="collection">
-                Төрөл
+              <label className={cap} htmlFor="slug">
+                Slug
+              </label>
+              <input
+                id="slug"
+                name="slug"
+                defaultValue={product?.slug ?? ""}
+                required
+                placeholder="product-name-mn"
+                className={input}
+              />
+            </div>
+            <div>
+              <label className={cap} htmlFor="categorySlug">
+                Категори
               </label>
               <select
-                id="collection"
-                name="collection"
-                defaultValue={product?.collection ?? "catalog"}
+                id="categorySlug"
+                name="categorySlug"
+                defaultValue={product?.categorySlug ?? ""}
+                required
                 className={input}
               >
+                <option value="" disabled>
+                  Сонгох…
+                </option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.slug}>
+                    {c.nameMn}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className={cap} htmlFor="color">
+              Өнгө (MN) <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="color"
+              name="color"
+              defaultValue={product?.color ?? ""}
+              required
+              placeholder="Тэмээн бор"
+              className={input}
+            />
+            <p className="mt-1.5 text-xs text-adm-mute">
+              Англи, орос, хятад руу автоматаар орчуулагдана.
+            </p>
+          </div>
+
+          <div>
+            <div className={group}>Үнэ &amp; нөөц</div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="price">
+                  Үнэ (₮)
+                </label>
+                <input id="price" name="price" type="number" defaultValue={product?.price ?? ""} required className={input} />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="compareAtPrice">
+                  Хямдралын өмнөх үнэ
+                </label>
+                <input
+                  id="compareAtPrice"
+                  name="compareAtPrice"
+                  type="number"
+                  defaultValue={product?.compareAtPrice ?? ""}
+                  className={input}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="stock">
+                  Нөөц
+                </label>
+                <input id="stock" name="stock" type="number" defaultValue={product?.stock ?? ""} className={input} />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className={cap} htmlFor="collection">
+                Төрөл
+              </label>
+              <select id="collection" name="collection" defaultValue={product?.collection ?? "catalog"} className={input}>
                 <option value="catalog">Каталог</option>
                 <option value="arrival">Шинэ</option>
               </select>
             </div>
-            <Field name="badge" title="Шошго (заавал биш)" defaultValue={product?.badge} placeholder="Шинэ, Хямдрал..." />
+            <div>
+              <label className={cap} htmlFor="badge">
+                Шошго
+              </label>
+              <input id="badge" name="badge" defaultValue={product?.badge ?? ""} placeholder="Шинэ, Хямдрал…" className={input} />
+            </div>
           </div>
-        </Section>
 
-        <Section title="Үнэ ба нөөц">
-          <div className="grid grid-cols-2 gap-3">
-            <Field name="price" title="Үнэ (₮)" type="number" defaultValue={product?.price} required />
-            <Field name="compareAtPrice" title="Хуучин үнэ (₮)" type="number" defaultValue={product?.compareAtPrice} />
-          </div>
-          <Field
-            name="stock"
-            title="Нөөц (ширхэг, хоосон бол хянахгүй)"
-            type="number"
-            defaultValue={product?.stock}
-          />
-          <div className="flex flex-wrap gap-6 pt-1 text-sm">
+          <SizePicker defaultValue={product?.sizes} />
+
+          <GalleryField images={productImages(product)} cover={product?.image} />
+
+          <div className="flex flex-wrap gap-6 text-sm">
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
@@ -137,26 +218,24 @@ export function ProductForm({
               Сайтаас нуух
             </label>
           </div>
-        </Section>
+        </div>
 
-        <Section title="Хэмжээ">
-          <SizePicker defaultValue={product?.sizes} />
-        </Section>
-
-        <Section title="Зураг">
-          <GalleryField images={productImages(product)} cover={product?.image} />
-        </Section>
-      </div>
-
-      <div className="flex gap-3 lg:col-span-2">
-        <button type="submit" className={btnDark}>
-          Хадгалах
-        </button>
-        <Link href="/admin/products" className={btnSoft}>
-          Болих
-        </Link>
-      </div>
-    </form>
+        <footer className="space-y-2 border-t border-adm-line px-8 py-5">
+          <button
+            type="submit"
+            className="w-full bg-adm-ink py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white hover:opacity-90"
+          >
+            {editing ? "Хадгалах" : "Нэмэх"}
+          </button>
+          <Link
+            href="/admin/products"
+            className="block w-full border border-adm-line py-3 text-center text-sm font-semibold uppercase tracking-[0.16em] text-adm-ink hover:bg-adm-cream"
+          >
+            Болих
+          </Link>
+        </footer>
+      </form>
+    </div>
   );
 }
 
