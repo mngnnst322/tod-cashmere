@@ -4227,7 +4227,12 @@ a.story-card:hover .story-title {
 
 /* "Сагсанд хийх" buttons in the brand brown. */
 .product-actions button,
-.arrival-actions button,
+.arrival-actions button {
+  border-color: #6b4f3c;
+  background: transparent;
+  color: #6b4f3c;
+}
+
 .product-page-cart {
   border-color: #6b4f3c;
   background: #6b4f3c;
@@ -4235,7 +4240,12 @@ a.story-card:hover .story-title {
 }
 
 .product-actions button:hover,
-.arrival-actions button:hover,
+.arrival-actions button:hover {
+  border-color: #6b4f3c;
+  background: #6b4f3c;
+  color: #fff;
+}
+
 .product-page-cart:hover {
   border-color: #5a4232;
   background: #5a4232;
