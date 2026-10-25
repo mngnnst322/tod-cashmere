@@ -13,7 +13,7 @@ export default async function LookbookPage() {
   const { dict } = await getDict();
   return (
     <>
-      <link rel="stylesheet" href={`/css/bundle.css?v=${process.env.NEXT_PUBLIC_ASSET_VERSION}`} />
+      <link rel="stylesheet" href={`/css/bundle.css?v=${process.env.NODE_ENV === "development" ? Date.now().toString(36) : process.env.NEXT_PUBLIC_ASSET_VERSION}`} />
       {/* The "build the look" bundle sits at the top of the lookbook. */}
       <BundleConfigurator />
       <section className="section">

@@ -61,7 +61,7 @@ export function MobileTabBar({ signedIn }: { signedIn: boolean }) {
         return (
           <Link key={tab.key} href={tab.href} className={`mobile-tab ${active ? "is-active" : ""}`}>
             <span className="mobile-tab-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" aria-hidden="true">
                 {icons[tab.key]}
               </svg>
               {tab.badge > 0 && <span className="mobile-tab-badge">{tab.badge}</span>}
