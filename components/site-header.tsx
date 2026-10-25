@@ -77,15 +77,16 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
 
   const toggleTheme = () => {
     const root = document.documentElement;
-    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const attr = root.getAttribute("data-theme");
+    const current =
+      attr === "dark" || (!attr && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ? "dark"
+        : "light";
     const next = current === "dark" ? "light" : "dark";
     const apply = () => {
       root.setAttribute("data-theme", next);
-      try {
-        localStorage.setItem("theme", next);
-      } catch {
-        // ignore
-      }
+      // Read by the root layout on the next page load.
+      document.cookie = `theme=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
     };
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",

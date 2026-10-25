@@ -31,4 +31,6 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
+// Local dev uses local bindings only; remote ones (Workers AI) need a Cloudflare
+// login and would fail every request, so translation is skipped locally.
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev({ remoteBindings: false }));

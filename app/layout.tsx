@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { enUS, mnMN, ruRU, zhCN } from "@clerk/localizations";
 import "./globals.css";
@@ -13,27 +14,16 @@ export const metadata: Metadata = {
 
 const clerkLocalizations = { mn: mnMN, en: enUS, ru: ruRU, zh: zhCN };
 
-const themeScript = `
-(function () {
-  try {
-    var stored = localStorage.getItem("theme");
-    var theme = stored === "dark" || stored === "light"
-      ? stored
-      : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", theme);
-  } catch (e) {
-    document.documentElement.setAttribute("data-theme", "light");
-  }
-})();
-`;
-
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const lang = await getLang();
+  const [lang, cookieStore] = await Promise.all([getLang(), cookies()]);
+  // The light/dark choice is a cookie so the server renders it directly;
+  // with no choice yet, CSS follows the device setting.
+  const themeCookie = cookieStore.get("theme")?.value;
+  const theme = themeCookie === "dark" || themeCookie === "light" ? themeCookie : undefined;
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang={lang} data-theme={theme} suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

@@ -36,6 +36,30 @@
   --color-header-bg: #15120f;
 }
 
+/* No theme picked yet: follow the device's light/dark setting. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #15120f;
+    --color-bg-alt: #1d1916;
+    --color-primary: #c79a6f;
+    --color-primary-dark: #a87c50;
+    --color-text: #f1ebe3;
+    --color-muted: #a79e93;
+    --color-border: #352e27;
+    --color-ink: #f7f2ea;
+    --color-header-bg: #15120f;
+  }
+  :root:not([data-theme]) .theme-toggle .theme-icon-sun {
+    display: none;
+  }
+  :root:not([data-theme]) .theme-toggle .theme-icon-moon {
+    display: inline-block;
+  }
+  :root:not([data-theme]) .katalog-logo img {
+    filter: invert(1);
+  }
+}
+
 /* === Design rules: sharp edges, no frosted glass anywhere (storefront only;
    the admin console has its own look) === */
 :not(.admin-shell, .admin-shell *),
