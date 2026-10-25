@@ -32,6 +32,7 @@
   "ai": {
     // Workers AI: translates admin-entered Mongolian names into EN/RU/ZH.
     "binding": "AI",
+    "remote": true,
   },
   "r2_buckets": [
     {
