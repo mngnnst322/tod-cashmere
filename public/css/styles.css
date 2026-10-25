@@ -4315,6 +4315,112 @@ button.katalog-size.is-picked {
   margin-top: 28px;
 }
 
+/* Phone bottom navigation (shop pages). */
+.mobile-tab-bar {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .mobile-tab-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    border-top: 1px solid #e3ded8;
+    background: #fff;
+  }
+
+  .mobile-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #6f6a65;
+    font-size: 11px;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .mobile-tab.is-active {
+    color: #3a2f28;
+  }
+
+  .mobile-tab-icon {
+    position: relative;
+  }
+
+  .mobile-tab svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  .mobile-tab-badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px !important;
+    background: #e5484d;
+    color: #fff;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  body:has(.mobile-tab-bar) {
+    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+
+  body:has(.mobile-tab-bar) .scroll-top {
+    bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+
+  /* Header: language on the left, logo centred, menu button on the right;
+     search, profile and cart move to the bottom bar. */
+  body:has(.mobile-tab-bar) .site-header .nav {
+    position: relative;
+  }
+
+  body:has(.mobile-tab-bar) .site-header .nav-left {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  body:has(.mobile-tab-bar) .site-header .nav-right {
+    order: -1;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  body:has(.mobile-tab-bar) .site-header .nav-right > :not(.lang-select:not(.profile-select)) {
+    display: none;
+  }
+
+  body:has(.mobile-tab-bar) .site-header .nav-burger-end {
+    margin-left: auto;
+    border: 0;
+    background: transparent;
+  }
+
+  body:has(.mobile-tab-bar) .site-header .katalog-logo img {
+    height: 48px;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

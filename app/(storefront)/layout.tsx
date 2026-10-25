@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { SiteHeader } from "@/components/site-header";
+import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { SiteFooter } from "@/components/site-footer";
 import { ComingSoon } from "@/components/coming-soon";
 import { CatalogHeader } from "@/components/catalog-header";
@@ -67,6 +68,7 @@ export default async function StorefrontLayout({
       />
       <main>{children}</main>
       <SiteFooter />
+      <MobileTabBar signedIn={!!user} />
       <RevealObserver />
     </div>
   );
