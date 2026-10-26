@@ -4434,6 +4434,12 @@ button.katalog-size.is-picked {
     display: none;
   }
 
+  body:has(.mobile-tab-bar) .site-header .lang-toggle {
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+
   body:has(.mobile-tab-bar) .site-header .nav-burger-end {
     margin-left: auto;
     border: 0;
