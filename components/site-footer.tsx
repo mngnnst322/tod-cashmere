@@ -20,7 +20,7 @@ const columns: Record<Lang, Column[]> = {
       title: "Бидний тухай",
       links: [
         { label: "Бидний тухай", href: "#" },
-        { label: "Дэлгүүрийн байршил", href: "#" },
+        { label: "Дэлгүүрийн байршил", href: "/store" },
         { label: "Ноолуур арчилгаа", href: "#" },
         { label: "Мэдээ, мэдээлэл", href: "/news" },
       ],
@@ -40,7 +40,7 @@ const columns: Record<Lang, Column[]> = {
       title: "About us",
       links: [
         { label: "About us", href: "#" },
-        { label: "Store locations", href: "#" },
+        { label: "Store locations", href: "/store" },
         { label: "Cashmere care", href: "#" },
         { label: "News", href: "/news" },
       ],
@@ -60,7 +60,7 @@ const columns: Record<Lang, Column[]> = {
       title: "О нас",
       links: [
         { label: "О нас", href: "#" },
-        { label: "Адреса магазинов", href: "#" },
+        { label: "Адреса магазинов", href: "/store" },
         { label: "Уход за кашемиром", href: "#" },
         { label: "Новости", href: "/news" },
       ],
@@ -80,7 +80,7 @@ const columns: Record<Lang, Column[]> = {
       title: "关于我们",
       links: [
         { label: "关于我们", href: "#" },
-        { label: "门店位置", href: "#" },
+        { label: "门店位置", href: "/store" },
         { label: "羊绒护理", href: "#" },
         { label: "新闻资讯", href: "/news" },
       ],
@@ -138,7 +138,9 @@ export async function SiteFooter() {
         <div>
           <div className="footer-column-title">{c.title}</div>
           <ul className="footer-links">
-            <li>{ADDRESS[lang]}</li>
+            <li>
+              <a href="/store">{ADDRESS[lang]}</a>
+            </li>
             <li>
               <a href={`tel:${PHONE.replace(/\s/g, "")}`}>{PHONE}</a>
             </li>
