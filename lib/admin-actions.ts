@@ -96,6 +96,13 @@ async function productFields(
     colorRu: colour.ru || null,
     colorZh: colour.zh || null,
     sizes: String(formData.get("sizes") || "").trim(),
+    regionPrices: JSON.stringify(
+      Object.fromEntries(
+        (["RU", "KR", "INTL"] as const)
+          .map((r) => [r, Number(formData.get(`price-${r}`) || 0)] as const)
+          .filter(([, v]) => v > 0),
+      ),
+    ),
     categorySlug: String(formData.get("categorySlug")),
     collection: String(formData.get("collection") || "catalog"),
     badge: optional(formData, "badge"),

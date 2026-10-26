@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { formatPrice } from "@/lib/format";
+import { useMoney } from "./pricing-provider";
 import type { Lang } from "@/lib/i18n";
 
 type SearchProduct = {
@@ -70,6 +70,7 @@ export function SearchDropdown({
   /** Fill the box with a recent search. */
   onRecent: (term: string) => void;
 }) {
+  const money = useMoney();
   const [products, setProducts] = useState<SearchProduct[] | null>(null);
   const [recent, setRecent] = useState<string[]>([]);
   const t = text[lang];
@@ -109,8 +110,8 @@ export function SearchDropdown({
         <img src={p.image} alt="" loading="lazy" />
         <span className="search-result-title">{titleOf(p, lang)}</span>
         <span className="search-result-price">
-          {formatPrice(p.price)}
-          {p.compareAtPrice != null && <s>{formatPrice(p.compareAtPrice)}</s>}
+          {money(p.price)}
+          {p.compareAtPrice != null && <s>{money(p.compareAtPrice)}</s>}
         </span>
       </Link>
     </li>

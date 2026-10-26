@@ -36,6 +36,9 @@ export const products = sqliteTable("products", {
   badge: text("badge"),
   image: text("image").notNull(),
   // Every photo (JSON array, different angles); `image` is the cover.
+  // Prices for other countries, in tugrik: {"RU": 30000, "KR": 40000,
+  // "INTL": 50000}. Missing ones use `price`. Shown in the visitor's currency.
+  regionPrices: text("region_prices").notNull().default("{}"),
   // Sizes it comes in, e.g. "S / M / L" or "3-4 нас / 5-6 нас"; empty = one size.
   sizes: text("sizes").notNull().default(""),
   images: text("images").notNull().default("[]"),

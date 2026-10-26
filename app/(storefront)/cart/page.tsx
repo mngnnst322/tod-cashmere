@@ -3,13 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/components/cart-provider";
-import { formatPrice, isUploadedImage } from "@/lib/format";
+import { isUploadedImage } from "@/lib/format";
+import { useMoney } from "@/components/pricing-provider";
 import { createOrder } from "@/lib/actions";
 import { useLang } from "@/components/lang-provider";
 import { fmt } from "@/lib/i18n";
 
 export default function CartPage() {
   const { items, total, decrementItem, addItem, removeItem, clear } = useCart();
+  const money = useMoney();
   const { dict } = useLang();
   const [paymentMethod, setPaymentMethod] = useState("qpay");
   const [status, setStatus] = useState("");
@@ -101,7 +103,7 @@ export default function CartPage() {
                 <div style={{ flex: 1 }}>
                   <div className="product-title">{line.title}</div>
                   <div className="product-price-current">
-                    {formatPrice(line.price)}
+                    {money(line.price)}
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -131,7 +133,7 @@ export default function CartPage() {
             <div className="summary" style={{ marginTop: 16 }}>
               <div className="summary-row">
                 <strong>{dict.total}</strong>
-                <strong>{formatPrice(total)}</strong>
+                <strong>{money(total)}</strong>
               </div>
             </div>
           </div>

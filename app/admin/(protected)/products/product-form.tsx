@@ -6,6 +6,7 @@ import type { categories, products } from "@/lib/db/schema";
 import { input } from "../../ui";
 import { GalleryField } from "../gallery-field";
 import { SizePicker } from "../size-picker";
+import { REGION_LABELS, type Region } from "@/lib/money";
 
 type Category = typeof categories.$inferSelect;
 type Product = typeof products.$inferSelect;
@@ -176,6 +177,31 @@ export function ProductForm({
             </div>
           </div>
 
+          <div>
+            <div className={group}>Улс бүрийн үнэ (₮)</div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {(["RU", "KR", "INTL"] as const).map((r) => (
+                <div key={r}>
+                  <label className="mb-1 block text-xs text-adm-mute" htmlFor={`price-${r}`}>
+                    {REGION_LABELS[r]}
+                  </label>
+                  <input
+                    id={`price-${r}`}
+                    name={`price-${r}`}
+                    type="number"
+                    defaultValue={regionPricesOf(product)[r] ?? ""}
+                    placeholder="Монгол үнээр"
+                    className={input}
+                  />
+                </div>
+              ))}
+            </div>
+            <p className="mt-1.5 text-xs text-adm-mute">
+              Төгрөгөөр оруулна. Тухайн улсаас орсон хүнд өдрийн ханшаар өөрийнх нь мөнгөн
+              тэмдэгтээр харагдана (Орос ₽, Солонгос ₩, бусад $). Хоосон бол Монгол үнэ.
+            </p>
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className={cap} htmlFor="collection">
@@ -249,4 +275,13 @@ function productImages(product?: { image: string; images: string } | null): stri
     // fall through to the cover
   }
   return product.image ? [product.image] : [];
+}
+
+/** Stored regional tugrik prices of a product, if any. */
+function regionPricesOf(product?: { regionPrices: string } | null): Partial<Record<Region, number>> {
+  try {
+    return product ? JSON.parse(product.regionPrices || "{}") : {};
+  } catch {
+    return {};
+  }
 }

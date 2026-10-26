@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { AddToCartButton } from "./add-to-cart-button";
-import { formatPrice, discountPercent, isSoldOut } from "@/lib/products";
+import { discountPercent, isSoldOut } from "@/lib/products";
+import { getPricing } from "@/lib/pricing";
+import { formatMoney } from "@/lib/money";
 import { badgeLabel, productTitle } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
 import type { products } from "@/lib/db/schema";
@@ -10,7 +12,7 @@ import { isUploadedImage } from "@/lib/format";
 type Product = typeof products.$inferSelect;
 
 export async function ProductCard({ product }: { product: Product }) {
-  const { lang, dict } = await getDict();
+  const [{ lang, dict }, pricing] = await Promise.all([getDict(), getPricing()]);
   const title = productTitle(product, lang);
   const isOut = isSoldOut(product);
   return (
@@ -39,11 +41,11 @@ export async function ProductCard({ product }: { product: Product }) {
         <div className="product-title">{title}</div>
         <div className="product-prices">
           <div className="product-price-current">
-            {formatPrice(product.price)}
+            {formatMoney(product.price, pricing)}
           </div>
           {product.compareAtPrice != null && (
             <div className="product-price-old">
-              {formatPrice(product.compareAtPrice)}
+              {formatMoney(product.compareAtPrice, pricing)}
             </div>
           )}
         </div>

@@ -134,6 +134,13 @@
       "when": 1792998605739,
       "tag": "0018_kids_catalog_types",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1792999158342,
+      "tag": "0019_region_prices",
+      "breakpoints": true
     }
   ]
 }

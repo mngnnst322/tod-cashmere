@@ -6,6 +6,8 @@ import "./globals.css";
 import { CartProvider } from "@/components/cart-provider";
 import { LangProvider } from "@/components/lang-provider";
 import { getLang } from "@/lib/i18n-server";
+import { getPricing } from "@/lib/pricing";
+import { PricingProvider } from "@/components/pricing-provider";
 
 export const metadata: Metadata = {
   title: "Tod Cashmere",
@@ -20,7 +22,7 @@ const assetVersion = () =>
   process.env.NODE_ENV === "development" ? Date.now().toString(36) : process.env.NEXT_PUBLIC_ASSET_VERSION;
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const [lang, cookieStore] = await Promise.all([getLang(), cookies()]);
+  const [lang, cookieStore, pricing] = await Promise.all([getLang(), cookies(), getPricing()]);
   // The light/dark choice is a cookie so the server renders it directly;
   // with no choice yet, CSS follows the device setting.
   const themeCookie = cookieStore.get("theme")?.value;
@@ -43,9 +45,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body>
         <ClerkProvider localization={clerkLocalizations[lang]}>
-          <LangProvider initialLang={lang}>
-            <CartProvider>{children}</CartProvider>
-          </LangProvider>
+          <PricingProvider pricing={pricing}>
+            <LangProvider initialLang={lang}>
+              <CartProvider>{children}</CartProvider>
+            </LangProvider>
+          </PricingProvider>
         </ClerkProvider>
       </body>
     </html>

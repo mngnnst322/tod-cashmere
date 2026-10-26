@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "./cart-provider";
-import { formatPrice } from "@/lib/format";
+import { useMoney } from "./pricing-provider";
 import { useLang } from "./lang-provider";
 
 // Copy for each piece lives in the dictionary (`lookItems`), in the same order.
@@ -50,6 +50,7 @@ const lookPieces = [
 ];
 
 export function BundleConfigurator() {
+  const money = useMoney();
   const [selected, setSelected] = useState<Set<string>>(
     new Set(lookPieces.map((i) => i.id)),
   );
@@ -122,13 +123,13 @@ export function BundleConfigurator() {
                   } as React.CSSProperties
                 }
                 data-marker-id={item.id}
-                aria-label={`${item.title}, ${formatPrice(item.price)}`}
+                aria-label={`${item.title}, ${money(item.price)}`}
                 onClick={() => toggle(item.id)}
               >
                 <span className="look-marker-dot">{item.no}</span>
                 <span className="look-marker-label">
                   <span>{item.title}</span>
-                  <strong>{formatPrice(item.price)}</strong>
+                  <strong>{money(item.price)}</strong>
                 </span>
               </button>
             ))}
@@ -178,7 +179,7 @@ export function BundleConfigurator() {
                     <small>{item.detail2}</small>
                   </span>
                   <span className="bundle-item-price">
-                    {formatPrice(item.price)}
+                    {money(item.price)}
                   </span>
                 </label>
               ))}
@@ -192,15 +193,15 @@ export function BundleConfigurator() {
               <dl>
                 <div>
                   <dt>{dict.subtotal}</dt>
-                  <dd>{formatPrice(subtotal)}</dd>
+                  <dd>{money(subtotal)}</dd>
                 </div>
                 <div className="bundle-saving-row">
                   <dt>{dict.savings}</dt>
-                  <dd>−{formatPrice(discount)}</dd>
+                  <dd>−{money(discount)}</dd>
                 </div>
                 <div className="bundle-total-row">
                   <dt>{dict.bundleTotal}</dt>
-                  <dd>{formatPrice(total)}</dd>
+                  <dd>{money(total)}</dd>
                 </div>
               </dl>
               <p className="bundle-hint">{hint}</p>

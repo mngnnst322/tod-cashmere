@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { AddToCartButton } from "./add-to-cart-button";
-import { formatPrice } from "@/lib/products";
+import { getPricing } from "@/lib/pricing";
+import { formatMoney } from "@/lib/money";
 import { badgeLabel, productColor, productTitle } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
 import type { products } from "@/lib/db/schema";
@@ -31,7 +32,7 @@ export async function ArrivalCard({ product }: { product: Product }) {
           <div className="product-flag">{badgeLabel(product.badge, dict)}</div>
         )}
         <div className="arrival-title">{title}</div>
-        <div className="arrival-price">{formatPrice(product.price)}</div>
+        <div className="arrival-price">{formatMoney(product.price, await getPricing())}</div>
         <div className="arrival-actions">
           <AddToCartButton
             id={product.slug}

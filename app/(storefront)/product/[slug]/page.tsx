@@ -3,7 +3,6 @@ import {
   getProductBySlug,
   getRelatedProducts,
   listCategories,
-  formatPrice,
   isSoldOut,
 } from "@/lib/products";
 import { SizeBuyBox } from "@/components/size-buy-box";
@@ -15,6 +14,8 @@ import {
   productTitle,
 } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
+import { getPricing } from "@/lib/pricing";
+import { formatMoney } from "@/lib/money";
 import { CatalogGallery } from "@/components/catalog-gallery";
 import { itemImages } from "@/lib/catalog";
 
@@ -23,10 +24,11 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const [related, categories, { lang, dict }] = await Promise.all([
+  const [related, categories, { lang, dict }, pricing] = await Promise.all([
     getRelatedProducts(product.slug, 4),
     listCategories(),
     getDict(),
+    getPricing(),
   ]);
   const title = productTitle(product, lang);
   const category = categories.find((c) => c.slug === product.categorySlug);
@@ -54,9 +56,9 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
             <h1 className="katalog-item-name">{title}</h1>
             <div className="katalog-item-material">{productColor(product, lang)}</div>
             <div className="product-page-prices">
-              <span className="product-page-price">{formatPrice(product.price)}</span>
+              <span className="product-page-price">{formatMoney(product.price, pricing)}</span>
               {product.compareAtPrice != null && (
-                <s className="product-page-old">{formatPrice(product.compareAtPrice)}</s>
+                <s className="product-page-old">{formatMoney(product.compareAtPrice, pricing)}</s>
               )}
             </div>
             <hr className="katalog-item-rule" />

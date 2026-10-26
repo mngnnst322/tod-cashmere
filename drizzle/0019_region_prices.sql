@@ -1,0 +1,1 @@
+ALTER TABLE `products` ADD `region_prices` text DEFAULT '{}' NOT NULL;
