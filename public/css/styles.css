@@ -2813,6 +2813,30 @@ footer .footer-bottom.container {
     display: none;
   }
 
+  /* Headings only; a tapped heading expands its sub-menu. */
+  .nav-menu-item.has-mega:not(.is-open) .mega-menu {
+    display: none;
+  }
+
+  .nav-menu-item.has-mega .nav-caret {
+    transition: transform 0.25s ease;
+  }
+
+  .nav-menu-item.has-mega:not(.is-open):hover .nav-caret,
+  .nav-menu-item.has-mega:not(.is-open):focus-within .nav-caret {
+    transform: none;
+  }
+
+  .nav-menu-item.has-mega.is-open .nav-caret {
+    transform: rotate(180deg);
+  }
+
+  .nav-menu-link {
+    padding: 18px 12px;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+  }
+
   .nav-burger {
     display: flex;
   }

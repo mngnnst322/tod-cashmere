@@ -33,6 +33,7 @@ const mn = {
   searchPlaceholder: "Tod Cashmere-аас хайх...",
   close: "Хаах",
   cart: "Сагс",
+  saved: "Зүрхэлсэн",
   viewAll: "Бүгдийг харах",
 
   // Mega menu
@@ -329,6 +330,7 @@ const en: Dict = {
   searchPlaceholder: "Search Tod Cashmere...",
   close: "Close",
   cart: "Cart",
+  saved: "Saved",
   viewAll: "View all",
 
   megaNew: "New in",
@@ -614,6 +616,7 @@ const ru: Dict = {
   searchPlaceholder: "Поиск по Tod Cashmere...",
   close: "Закрыть",
   cart: "Корзина",
+  saved: "Избранное",
   viewAll: "Смотреть все",
 
   megaNew: "Новинки",
@@ -899,6 +902,7 @@ const zh: Dict = {
   searchPlaceholder: "搜索 Tod Cashmere...",
   close: "关闭",
   cart: "购物车",
+  saved: "收藏",
   viewAll: "查看全部",
 
   megaNew: "新品",

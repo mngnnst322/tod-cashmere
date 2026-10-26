@@ -7,6 +7,7 @@ import { useCart } from "./cart-provider";
 import { useLang } from "./lang-provider";
 import { LANG_MENU_CODES, LangFlag } from "./lang-flag";
 import { SearchDropdown, rememberSearch } from "./search-dropdown";
+import { useCatalogFavorites } from "./catalog-favorites";
 import { AccountSignOutButton } from "./account-sign-out-button";
 import { LANGS, type Dict } from "@/lib/i18n";
 import { shopMenu } from "@/lib/shop-menu";
@@ -42,9 +43,12 @@ export type HeaderUser = {
 
 export function SiteHeader({ user }: { user: HeaderUser | null }) {
   const { count } = useCart();
+  const { ids: savedIds } = useCatalogFavorites();
   const { lang, setLang, t, dict } = useLang();
   const headerRef = useRef<HTMLElement>(null);
   const [navOpen, setNavOpen] = useState(false);
+  // Phone drawer: which heading's sub-menu is expanded.
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [langOpen, setLangOpen] = useState(false);
@@ -120,11 +124,23 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               entry.columns ? (
                 <li
                   key={entry.key}
-                  className="nav-menu-item has-mega"
+                  className={`nav-menu-item has-mega ${openGroup === entry.key ? "is-open" : ""}`}
                   onMouseEnter={() => setMegaOpen(true)}
                   onMouseLeave={() => setMegaOpen(false)}
                 >
-                  <Link className="nav-menu-link" href={entry.href} onClick={() => setNavOpen(false)}>
+                  <Link
+                    className="nav-menu-link"
+                    href={entry.href}
+                    onClick={(e) => {
+                      // In the phone drawer a heading opens its sub-menu instead.
+                      if (window.matchMedia("(max-width: 1024px)").matches) {
+                        e.preventDefault();
+                        setOpenGroup((g) => (g === entry.key ? null : entry.key));
+                        return;
+                      }
+                      setNavOpen(false);
+                    }}
+                  >
                     {entry.label}
                     <svg className="nav-caret" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M7 10l5 5 5-5z" />
@@ -218,6 +234,23 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
             </svg>
           </button>
 
+          <Link
+            className="nav-icon-button nav-icon-only nav-cart nav-heart"
+            href="/catalog?saved=1"
+            aria-label={t("saved")}
+          >
+            <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path className="line-icon" d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z" />
+            </svg>
+            {savedIds.length > 0 && <span className="cart-count">{savedIds.length}</span>}
+          </Link>
+          <Link className="nav-icon-button nav-icon-only nav-cart nav-bag" href="/cart" aria-label={t("cart")}>
+            <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8" />
+              <path d="M5 8h14l-1 12H6Z" />
+            </svg>
+            {count > 0 && <span className="cart-count">{count}</span>}
+          </Link>
           <div className={`lang-select ${langOpen ? "open" : ""}`} data-lang-select>
             <button
               type="button"
@@ -347,13 +380,6 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
               )}
             </ul>
           </div>
-          <Link className="nav-icon-button nav-icon-only nav-cart nav-bag" href="/cart" aria-label={t("cart")}>
-            <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8" />
-              <path d="M5 8h14l-1 12H6Z" />
-            </svg>
-            {count > 0 && <span className="cart-count">{count}</span>}
-          </Link>
         </div>
 
           <button
