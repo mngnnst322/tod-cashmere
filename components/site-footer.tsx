@@ -21,7 +21,7 @@ const columns: Record<Lang, Column[]> = {
       links: [
         { label: "Бидний тухай", href: "#" },
         { label: "Дэлгүүрийн байршил", href: "/store" },
-        { label: "Ноолуур арчилгаа", href: "#" },
+        { label: "Ноолуур арчилгаа", href: "/care" },
         { label: "Мэдээ, мэдээлэл", href: "/news" },
       ],
     },
@@ -41,7 +41,7 @@ const columns: Record<Lang, Column[]> = {
       links: [
         { label: "About us", href: "#" },
         { label: "Store locations", href: "/store" },
-        { label: "Cashmere care", href: "#" },
+        { label: "Cashmere care", href: "/care" },
         { label: "News", href: "/news" },
       ],
     },
@@ -61,7 +61,7 @@ const columns: Record<Lang, Column[]> = {
       links: [
         { label: "О нас", href: "#" },
         { label: "Адреса магазинов", href: "/store" },
-        { label: "Уход за кашемиром", href: "#" },
+        { label: "Уход за кашемиром", href: "/care" },
         { label: "Новости", href: "/news" },
       ],
     },
@@ -81,7 +81,7 @@ const columns: Record<Lang, Column[]> = {
       links: [
         { label: "关于我们", href: "#" },
         { label: "门店位置", href: "/store" },
-        { label: "羊绒护理", href: "#" },
+        { label: "羊绒护理", href: "/care" },
         { label: "新闻资讯", href: "/news" },
       ],
     },

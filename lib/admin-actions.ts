@@ -349,6 +349,7 @@ function newsFields(formData: FormData) {
     bodyEn: optional(formData, "bodyEn"),
     bodyRu: optional(formData, "bodyRu"),
     bodyZh: optional(formData, "bodyZh"),
+    sourceUrl: optional(formData, "sourceUrl"),
   };
 }
 

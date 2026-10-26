@@ -4536,6 +4536,159 @@ button.katalog-size.is-picked {
   }
 }
 
+/* /news/[id]: title, wide photo, text, source button. */
+.news-article {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.news-article-title {
+  font-size: clamp(30px, 3.6vw, 56px);
+  font-weight: 300 !important;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.news-article-image {
+  position: relative;
+  margin-top: 36px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px !important;
+}
+
+.news-article-image img {
+  object-fit: cover;
+}
+
+.news-article-body {
+  margin-top: 36px;
+  color: #4a4744;
+  font-size: 18px;
+  font-weight: 400 !important;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.news-article-source {
+  display: inline-block;
+  margin-top: 36px;
+  padding: 16px 30px;
+  border: 1px solid #b9b4ae;
+  color: #2a2522;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.news-article-source:hover {
+  border-color: #6b4f3c;
+  background: #6b4f3c;
+  color: #fff;
+}
+
+/* /care: cashmere care guide, photo and text side by side. */
+.care-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.care-intro {
+  max-width: 720px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.care-intro h1 {
+  font-size: clamp(32px, 3.6vw, 52px);
+  font-weight: 300 !important;
+}
+
+.care-intro p {
+  margin-top: 16px;
+  color: #4a4744;
+  font-size: 18px;
+  font-weight: 400 !important;
+  line-height: 1.7;
+}
+
+.care-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.care-section.is-flipped .care-image {
+  order: 2;
+}
+
+.care-image {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 8px !important;
+}
+
+.care-image img {
+  object-fit: cover;
+}
+
+.care-text h2 {
+  font-size: clamp(22px, 2vw, 30px);
+  font-weight: 400 !important;
+}
+
+.care-text p,
+.care-text li {
+  color: #4a4744;
+  font-size: 16px;
+  font-weight: 400 !important;
+  line-height: 1.7;
+}
+
+.care-text p {
+  margin-top: 14px;
+}
+
+.care-text .care-lead {
+  color: #2a2522;
+  font-weight: 600 !important;
+}
+
+.care-text ul {
+  margin-top: 12px;
+  padding-left: 20px;
+}
+
+.care-text li + li {
+  margin-top: 6px;
+}
+
+.care-contact {
+  margin-top: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+  font-size: 16px;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .care-section {
+    grid-template-columns: 1fr;
+  }
+  .care-section.is-flipped .care-image {
+    order: 0;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

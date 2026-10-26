@@ -163,6 +163,8 @@ export const news = sqliteTable("news", {
   bodyEn: text("body_en"),
   bodyRu: text("body_ru"),
   bodyZh: text("body_zh"),
+  // Where the post was first published (e.g. its Facebook post).
+  sourceUrl: text("source_url"),
   image: text("image"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()

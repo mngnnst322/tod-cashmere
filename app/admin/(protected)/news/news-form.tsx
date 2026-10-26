@@ -54,6 +54,22 @@ export function NewsForm({
         </section>
       ))}
       <section className={`${panel} space-y-4 p-7 lg:col-span-2`}>
+        <h2 className="text-base font-medium">Эх сурвалж</h2>
+        <div>
+          <label className={label} htmlFor="sourceUrl">
+            Facebook / эх сурвалжийн холбоос
+          </label>
+          <input
+            id="sourceUrl"
+            name="sourceUrl"
+            type="url"
+            defaultValue={item?.sourceUrl ?? ""}
+            placeholder="https://www.facebook.com/..."
+            className={input}
+          />
+        </div>
+      </section>
+      <section className={`${panel} space-y-4 p-7 lg:col-span-2`}>
         <h2 className="text-base font-medium">Зураг</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
