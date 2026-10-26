@@ -14,7 +14,7 @@ import { LANG_MENU_CODES, LangFlag } from "./lang-flag";
 import { useCatalogFavorites } from "./catalog-favorites";
 import { HeartIcon } from "./catalog-grid";
 
-const MENU = ["women", "men"] as const;
+const MENU = ["women", "men", "kids"] as const;
 
 const typeHref = (gender: string, type: string) =>
   `/catalog?gender=${gender}&type=${encodeURIComponent(type)}`;

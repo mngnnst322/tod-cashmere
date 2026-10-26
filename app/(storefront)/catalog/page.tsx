@@ -11,7 +11,7 @@ export async function generateMetadata() {
   return { title: `${s.eyebrow} – Tod Cashmere` };
 }
 
-const GENDERS = ["women", "men", "all"] as const;
+const GENDERS = ["women", "men", "kids", "all"] as const;
 type MenuGender = (typeof GENDERS)[number];
 const isMenuGender = (v: unknown): v is MenuGender => GENDERS.includes(v as MenuGender);
 
@@ -28,7 +28,7 @@ export default async function CatalogPage(props: PageProps<"/catalog">) {
   const s = catalogStrings(lang);
   // Type names in menu order: a gender's own, or both (women's first) for "all".
   const typeNames = (g: string) => {
-    const genders = g === "all" ? ["women", "men"] : [g];
+    const genders = g === "all" ? ["women", "men", "kids"] : [g];
     return [
       ...new Set(genders.flatMap((x) => types.filter((t) => t.gender === x).map((t) => t.name))),
     ];

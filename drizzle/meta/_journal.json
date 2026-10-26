@@ -127,6 +127,13 @@
       "when": 1792400029414,
       "tag": "0017_product_sizes",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1792998605739,
+      "tag": "0018_kids_catalog_types",
+      "breakpoints": true
     }
   ]
 }
