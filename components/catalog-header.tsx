@@ -10,7 +10,7 @@ import {
 } from "@/lib/catalog-i18n";
 import { LANGS } from "@/lib/i18n";
 import { useLang } from "./lang-provider";
-import { LangFlag } from "./lang-flag";
+import { LANG_MENU_CODES, LangFlag } from "./lang-flag";
 import { useCatalogFavorites } from "./catalog-favorites";
 import { HeartIcon } from "./catalog-grid";
 
@@ -250,7 +250,7 @@ export function CatalogHeader({
                     }}
                   >
                     <LangFlag lang={option.code} />
-                    <span className="lang-code">{option.code.toUpperCase()}</span>
+                    <span className="lang-code">{LANG_MENU_CODES[option.code]}</span>
                   </button>
                 </li>
               ))}

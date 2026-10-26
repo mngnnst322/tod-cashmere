@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
 import { useLang } from "./lang-provider";
-import { LangFlag } from "./lang-flag";
+import { LANG_MENU_CODES, LangFlag } from "./lang-flag";
 import { SearchDropdown, rememberSearch } from "./search-dropdown";
 import { AccountSignOutButton } from "./account-sign-out-button";
 import { LANGS, type Dict } from "@/lib/i18n";
@@ -249,7 +249,7 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
                     }}
                   >
                     <LangFlag lang={option.code} />
-                    <span className="lang-code">{option.code.toUpperCase()}</span>
+                    <span className="lang-code">{LANG_MENU_CODES[option.code]}</span>
                   </button>
                 </li>
               ))}

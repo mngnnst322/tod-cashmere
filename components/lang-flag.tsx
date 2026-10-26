@@ -1,5 +1,8 @@
 import type { Lang } from "@/lib/i18n";
 
+/** Short codes shown in the language menu. */
+export const LANG_MENU_CODES: Record<Lang, string> = { mn: "МН", en: "EN", ru: "РУ", zh: "ЗХ" };
+
 /** Small inline flag for each site language (emoji flags don't show on Windows). */
 export function LangFlag({ lang }: { lang: Lang }) {
   return (

@@ -4421,6 +4421,33 @@ button.katalog-size.is-picked {
   }
 }
 
+/* Phones: the language menu opens from the button at the left edge. */
+@media (max-width: 760px) {
+  .site-header .lang-menu--flags {
+    left: 0;
+    right: auto;
+    transform: translateY(-8px) scale(0.96);
+    transform-origin: top left;
+    padding: 6px;
+    border-radius: 16px !important;
+  }
+
+  .site-header .lang-select.open .lang-menu--flags {
+    transform: translateY(0) scale(1);
+  }
+
+  .site-header .lang-menu--flags .lang-option {
+    gap: 14px;
+    padding: 12px 34px 12px 16px;
+    font-size: 15px;
+  }
+
+  .site-header .lang-menu--flags .lang-flag {
+    width: 22px;
+    height: 15px;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
