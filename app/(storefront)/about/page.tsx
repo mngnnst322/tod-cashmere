@@ -2,7 +2,13 @@ import Image from "next/image";
 
 export const metadata = { title: "Бидний тухай – Tod Cashmere" };
 
+// "Бидний зорилт" (objectives).
 const values = [
+  {
+    title: "Өв соёл, уламжлал",
+    image: "/images/katalog-page-2.jpg",
+    text: "Монголын түүх, нүүдэлчдийн соёл, үндэсний өв уламжлалыг бүтээгдэхүүний загвар, хийц, хэв маягт шингээж, орчин үеийн хэрэглээнд нийцүүлэн дэлхийд таниулах.",
+  },
   {
     title: "Чанар",
     image: "/images/care/store.jpg",
@@ -25,6 +31,10 @@ const purpose = [
     title: "Эрхэм зорилго",
     text: "Монгол ноолуурын байгалийн онцлог, уламжлалт ур ухаан, дээд зэргийн чанарыг орчин үеийн загвар, дэвшилтэт технологитой хослуулан, хэрэглэгчдийн хэрэгцээ, хүлээлтэд нийцсэн үнэ цэнтэй бүтээгдэхүүн бүтээж, Монголын өв соёлыг дэлхийд түгээн дэлгэрүүлэх.",
   },
+  {
+    title: "Бидний зорилго",
+    text: "Монгол ноолуурын чанар, өвөрмөц шинж чанарыг хадгалсан, олон улсын стандарт шаардлагад нийцсэн бүтээгдэхүүн үйлдвэрлэж, “Тод Кашмер” брэндийн нэр хүнд, үнэ цэн, өрсөлдөх чадварыг тасралтгүй нэмэгдүүлэх.",
+  },
 ];
 
 export default function AboutPage() {
@@ -42,6 +52,7 @@ export default function AboutPage() {
           </section>
         ))}
       </div>
+      <h2 className="about-objectives-title">Бидний зорилт</h2>
       {values.map((v, i) => (
         <section key={v.title} className={`care-section ${i % 2 ? "is-flipped" : ""}`}>
           <div className="care-image">

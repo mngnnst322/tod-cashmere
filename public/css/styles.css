@@ -5060,7 +5060,7 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
 /* /about vision and mission, two columns above the values. */
 .about-purpose {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(28px, 4vw, 64px);
   padding: 44px 0;
   border-top: 1px solid var(--color-border);
@@ -5080,6 +5080,26 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
 }
 
 @media (max-width: 760px) {
+  .about-purpose {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-objectives-title {
+  padding: 40px 0 8px;
+  border-top: 1px solid var(--color-border);
+  font-size: clamp(26px, 2.6vw, 38px);
+  font-weight: 300 !important;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.about-objectives-title + .care-section {
+  border-top: 0;
+}
+
+@media (max-width: 1000px) {
   .about-purpose {
     grid-template-columns: 1fr;
   }
