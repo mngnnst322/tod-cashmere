@@ -5057,6 +5057,34 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   cursor: pointer;
 }
 
+/* /about vision and mission, two columns above the values. */
+.about-purpose {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4vw, 64px);
+  padding: 44px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.about-purpose h2 {
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 400 !important;
+}
+
+.about-purpose p {
+  margin-top: 14px;
+  color: #4a4744;
+  font-size: 17px;
+  font-weight: 400 !important;
+  line-height: 1.75;
+}
+
+@media (max-width: 760px) {
+  .about-purpose {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

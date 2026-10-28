@@ -15,7 +15,18 @@ const values = [
   },
 ];
 
-// "Бидний тухай": the company's values, linked from the footer.
+// "Бидний тухай": vision, mission and values, linked from the footer.
+const purpose = [
+  {
+    title: "Алсын хараа",
+    text: "Монголын өв соёл, түүх, нүүдэлчдийн уламжлалыг шингээсэн ноолууран бүтээгдэхүүний үнэ цэн, чанар, өвөрмөц онцлогийг дэлхийд таниулж, тогтвортой үйлдвэрлэлээрээ тэргүүлэгч дэлхийн брэнд болох.",
+  },
+  {
+    title: "Эрхэм зорилго",
+    text: "Монгол ноолуурын байгалийн онцлог, уламжлалт ур ухаан, дээд зэргийн чанарыг орчин үеийн загвар, дэвшилтэт технологитой хослуулан, хэрэглэгчдийн хэрэгцээ, хүлээлтэд нийцсэн үнэ цэнтэй бүтээгдэхүүн бүтээж, Монголын өв соёлыг дэлхийд түгээн дэлгэрүүлэх.",
+  },
+];
+
 export default function AboutPage() {
   return (
     <article className="section care-page">
@@ -23,6 +34,14 @@ export default function AboutPage() {
         <h1>Бидний тухай</h1>
         <p>Монголын хээр тал, нүүдэлчдийн соёлоос таны гарт.</p>
       </header>
+      <div className="about-purpose">
+        {purpose.map((p) => (
+          <section key={p.title}>
+            <h2 className="about-value-title">{p.title}</h2>
+            <p>{p.text}</p>
+          </section>
+        ))}
+      </div>
       {values.map((v, i) => (
         <section key={v.title} className={`care-section ${i % 2 ? "is-flipped" : ""}`}>
           <div className="care-image">
