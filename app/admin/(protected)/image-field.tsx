@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { btnSoft, label } from "../ui";
+import { shrinkImage } from "./shrink-image";
 
 /**
  * Photo picker for admin forms: shows the current photo (or the newly chosen
@@ -59,15 +60,22 @@ export function ImageField({ current, id = "imageFile" }: { current?: string | n
             name="imageFile"
             accept="image/*"
             className="sr-only"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              setFileName(file.name);
+            onChange={async (e) => {
+              const input = e.currentTarget;
+              const chosen = input.files?.[0];
+              if (!chosen) return;
+              setFileName(chosen.name);
+              const file = await shrinkImage(chosen);
+              if (file !== chosen) {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+              }
               setPreview(URL.createObjectURL(file));
             }}
           />
           <p className="truncate text-xs text-adm-mute">
-            {fileName || (preview ? "Одоогийн зураг" : "JPG, PNG — 10MB хүртэл")}
+            {fileName || (preview ? "Одоогийн зураг" : "JPG, PNG")}
           </p>
         </div>
       </div>

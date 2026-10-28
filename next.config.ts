@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   experimental: {
     // Admin forms upload product and catalog photos through Server Actions,
     // which are capped at 1MB by default.
-    serverActions: { bodySizeLimit: "10mb" },
+    serverActions: { bodySizeLimit: "25mb" },
   },
   // Common guesses for the sign-in URL all land on Clerk's /sign-in page.
   redirects() {

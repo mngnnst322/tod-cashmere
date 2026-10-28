@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { btnSoft, label } from "../ui";
+import { shrinkImage } from "./shrink-image";
 
 type Photo = { key: string; src: string; file?: File };
 
@@ -14,6 +15,7 @@ export function GalleryField({ images, cover }: { images: string[]; cover?: stri
   const [photos, setPhotos] = useState<Photo[]>(images.map((src) => ({ key: src, src })));
   const [coverKey, setCoverKey] = useState<string>(cover ?? images[0] ?? "");
   const [zoomed, setZoomed] = useState<string | null>(null);
+  const [shrinking, setShrinking] = useState(false);
   const filesRef = useRef<HTMLInputElement>(null);
 
   // Keep the hidden file input in step with the new photos still listed.
@@ -73,21 +75,25 @@ export function GalleryField({ images, cover }: { images: string[]; cover?: stri
         <label
           className={`${btnSoft} flex h-[122px] w-[92px] cursor-pointer flex-col items-center justify-center text-center text-xs`}
         >
-          <span className="text-2xl leading-none">+</span>
-          Зураг нэмэх
+          <span className="text-2xl leading-none">{shrinking ? "…" : "+"}</span>
+          {shrinking ? "Бэлтгэж байна" : "Зураг нэмэх"}
           <input
             type="file"
             accept="image/*"
             multiple
             className="sr-only"
-            onChange={(e) => {
-              const added = Array.from(e.target.files ?? []).map((file) => ({
+            onChange={async (e) => {
+              const chosen = Array.from(e.target.files ?? []);
+              e.target.value = "";
+              setShrinking(true);
+              const files = await Promise.all(chosen.map(shrinkImage));
+              setShrinking(false);
+              const added = files.map((file) => ({
                 key: `${file.name}-${file.size}-${Math.random()}`,
                 src: URL.createObjectURL(file),
                 file,
               }));
               setPhotos((ps) => [...ps, ...added]);
-              e.target.value = "";
             }}
           />
         </label>
