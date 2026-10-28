@@ -4738,9 +4738,46 @@ button.katalog-size.is-picked {
   background: rgba(20, 18, 16, 0.7);
 }
 
+/* Phones: show the whole (wide) film under the header instead of a
+   cropped full-height slice. */
 @media (max-width: 760px) {
+  .hero--photo:has(.hero-film) {
+    min-height: 0;
+    margin-top: var(--header-h);
+    aspect-ratio: 1920 / 900;
+  }
+
+  .hero-film {
+    transform: scale(1.07);
+  }
+
   .hero-sound {
-    bottom: 20px;
+    right: 12px;
+    bottom: 10px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-sound svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* The header sits on white above the film, not over it. */
+  body:has(.hero-film) .site-header:not(.is-solid) {
+    background: var(--color-header-bg);
+  }
+  html body:has(.hero-film) .site-header:not(.is-solid) .katalog-logo img {
+    filter: none;
+  }
+  body:has(.hero-film) .site-header:not(.is-solid) .nav-icon-button,
+  body:has(.hero-film) .site-header:not(.is-solid) .nav-burger,
+  body:has(.hero-film) .site-header:not(.is-solid) .icon-svg {
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+  body:has(.hero-film) .site-header:not(.is-solid) .nav-burger span {
+    background: var(--color-text);
   }
 }
 
