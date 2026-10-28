@@ -42,7 +42,7 @@ export type HeaderUser = {
 };
 
 export function SiteHeader({ user }: { user: HeaderUser | null }) {
-  const { count } = useCart();
+  const { count, setOpen: setCartOpen } = useCart();
   const { ids: savedIds } = useCatalogFavorites();
   const { lang, setLang, t, dict } = useLang();
   const headerRef = useRef<HTMLElement>(null);
@@ -244,7 +244,15 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
             </svg>
             {savedIds.length > 0 && <span className="cart-count">{savedIds.length}</span>}
           </Link>
-          <Link className="nav-icon-button nav-icon-only nav-cart nav-bag" href="/cart" aria-label={t("cart")}>
+          <Link
+            className="nav-icon-button nav-icon-only nav-cart nav-bag"
+            href="/cart"
+            aria-label={t("cart")}
+            onClick={(e) => {
+              e.preventDefault();
+              setCartOpen(true);
+            }}
+          >
             <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8" />
               <path d="M5 8h14l-1 12H6Z" />

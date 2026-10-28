@@ -10,12 +10,18 @@ export function AddToCartButton({
   price,
   image,
   className,
+  slug,
+  size,
+  sizes,
 }: {
   id: string;
   title: string;
   price: number;
   image: string;
   className?: string;
+  slug?: string;
+  size?: string;
+  sizes?: string[];
 }) {
   const { addItem } = useCart();
   const { t } = useLang();
@@ -27,7 +33,7 @@ export function AddToCartButton({
       className={className}
       data-product-id={id}
       onClick={() => {
-        addItem({ id, title, price, image });
+        addItem({ id, title, price, image, slug: slug ?? id, size, sizes });
         setStatus("added");
         setTimeout(() => setStatus("idle"), 1200);
       }}

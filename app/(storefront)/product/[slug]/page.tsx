@@ -15,6 +15,7 @@ import {
 } from "@/lib/i18n";
 import { getDict } from "@/lib/i18n-server";
 import { getPricing } from "@/lib/pricing";
+import { modelNote } from "@/lib/model-note";
 import { formatMoney } from "@/lib/money";
 import { CatalogGallery } from "@/components/catalog-gallery";
 import { itemImages } from "@/lib/catalog";
@@ -62,6 +63,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
               )}
             </div>
             <hr className="katalog-item-rule" />
+            {modelNote(product, lang) && <p className="model-note">{modelNote(product, lang)}</p>}
             {!isSoldOut(product) ? (
               <SizeBuyBox
                 slug={product.slug}

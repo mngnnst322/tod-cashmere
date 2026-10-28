@@ -36,7 +36,7 @@ export async function createOrder(input: {
       id: crypto.randomUUID(),
       orderId,
       productId: item.id,
-      titleMn: item.title,
+      titleMn: item.size ? `${item.title} (${item.size})` : item.title,
       price: item.price,
       quantity: item.qty,
     })),

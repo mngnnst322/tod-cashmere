@@ -221,6 +221,39 @@ export function ProductForm({
           </div>
 
           <SizePicker defaultValue={product?.sizes} />
+          <div>
+            <span className={cap}>Моделийн хэмжээ</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="p-modelHeight">
+                  Моделийн өндөр (см)
+                </label>
+                <input
+                  id="p-modelHeight"
+                  name="modelHeight"
+                  type="number"
+                  defaultValue={product?.modelHeight ?? ""}
+                  placeholder="175"
+                  className={input}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="p-modelSize">
+                  Өмссөн хэмжээ
+                </label>
+                <input
+                  id="p-modelSize"
+                  name="modelSize"
+                  defaultValue={product?.modelSize ?? ""}
+                  placeholder="S"
+                  className={input}
+                />
+              </div>
+            </div>
+            <p className="mt-1.5 text-xs text-adm-mute">
+              Сайт дээр: “Модель 175 см өндөртэй, S хэмжээ өмссөн.” гэж 4 хэлээр харагдана.
+            </p>
+          </div>
 
           <GalleryField images={productImages(product)} cover={product?.image} />
 

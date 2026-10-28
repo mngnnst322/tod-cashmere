@@ -8,6 +8,7 @@ import {
   catalogTypeName,
 } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
+import { modelNote } from "@/lib/model-note";
 import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
 import { CatalogGrid, CatalogItemHeart } from "@/components/catalog-grid";
 import { CatalogGallery } from "@/components/catalog-gallery";
@@ -104,6 +105,7 @@ export default async function CatalogItemPage(
                 </div>
               </div>
             )}
+          {modelNote(item, lang) && <p className="model-note">{modelNote(item, lang)}</p>}
           </div>
         </div>
       </section>

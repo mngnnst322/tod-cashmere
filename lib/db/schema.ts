@@ -39,6 +39,9 @@ export const products = sqliteTable("products", {
   // Prices for other countries, in tugrik: {"RU": 30000, "KR": 40000,
   // "INTL": 50000}. Missing ones use `price`. Shown in the visitor's currency.
   regionPrices: text("region_prices").notNull().default("{}"),
+  // The model in the photos: height in cm and the size they wear.
+  modelHeight: integer("model_height"),
+  modelSize: text("model_size"),
   // Sizes it comes in, e.g. "S / M / L" or "3-4 нас / 5-6 нас"; empty = one size.
   sizes: text("sizes").notNull().default(""),
   images: text("images").notNull().default("[]"),
@@ -182,6 +185,9 @@ export const catalogItems = sqliteTable("catalog_items", {
   // Free text as shown on the card, e.g. "Camel, Ivory, Grey, Black".
   colors: text("colors").notNull().default(""),
   // e.g. "S / M / L / XL / 2XL".
+  // The model in the photos: height in cm and the size they wear.
+  modelHeight: integer("model_height"),
+  modelSize: text("model_size"),
   sizes: text("sizes").notNull().default(""),
   // Every photo of the item (JSON array of paths, different angles); `image`
   // is the one picked as the cover for cards.

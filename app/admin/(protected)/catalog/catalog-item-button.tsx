@@ -88,6 +88,39 @@ export function CatalogItemButton({
           <ColorPicker defaultValue={item?.colors} />
           <SizePicker defaultValue={item?.sizes} />
           <div>
+            <span className={label}>Моделийн хэмжээ</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="c-modelHeight">
+                  Моделийн өндөр (см)
+                </label>
+                <input
+                  id="c-modelHeight"
+                  name="modelHeight"
+                  type="number"
+                  defaultValue={item?.modelHeight ?? ""}
+                  placeholder="175"
+                  className={input}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-adm-mute" htmlFor="c-modelSize">
+                  Өмссөн хэмжээ
+                </label>
+                <input
+                  id="c-modelSize"
+                  name="modelSize"
+                  defaultValue={item?.modelSize ?? ""}
+                  placeholder="S"
+                  className={input}
+                />
+              </div>
+            </div>
+            <p className="mt-1.5 text-xs text-adm-mute">
+              Сайт дээр: “Модель 175 см өндөртэй, S хэмжээ өмссөн.” гэж 4 хэлээр харагдана.
+            </p>
+          </div>
+          <div>
             <label className={label} htmlFor="catalog-order">
               Дараалал
             </label>

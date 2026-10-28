@@ -73,9 +73,12 @@ export function SizeBuyBox({
       >
         <AddToCartButton
           id={size ? `${slug}:${size}` : slug}
-          title={size ? `${title} (${size})` : title}
+          title={title}
           price={price}
           image={image}
+          slug={slug}
+          size={size ?? undefined}
+          sizes={options}
           className="btn btn-primary product-page-cart"
         />
       </div>

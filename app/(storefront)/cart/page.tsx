@@ -101,7 +101,10 @@ export default function CartPage() {
                   />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div className="product-title">{line.title}</div>
+                  <div className="product-title">
+                    {line.title}
+                    {line.size && ` (${line.size})`}
+                  </div>
                   <div className="product-price-current">
                     {money(line.price)}
                   </div>

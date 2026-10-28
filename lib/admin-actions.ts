@@ -96,6 +96,8 @@ async function productFields(
     colorRu: colour.ru || null,
     colorZh: colour.zh || null,
     sizes: String(formData.get("sizes") || "").trim(),
+    modelHeight: optionalInt(formData, "modelHeight"),
+    modelSize: optional(formData, "modelSize"),
     regionPrices: JSON.stringify(
       Object.fromEntries(
         (["RU", "KR", "INTL"] as const)
@@ -411,6 +413,8 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     material: String(formData.get("material") || ""),
     colors: String(formData.get("colors") || "").trim(),
     sizes: String(formData.get("sizes") || "").trim(),
+    modelHeight: optionalInt(formData, "modelHeight"),
+    modelSize: optional(formData, "modelSize"),
     gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "women",
     sortOrder: Number(formData.get("sortOrder") || 0),
     ...(await galleryPhotos(formData)),

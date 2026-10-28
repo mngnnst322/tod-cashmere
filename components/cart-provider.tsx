@@ -10,11 +10,16 @@ import {
 } from "react";
 
 export type CartLine = {
+  /** Unique per product and size: "slug" or "slug:M". */
   id: string;
   title: string;
   price: number;
   image: string;
   qty: number;
+  slug?: string;
+  /** The chosen size, and the sizes it can be switched to in the cart. */
+  size?: string;
+  sizes?: string[];
 };
 
 type CartContextValue = {
@@ -24,7 +29,12 @@ type CartContextValue = {
   addItem: (item: Omit<CartLine, "qty">) => void;
   decrementItem: (id: string) => void;
   removeItem: (id: string) => void;
+  /** Switch a line to another size (merging with an existing line of it). */
+  changeSize: (id: string, size: string) => void;
   clear: () => void;
+  /** The slide-in cart panel. */
+  open: boolean;
+  setOpen: (open: boolean) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -42,6 +52,7 @@ function loadCart(): CartLine[] {
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartLine[]>([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     // One-time hydration read: localStorage isn't available during SSR.
@@ -74,9 +85,30 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
         return next;
       });
+      setOpen(true);
     },
     [],
   );
+
+  const changeSize = useCallback((id: string, size: string) => {
+    setItems((prev) => {
+      const line = prev.find((l) => l.id === id);
+      if (!line || !line.slug || line.size === size) return prev;
+      const newId = `${line.slug}:${size}`;
+      const other = prev.find((l) => l.id === newId);
+      const next = other
+        ? prev
+            .filter((l) => l.id !== id)
+            .map((l) => (l.id === newId ? { ...l, qty: l.qty + line.qty } : l))
+        : prev.map((l) => (l.id === id ? { ...l, id: newId, size } : l));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  }, []);
 
   const decrementItem = useCallback(
     (id: string) => {
@@ -109,8 +141,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<CartContextValue>(() => {
     const count = items.reduce((sum, line) => sum + line.qty, 0);
     const total = items.reduce((sum, line) => sum + line.qty * line.price, 0);
-    return { items, count, total, addItem, decrementItem, removeItem, clear };
-  }, [items, addItem, decrementItem, removeItem, clear]);
+    return { items, count, total, addItem, decrementItem, removeItem, changeSize, clear, open, setOpen };
+  }, [items, addItem, decrementItem, removeItem, changeSize, clear, open]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

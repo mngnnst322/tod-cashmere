@@ -41,7 +41,7 @@ const icons = {
 /** Phone-only bottom navigation for the shop. */
 export function MobileTabBar({ signedIn }: { signedIn: boolean }) {
   const pathname = usePathname();
-  const { count } = useCart();
+  const { count, setOpen: setCartOpen } = useCart();
   const { ids } = useCatalogFavorites();
   const { lang } = useLang();
   const t = labels[lang];
@@ -59,7 +59,17 @@ export function MobileTabBar({ signedIn }: { signedIn: boolean }) {
       {tabs.map((tab) => {
         const active = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href.split("?")[0]);
         return (
-          <Link key={tab.key} href={tab.href} className={`mobile-tab ${active ? "is-active" : ""}`}>
+          <Link
+            key={tab.key}
+            href={tab.href}
+            className={`mobile-tab ${active ? "is-active" : ""}`}
+            onClick={(e) => {
+              if (tab.key === "cart") {
+                e.preventDefault();
+                setCartOpen(true);
+              }
+            }}
+          >
             <span className="mobile-tab-icon">
               <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" aria-hidden="true">
                 {icons[tab.key]}
