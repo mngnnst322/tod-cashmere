@@ -9,7 +9,7 @@ import {
   duplicateProduct,
   setProductHidden,
 } from "@/lib/admin-actions";
-import { formatPrice, isSoldOut } from "@/lib/format";
+import { formatPrice, isSoldOut, isUploadedImage } from "@/lib/format";
 import { input, panel, th } from "../../ui";
 
 type Row = {
@@ -180,7 +180,7 @@ export function ProductsTable({
                       )}
                       <td className="w-16 py-3 pl-5">
                         <div className="relative h-16 w-14 overflow-hidden rounded-lg bg-adm-paper">
-                          <Image src={p.image} alt="" fill sizes="56px" className="object-cover" />
+                          <Image src={p.image} alt="" fill sizes="56px" className="object-cover" unoptimized={isUploadedImage(p.image)} />
                         </div>
                       </td>
                       <td className="max-w-xs px-5 py-4">

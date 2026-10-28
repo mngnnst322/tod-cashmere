@@ -3,6 +3,7 @@ import Image from "next/image";
 import { guardPage } from "@/lib/auth-guard";
 import { getDashboard } from "@/lib/admin-data";
 import { formatPrice } from "@/lib/products";
+import { isUploadedImage } from "@/lib/format";
 import {
   OrderStatusBadge,
   PageBody,
@@ -90,7 +91,7 @@ export default async function AdminDashboard() {
               {d.lowStock.slice(0, 5).map((p) => (
                 <li key={p.id} className="flex items-center gap-4">
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-adm-paper">
-                    <Image src={p.image} alt="" fill sizes="48px" className="object-cover" />
+                    <Image src={p.image} alt="" fill sizes="48px" className="object-cover" unoptimized={isUploadedImage(p.image)} />
                   </div>
                   <Link
                     href={`/admin/products/${p.id}/edit`}
