@@ -34,3 +34,15 @@ export async function shrinkImage(file: File): Promise<File> {
     return file;
   }
 }
+
+/** Shrinks a photo and stores it in R2, returning its /api/images path. */
+export async function uploadPhoto(file: File): Promise<string> {
+  const photo = await shrinkImage(file);
+  const res = await fetch("/api/admin/upload", {
+    method: "POST",
+    headers: { "Content-Type": photo.type },
+    body: photo,
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return ((await res.json()) as { path: string }).path;
+}

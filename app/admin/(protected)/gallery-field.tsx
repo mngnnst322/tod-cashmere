@@ -1,37 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { btnSoft, label } from "../ui";
-import { shrinkImage } from "./shrink-image";
+import { uploadPhoto } from "./shrink-image";
 
-type Photo = { key: string; src: string; file?: File };
+type Photo = { key: string; src: string };
 
 /**
  * All of a catalog item's photos (different angles). Add several at once,
- * remove any, and pick the cover shown on cards. Posts `keep` (kept paths),
- * `galleryFiles` (new uploads) and `cover` (a kept path or "new:<n>").
+ * remove any, and pick the cover shown on cards. New photos go straight to
+ * R2 when chosen, so the form only posts `keep` (paths) and `cover` (a path).
  */
 export function GalleryField({ images, cover }: { images: string[]; cover?: string | null }) {
   const [photos, setPhotos] = useState<Photo[]>(images.map((src) => ({ key: src, src })));
   const [coverKey, setCoverKey] = useState<string>(cover ?? images[0] ?? "");
   const [zoomed, setZoomed] = useState<string | null>(null);
-  const [shrinking, setShrinking] = useState(false);
-  const filesRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(0);
+  const [error, setError] = useState("");
 
-  // Keep the hidden file input in step with the new photos still listed.
-  useEffect(() => {
-    if (!filesRef.current) return;
-    const dt = new DataTransfer();
-    photos.forEach((p) => p.file && dt.items.add(p.file));
-    filesRef.current.files = dt.files;
-  }, [photos]);
-
-  const newPhotos = photos.filter((p) => p.file);
   const effectiveCover = photos.some((p) => p.key === coverKey) ? coverKey : photos[0]?.key;
-  const coverValue = (() => {
-    const i = newPhotos.findIndex((p) => p.key === effectiveCover);
-    return i >= 0 ? `new:${i}` : (effectiveCover ?? "");
-  })();
 
   return (
     <div>
@@ -68,15 +55,15 @@ export function GalleryField({ images, cover }: { images: string[]; cover?: stri
                   ×
                 </button>
               </div>
-              {!p.file && <input type="hidden" name="keep" value={p.src} />}
+              <input type="hidden" name="keep" value={p.src} />
             </div>
           );
         })}
         <label
           className={`${btnSoft} flex h-[122px] w-[92px] cursor-pointer flex-col items-center justify-center text-center text-xs`}
         >
-          <span className="text-2xl leading-none">{shrinking ? "…" : "+"}</span>
-          {shrinking ? "Бэлтгэж байна" : "Зураг нэмэх"}
+          <span className="text-2xl leading-none">{uploading ? "…" : "+"}</span>
+          {uploading ? `Хуулж байна (${uploading})` : "Зураг нэмэх"}
           <input
             type="file"
             accept="image/*"
@@ -85,15 +72,20 @@ export function GalleryField({ images, cover }: { images: string[]; cover?: stri
             onChange={async (e) => {
               const chosen = Array.from(e.target.files ?? []);
               e.target.value = "";
-              setShrinking(true);
-              const files = await Promise.all(chosen.map(shrinkImage));
-              setShrinking(false);
-              const added = files.map((file) => ({
-                key: `${file.name}-${file.size}-${Math.random()}`,
-                src: URL.createObjectURL(file),
-                file,
-              }));
-              setPhotos((ps) => [...ps, ...added]);
+              setError("");
+              setUploading((n) => n + chosen.length);
+              await Promise.all(
+                chosen.map(async (file) => {
+                  try {
+                    const src = await uploadPhoto(file);
+                    setPhotos((ps) => [...ps, { key: src, src }]);
+                  } catch {
+                    setError(`“${file.name}” оруулж чадсангүй. Дахин оролдоно уу.`);
+                  } finally {
+                    setUploading((n) => n - 1);
+                  }
+                }),
+              );
             }}
           />
         </label>
@@ -101,8 +93,8 @@ export function GalleryField({ images, cover }: { images: string[]; cover?: stri
       <p className="mt-2 text-xs text-adm-mute">
         Олон өнцгөөс авсан зургуудыг нэг дор сонгож болно. ★ тэмдэгтэй нь нүүр зураг болж жагсаалтад харагдана.
       </p>
-      <input ref={filesRef} type="file" name="galleryFiles" multiple className="hidden" />
-      <input type="hidden" name="cover" value={coverValue} />
+      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      <input type="hidden" name="cover" value={effectiveCover ?? ""} />
 
       {zoomed && (
         <div
