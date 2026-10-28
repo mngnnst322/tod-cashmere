@@ -5,7 +5,6 @@ import {
 } from "@/lib/products";
 import { ArrivalCard } from "@/components/arrival-card";
 import { getDict } from "@/lib/i18n-server";
-import { HeroVideo } from "@/components/hero-video";
 
 const shopLabels = {
   mn: { women: "Эмэгтэй дэлгүүр", men: "Эрэгтэй дэлгүүр" },
@@ -49,7 +48,15 @@ export default async function HomePage() {
     <>
       {/* `hero--video` lets the header float transparently over the photo. */}
       <section className="hero hero--video hero--photo" id="intro">
-        <HeroVideo />
+        <Image
+          className="hero-photo"
+          src="/images/front-view-woman-enjoying-time-beach.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+        />
+        <div className="hero-photo-shade" aria-hidden="true" />
       </section>
 
       <section className="section section-muted section--centered-title" id="arrivals">
