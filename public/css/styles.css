@@ -4695,6 +4695,17 @@ button.katalog-size.is-picked {
   }
 }
 
+/* Smaller count badges on the header heart and cart. */
+.site-header .nav-cart .cart-count {
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+  line-height: 16px;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
@@ -4750,10 +4761,12 @@ body:has(.hero--video) .site-header:not(.is-solid) .katalog-logo img,
 }
 
 .site-header .lang-toggle {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   padding: 0;
   justify-content: center;
+  border-width: 1px;
+  font-size: 13px;
 }
 
 .lang-menu--flags {
