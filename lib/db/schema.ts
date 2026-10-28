@@ -185,6 +185,9 @@ export const catalogItems = sqliteTable("catalog_items", {
   // Free text as shown on the card, e.g. "Camel, Ivory, Grey, Black".
   colors: text("colors").notNull().default(""),
   // e.g. "S / M / L / XL / 2XL".
+  // Garment measurements: {"shoulder": 42, "sleeve": 60, "back": 65,
+  // "waist": 50, "cuff": 9, "weight": 320} (cm; weight in grams).
+  measurements: text("measurements").notNull().default("{}"),
   // The model in the photos: height in cm and the size they wear.
   modelHeight: integer("model_height"),
   modelSize: text("model_size"),

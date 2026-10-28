@@ -5105,6 +5105,33 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   }
 }
 
+/* Catalog item measurements. */
+.measure-table {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.measure-table > div {
+  padding: 12px 14px;
+  background: #111;
+}
+
+.measure-table dt {
+  color: #a8a29b;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.measure-table dd {
+  margin-top: 4px;
+  font-size: 17px;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

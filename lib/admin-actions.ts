@@ -20,6 +20,7 @@ import {
 import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
 import { isCatalogGender } from "./catalog-types";
 import { translateFromMongolian } from "./translate";
+import { MEASUREMENTS } from "./measurements";
 
 /** Stores an uploaded photo in R2 and returns its public path. */
 async function uploadImage(file: File) {
@@ -415,6 +416,13 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     sizes: String(formData.get("sizes") || "").trim(),
     modelHeight: optionalInt(formData, "modelHeight"),
     modelSize: optional(formData, "modelSize"),
+    measurements: JSON.stringify(
+      Object.fromEntries(
+        MEASUREMENTS.map((d) => [d.key, Number(formData.get(`m-${d.key}`) || 0)] as const).filter(
+          ([, v]) => v > 0,
+        ),
+      ),
+    ),
     gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "women",
     sortOrder: Number(formData.get("sortOrder") || 0),
     ...(await galleryPhotos(formData)),

@@ -9,6 +9,9 @@ import {
 } from "@/lib/catalog-i18n";
 import { getLang } from "@/lib/i18n-server";
 import { modelNote } from "@/lib/model-note";
+import { measurementRows } from "@/lib/measurements";
+
+const measureTitle = { mn: "Хэмжилт", en: "Measurements", ru: "Замеры", zh: "尺寸" };
 import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
 import { CatalogGrid, CatalogItemHeart } from "@/components/catalog-grid";
 import { CatalogGallery } from "@/components/catalog-gallery";
@@ -105,6 +108,19 @@ export default async function CatalogItemPage(
                 </div>
               </div>
             )}
+          {measurementRows(item.measurements, lang).length > 0 && (
+            <div className="katalog-item-option">
+              <div className="katalog-item-label">{measureTitle[lang]}</div>
+              <dl className="measure-table">
+                {measurementRows(item.measurements, lang).map((r) => (
+                  <div key={r.label}>
+                    <dt>{r.label}</dt>
+                    <dd>{r.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
           {modelNote(item, lang) && <p className="model-note">{modelNote(item, lang)}</p>}
           </div>
         </div>

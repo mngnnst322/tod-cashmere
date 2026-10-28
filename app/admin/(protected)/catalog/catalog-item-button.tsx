@@ -7,6 +7,7 @@ import { Modal } from "../modal";
 import { GalleryField } from "../gallery-field";
 import { ColorPicker } from "./color-picker";
 import { SizePicker } from "../size-picker";
+import { MEASUREMENTS, parseMeasurements } from "@/lib/measurements";
 import { btnDark, icons, input, label } from "../../ui";
 
 type Item = typeof catalogItems.$inferSelect;
@@ -87,6 +88,26 @@ export function CatalogItemButton({
           </div>
           <ColorPicker defaultValue={item?.colors} />
           <SizePicker defaultValue={item?.sizes} />
+          <div>
+            <span className={label}>Хэмжилт</span>
+            <div className="grid grid-cols-3 gap-3">
+              {MEASUREMENTS.map((d) => (
+                <div key={d.key}>
+                  <label className="mb-1 block text-xs text-adm-mute" htmlFor={`m-${d.key}`}>
+                    {d.names.mn} ({d.unit})
+                  </label>
+                  <input
+                    id={`m-${d.key}`}
+                    name={`m-${d.key}`}
+                    type="number"
+                    step="0.5"
+                    defaultValue={parseMeasurements(item?.measurements)[d.key] ?? ""}
+                    className={input}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
           <div>
             <span className={label}>Моделийн хэмжээ</span>
             <div className="grid grid-cols-2 gap-3">
