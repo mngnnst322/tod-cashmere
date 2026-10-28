@@ -4706,6 +4706,44 @@ button.katalog-size.is-picked {
   line-height: 16px;
 }
 
+/* Home hero brand film with a sound toggle. */
+.hero-film {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #e9eaee;
+  /* Some scenes carry thin letterbox bars; a slight zoom keeps them off screen. */
+  transform: scale(1.08);
+}
+
+.hero-sound {
+  position: absolute;
+  right: var(--grid-gutter);
+  bottom: 28px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px !important;
+  background: rgba(20, 18, 16, 0.45);
+  color: #fff;
+  cursor: pointer;
+}
+
+.hero-sound:hover {
+  background: rgba(20, 18, 16, 0.7);
+}
+
+@media (max-width: 760px) {
+  .hero-sound {
+    bottom: 20px;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
