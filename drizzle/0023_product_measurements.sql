@@ -1,0 +1,1 @@
+ALTER TABLE `products` ADD `measurements` text DEFAULT '{}' NOT NULL;

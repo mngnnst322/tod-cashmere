@@ -5105,23 +5105,27 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   }
 }
 
-/* Catalog item measurements. */
+/* Shop product measurements. */
 .measure-table {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   margin-top: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid #e3ded8;
+  background: #e3ded8;
 }
 
 .measure-table > div {
   padding: 12px 14px;
-  background: #111;
+  background: var(--color-bg);
+}
+
+.product-measure {
+  margin-top: 24px;
 }
 
 .measure-table dt {
-  color: #a8a29b;
+  color: #8a857f;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;

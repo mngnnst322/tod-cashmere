@@ -99,6 +99,13 @@ async function productFields(
     sizes: String(formData.get("sizes") || "").trim(),
     modelHeight: optionalInt(formData, "modelHeight"),
     modelSize: optional(formData, "modelSize"),
+    measurements: JSON.stringify(
+      Object.fromEntries(
+        MEASUREMENTS.map((d) => [d.key, Number(formData.get(`m-${d.key}`) || 0)] as const).filter(
+          ([, v]) => v > 0,
+        ),
+      ),
+    ),
     regionPrices: JSON.stringify(
       Object.fromEntries(
         (["RU", "KR", "INTL"] as const)
@@ -416,13 +423,6 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     sizes: String(formData.get("sizes") || "").trim(),
     modelHeight: optionalInt(formData, "modelHeight"),
     modelSize: optional(formData, "modelSize"),
-    measurements: JSON.stringify(
-      Object.fromEntries(
-        MEASUREMENTS.map((d) => [d.key, Number(formData.get(`m-${d.key}`) || 0)] as const).filter(
-          ([, v]) => v > 0,
-        ),
-      ),
-    ),
     gender: isCatalogGender(formData.get("gender")) ? String(formData.get("gender")) : "women",
     sortOrder: Number(formData.get("sortOrder") || 0),
     ...(await galleryPhotos(formData)),

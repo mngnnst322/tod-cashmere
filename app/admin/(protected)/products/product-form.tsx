@@ -6,6 +6,7 @@ import type { categories, products } from "@/lib/db/schema";
 import { input } from "../../ui";
 import { GalleryField } from "../gallery-field";
 import { SizePicker } from "../size-picker";
+import { MEASUREMENTS, parseMeasurements } from "@/lib/measurements";
 import { REGION_LABELS, type Region } from "@/lib/money";
 
 type Category = typeof categories.$inferSelect;
@@ -221,6 +222,26 @@ export function ProductForm({
           </div>
 
           <SizePicker defaultValue={product?.sizes} />
+          <div>
+            <div className={group}>Хэмжилт</div>
+            <div className="grid grid-cols-3 gap-4">
+              {MEASUREMENTS.map((d) => (
+                <div key={d.key}>
+                  <label className="mb-1 block text-xs text-adm-mute" htmlFor={`m-${d.key}`}>
+                    {d.names.mn} ({d.unit})
+                  </label>
+                  <input
+                    id={`m-${d.key}`}
+                    name={`m-${d.key}`}
+                    type="number"
+                    step="0.5"
+                    defaultValue={parseMeasurements(product?.measurements)[d.key] ?? ""}
+                    className={input}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
           <div>
             <span className={cap}>Моделийн хэмжээ</span>
             <div className="grid grid-cols-2 gap-3">

@@ -39,6 +39,9 @@ export const products = sqliteTable("products", {
   // Prices for other countries, in tugrik: {"RU": 30000, "KR": 40000,
   // "INTL": 50000}. Missing ones use `price`. Shown in the visitor's currency.
   regionPrices: text("region_prices").notNull().default("{}"),
+  // Garment measurements: {"shoulder": 42, "sleeve": 60, "back": 65,
+  // "waist": 50, "cuff": 9, "weight": 320} (cm; weight in grams).
+  measurements: text("measurements").notNull().default("{}"),
   // The model in the photos: height in cm and the size they wear.
   modelHeight: integer("model_height"),
   modelSize: text("model_size"),
@@ -185,8 +188,7 @@ export const catalogItems = sqliteTable("catalog_items", {
   // Free text as shown on the card, e.g. "Camel, Ivory, Grey, Black".
   colors: text("colors").notNull().default(""),
   // e.g. "S / M / L / XL / 2XL".
-  // Garment measurements: {"shoulder": 42, "sleeve": 60, "back": 65,
-  // "waist": 50, "cuff": 9, "weight": 320} (cm; weight in grams).
+  // Unused (measurements moved to shop products); kept to avoid a destructive migration.
   measurements: text("measurements").notNull().default("{}"),
   // The model in the photos: height in cm and the size they wear.
   modelHeight: integer("model_height"),
