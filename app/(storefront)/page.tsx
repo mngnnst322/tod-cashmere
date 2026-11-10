@@ -36,13 +36,13 @@ const lookLabels = {
 const lookBlocks = [
   {
     key: "women",
-    href: "/categories#women",
+    href: "/categories/women",
     large: "/images/front-view-woman-posing-beach_23-2150100135.jpg",
     small: ["/images/woman-holding-coffee-cup-front-view.jpg", "/images/woman-walking-beach-side-view.jpg"],
   },
   {
     key: "men",
-    href: "/categories#men",
+    href: "/categories/men",
     large: "/images/eregtei.png",
     // Only one men's photo so far; the small tiles show crops of it.
     small: ["/images/eregtei.png", "/images/eregtei.png"],

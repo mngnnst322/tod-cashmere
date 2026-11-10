@@ -29,7 +29,7 @@ export default async function CategoriesPage() {
             <CategoryCard
               key={category.id}
               category={category}
-              href={`#${category.slug}`}
+              href={`/categories/${category.slug}`}
             />
           ))}
         </div>
