@@ -5136,6 +5136,36 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   font-size: 17px;
 }
 
+/* Home: "Made in Mongolia" line under the hero photo */
+.made-in {
+  padding: 64px 16px 8px;
+  text-align: center;
+  background: var(--color-bg);
+}
+.made-in-brand {
+  margin: 0 0 14px;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.made-in-title {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 42px);
+  line-height: 1.2;
+}
+.made-in-line {
+  margin: 14px auto 0;
+  max-width: 640px;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--color-muted);
+  font-weight: 400 !important;
+}
+.made-in + .section-muted {
+  border-top: 0;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

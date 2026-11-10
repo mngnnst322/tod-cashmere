@@ -13,6 +13,14 @@ const shopLabels = {
   zh: { women: "女士系列", men: "男士系列" },
 };
 
+// Brand line under the hero photo.
+const madeIn = {
+  mn: { title: "Монголд үйлдвэрлэв", line: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт" },
+  en: { title: "Made in Mongolia", line: "From the Mongolian steppe and nomadic heritage to your hands" },
+  ru: { title: "Сделано в Монголии", line: "Из монгольской степи и наследия кочевников — в ваши руки" },
+  zh: { title: "蒙古制造", line: "从蒙古草原与游牧传承，到您手中" },
+};
+
 // Garment-type tiles under the gender pair.
 const shopTiles = [
   {
@@ -57,6 +65,12 @@ export default async function HomePage() {
           sizes="100vw"
         />
         <div className="hero-photo-shade" aria-hidden="true" />
+      </section>
+
+      <section className="made-in">
+        <p className="made-in-brand">Cashmere Mongolia</p>
+        <h2 className="made-in-title">{madeIn[lang].title}</h2>
+        <p className="made-in-line">{madeIn[lang].line}</p>
       </section>
 
       <section className="section section-muted section--centered-title" id="arrivals">
