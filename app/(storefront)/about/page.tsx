@@ -223,6 +223,11 @@ export default function AboutPage() {
           </section>
         ))}
       </div>
+      {/* Animated map of the domestic market; the lines draw in once it loads. */}
+      <div className="about-map">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/mongolia-map-animated.svg" alt="Монгол дахь борлуулалтын сүлжээ" loading="lazy" />
+      </div>
     </article>
   );
 }
