@@ -13,35 +13,41 @@ export function CatalogGallery({
   alt,
   children,
 }: {
-  images: string[];
+  /** null keeps an empty thumbnail slot (a product view not photographed yet). */
+  images: (string | null)[];
   alt: string;
   /** Overlaid on the large photo (the heart). */
   children?: React.ReactNode;
 }) {
-  const [active, setActive] = useState(0);
-  const src = images[active] ?? images[0];
+  const photos = images.filter((img): img is string => !!img);
+  const [active, setActive] = useState(photos[0] ?? null);
+  const src = active ?? photos[0];
 
   return (
     <div className={`katalog-gallery ${images.length > 1 ? "has-thumbs" : ""}`}>
       {images.length > 1 && (
         <div className="katalog-thumbs">
-          {images.map((img, i) => (
-            <button
-              key={img}
-              type="button"
-              className={`katalog-thumb ${i === active ? "is-active" : ""}`}
-              onClick={() => setActive(i)}
-              onMouseEnter={() => setActive(i)}
-              aria-label={`${alt} ${i + 1}`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={isUploadedImage(img) ? img : `/_next/image?url=${encodeURIComponent(img)}&w=256&q=90`}
-                alt=""
-                loading="lazy"
-              />
-            </button>
-          ))}
+          {images.map((img, i) =>
+            img ? (
+              <button
+                key={`${i}-${img}`}
+                type="button"
+                className={`katalog-thumb ${img === src ? "is-active" : ""}`}
+                onClick={() => setActive(img)}
+                onMouseEnter={() => setActive(img)}
+                aria-label={`${alt} ${i + 1}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={isUploadedImage(img) ? img : `/_next/image?url=${encodeURIComponent(img)}&w=256&q=90`}
+                  alt=""
+                  loading="lazy"
+                />
+              </button>
+            ) : (
+              <span key={i} className="katalog-thumb is-empty" aria-hidden="true" />
+            ),
+          )}
         </div>
       )}
       <div className="katalog-item-image">

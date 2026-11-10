@@ -21,7 +21,7 @@ import { measurementRows } from "@/lib/measurements";
 const measureTitle = { mn: "Хэмжилт", en: "Measurements", ru: "Замеры", zh: "尺寸" };
 import { formatMoney } from "@/lib/money";
 import { CatalogGallery } from "@/components/catalog-gallery";
-import { itemImages } from "@/lib/catalog";
+import { PRODUCT_VIEWS, productViews } from "@/lib/product-views";
 
 export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
@@ -48,7 +48,10 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
       {/* Same layout as a catalog item: large photo left, details right. */}
       <section className="section katalog-item product-page">
         <div className="katalog-item-layout">
-          <CatalogGallery images={itemImages(product)} alt={title}>
+          <CatalogGallery
+            images={PRODUCT_VIEWS.map((v) => productViews(product)[v.key] ?? null)}
+            alt={title}
+          >
             {product.badge && (
               <span className="product-tag">{badgeLabel(product.badge, dict)}</span>
             )}

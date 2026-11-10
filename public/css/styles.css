@@ -5241,6 +5241,14 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   border-top: 0;
 }
 
+/* Product page: a view not photographed yet keeps its thumbnail slot. */
+.katalog-thumb.is-empty {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #e7e2db;
+  cursor: default;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
