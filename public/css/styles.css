@@ -5249,6 +5249,84 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   cursor: default;
 }
 
+/* About: two-column text blocks, production steps, goods and markets. */
+.about-purpose--two {
+  grid-template-columns: repeat(2, 1fr);
+}
+.about-steps {
+  display: grid;
+  /* 14 steps: two rows of seven, or seven rows of two. */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin: 24px 0 44px;
+  padding: 0;
+  list-style: none;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+}
+.about-steps li {
+  padding: 22px 20px;
+  background: var(--color-bg);
+  font-size: 16px;
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+.about-step-no {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--color-primary);
+}
+.about-goods-lead {
+  margin: 16px 0 18px;
+  text-align: center;
+  color: var(--color-muted);
+  font-weight: 400 !important;
+}
+.about-goods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 44px;
+  padding: 0;
+  list-style: none;
+}
+.about-goods li {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  font-size: 15px;
+  font-weight: 400 !important;
+}
+.about-markets {
+  margin: 14px 0 0;
+}
+.about-markets div {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.about-markets dt {
+  font-size: 15px;
+}
+.about-markets dd {
+  margin: 4px 0 0;
+  color: #4a4744;
+  font-size: 16px;
+  font-weight: 400 !important;
+  line-height: 1.6;
+}
+@media (min-width: 1100px) {
+  .about-steps {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .about-purpose--two {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
