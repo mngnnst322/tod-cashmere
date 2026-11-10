@@ -3887,7 +3887,7 @@ footer {
 }
 
 .footer-columns .footer-links {
-  gap: 16px;
+  gap: 6px;
   color: #4a4744;
   font-size: 15px;
 }
@@ -5327,25 +5327,35 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   }
 }
 
-/* Product page: the four view thumbnails run the full height of the large
-   photo, and the page sits a little wider so the photo starts further left. */
+/* Product page: the large photo and the four view thumbnails fit one
+   screen; the thumbnails run the photo's full height. */
 @media (min-width: 861px) {
   .product-page.katalog-item {
-    max-width: 1440px;
-    padding-left: clamp(16px, 2.5vw, 40px);
-    padding-right: clamp(16px, 2.5vw, 40px);
+    max-width: none;
+    margin: 0;
+    padding-left: 16px;
+    padding-right: clamp(16px, 4vw, 64px);
   }
   .product-page .katalog-item-layout:has(.katalog-gallery.has-thumbs) {
-    grid-template-columns: minmax(0, 860px) minmax(240px, 1fr);
+    grid-template-columns: auto minmax(240px, 1fr);
   }
   .product-page .katalog-gallery.has-thumbs {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    /* Gallery height; widths follow from the 3:4 photos. */
+    --gallery-h: min(calc(100vh - 150px), 820px);
+    grid-template-columns: calc((var(--gallery-h) - 30px) / 4 * 0.75) calc(var(--gallery-h) * 0.75);
+    grid-template-rows: minmax(0, 1fr);
+    height: var(--gallery-h);
     align-items: stretch;
+  }
+  .product-page .katalog-item-image {
+    height: 100%;
+    aspect-ratio: auto;
   }
   .product-page .katalog-thumbs {
     display: grid;
     grid-template-rows: repeat(4, minmax(0, 1fr));
     gap: 10px;
+    height: 100%;
   }
   .product-page .katalog-thumb,
   .product-page .katalog-thumb.is-empty {
