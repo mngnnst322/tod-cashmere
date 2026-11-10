@@ -16,10 +16,10 @@ const shopLabels = {
 
 // Brand statement under the hero photo.
 const madeIn = {
-  mn: { eyebrow: "Монголд үйлдвэрлэв", title: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт", sub: "100% Монгол ноолуур" },
-  en: { eyebrow: "Made in Mongolia", title: "From the Mongolian steppe and nomadic heritage to your hands", sub: "100% Mongolian Cashmere" },
-  ru: { eyebrow: "Сделано в Монголии", title: "Из монгольской степи и наследия кочевников — в ваши руки", sub: "100% монгольский кашемир" },
-  zh: { eyebrow: "蒙古制造", title: "从蒙古草原与游牧传承，到您手中", sub: "100% 蒙古羊绒" },
+  mn: { eyebrow: "Монголд үйлдвэрлэв", title: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт" },
+  en: { eyebrow: "Made in Mongolia", title: "From the Mongolian steppe and nomadic heritage to your hands" },
+  ru: { eyebrow: "Сделано в Монголии", title: "Из монгольской степи и наследия кочевников — в ваши руки" },
+  zh: { eyebrow: "蒙古制造", title: "从蒙古草原与游牧传承，到您手中" },
 };
 
 const serif = Cormorant_Garamond({ subsets: ["latin", "cyrillic"], weight: ["400", "500"] });
@@ -75,8 +75,6 @@ export default async function HomePage() {
       <section className="made-in">
         <p className="made-in-eyebrow">Cashmere Mongolia {madeIn[lang].eyebrow}</p>
         <h2 className={`made-in-title ${serif.className}`}>{madeIn[lang].title}</h2>
-        <div className="made-in-rule" aria-hidden="true" />
-        <p className="made-in-line">{madeIn[lang].sub}</p>
       </section>
 
       <section className="look-blocks">

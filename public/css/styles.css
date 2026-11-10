@@ -5138,12 +5138,12 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
 
 /* Home: brand statement under the hero photo */
 .made-in {
-  padding: 80px 24px;
+  padding: 40px 24px;
   text-align: center;
   background: #f3f0eb;
 }
 .made-in-eyebrow {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   font-size: 12px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -5151,32 +5151,20 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   font-weight: 400 !important;
 }
 .made-in-title {
-  margin: 0 auto;
-  max-width: 980px;
-  text-wrap: balance;
-  font-size: clamp(1.75rem, 4vw, 3.25rem);
-  font-weight: 400 !important;
-  line-height: 1.15;
-  color: #171717;
-}
-.made-in-rule {
-  width: 48px;
-  height: 1px;
-  margin: 24px auto;
-  background: #a3a3a3;
-}
-.made-in-line {
   margin: 0;
-  font-size: 16px;
-  color: #525252;
+  font-size: clamp(1.6rem, 3.2vw, 3rem);
   font-weight: 400 !important;
+  line-height: 1.2;
+  color: #171717;
+  text-wrap: balance;
 }
-@media (min-width: 768px) {
+/* One long line wherever it fits. */
+@media (min-width: 1024px) {
   .made-in {
-    padding: 112px 24px;
+    padding: 52px 24px;
   }
-  .made-in-line {
-    font-size: 18px;
+  .made-in-title {
+    white-space: nowrap;
   }
 }
 .made-in + .section-muted {
