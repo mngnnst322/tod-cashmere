@@ -83,9 +83,25 @@ const steps = [
   "Эцсийн бүтээгдэхүүн",
 ];
 
+// "Борлуулж байгаа барааны нэр төрөл": icon per type in /images/sales; a
+// photo, where there is one, covers the card until hovered.
 const goods = [
-  "Оймс", "Түрий", "Өвдгөвч", "Улавч", "Бойтог", "Малгай", "Ороолт", "Хүзүүвч",
-  "Бээлий", "Цамц", "Ханцуйгүй цамц/хүрэм", "Нуруувч", "Даашинз", "Өмд", "Богино өмд", "Банзал (юбка)",
+  { mn: "Оймс", en: "Socks", icon: "oims" },
+  { mn: "Түрий", en: "Thigh Warmers", icon: "turii" },
+  { mn: "Өвдгөвч", en: "Knee Warmers", icon: "ovdgovch" },
+  { mn: "Улавч", en: "Insoles", icon: "ulavch", photo: "ulavch.png" },
+  { mn: "Бойтог", en: "Leg Warmers", icon: "boitog", photo: "boitog.jpg" },
+  { mn: "Малгай", en: "Hats", icon: "malgai" },
+  { mn: "Ороолт", en: "Scarves", icon: "oroolt" },
+  { mn: "Хүзүүвч", en: "Neck Warmers", icon: "huzuuvch" },
+  { mn: "Бээлий", en: "Gloves", icon: "beelii" },
+  { mn: "Цамц", en: "Shirts", icon: "tsamts" },
+  { mn: "Ханцуйгүй цамц, хүрэм", en: "Sleeveless Shirt, Jacket", icon: "hantsuigui-tsamts" },
+  { mn: "Нуруувч", en: "Back Warmers", icon: "nuruuvch" },
+  { mn: "Даашинз", en: "Dresses", icon: "daashinz" },
+  { mn: "Өмд", en: "Pants", icon: "umd" },
+  { mn: "Богино өмд", en: "Shorts", icon: "bogino-umd" },
+  { mn: "Банзал (юбка)", en: "Skirts", icon: "banzal" },
 ];
 
 const markets = [
@@ -199,11 +215,25 @@ export default async function AboutPage() {
       />
 
       <h2 className="about-objectives-title">Борлуулалтын үйл ажиллагаа</h2>
-      <p className="about-goods-lead">Борлуулж байгаа барааны нэр төрөл ({goods.length})</p>
-      <ul className="about-goods">
-        {goods.map((g) => (
-          <li key={g}>{g}</li>
-        ))}
+      <p className="sales-kicker">
+        {lang === "mn" ? "Борлуулж байгаа барааны нэр төрөл" : "Products we sell"}
+      </p>
+      <ul className="sales-grid">
+        {goods.map((g, i) => {
+          const name = lang === "mn" ? g.mn : g.en;
+          return (
+            <li key={g.icon} className="sales-card">
+              <Image src={`/images/sales/icon-${g.icon}.png`} alt="" width={64} height={64} className="sales-icon" />
+              <span className="sales-name">{name}</span>
+              {g.photo && (
+                <span className="sales-photo" style={{ animationDelay: `${i * 0.5}s` }}>
+                  <Image src={`/images/sales/${g.photo}`} alt="" fill sizes="(max-width: 640px) 25vw, 280px" />
+                  <span className="sales-photo-name">{name}</span>
+                </span>
+              )}
+            </li>
+          );
+        })}
       </ul>
       <div className="about-purpose about-purpose--two">
         {markets.map((m) => (
