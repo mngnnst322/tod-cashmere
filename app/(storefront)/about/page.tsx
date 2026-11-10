@@ -46,18 +46,24 @@ const story = [
   },
 ];
 
-// Quality and production, after the objectives.
+// Certificates shown under "Чанар, стандарт ба баталгаажуулалт".
+const certificates = [
+  { src: "/images/1.png", alt: "Органик бүтээгдэхүүн – Certified Organic" },
+  { src: "/images/2.png", alt: "ISO 9001" },
+  { src: "/images/3.png", alt: "Mongolia AEO – Гаалийн итгэмжлэгдсэн аж ахуйн нэгж" },
+  { src: "/images/4.png", alt: "Rangeland – Green Gold" },
+  { src: "/images/5.png", alt: "Responsible Nomads Standard" },
+];
+
+// Production, after the quality section.
 const production = [
-  {
-    title: "Чанар, стандарт ба баталгаажуулалт",
-    text: "Бид үйлдвэрлэлдээ Олон Улсын болон Үндэсний стандарт, хариуцлагатай, тогтвортой үйлдвэрлэлийн зарчмыг эрхэмлэн ажилладаг.",
-  },
   {
     title: "Үйлдвэрлэлийн үйл ажиллагаа",
     text: "Бид үйлдвэрлэлийн технологи, тоног төхөөрөмжийн шинэчлэлд тогтмол хөрөнгө оруулалт хийж, жил бүр сүүлийн үеийн дэвшилтэт сүлжих машин, тоног төхөөрөмжийг үйлдвэрлэлдээ нэвтрүүлэн ажилладаг. Ингэснээр бид оймсны үйлдвэрлэлийн технологийн хөгжлийг цаг алдалгүй нэвтрүүлж, Олон Улсын жишигт нийцсэн бүтээгдэхүүний төрөл, загварыг бий болгож байна.",
   },
 ];
 
+// Each step has a round photo at /images/steps/01.png … 14.png.
 const steps = [
   "Малчдаас ноос, ноолуур, хөөвөр худалдан авах",
   "Угаах",
@@ -153,7 +159,22 @@ export default function AboutPage() {
         </section>
       ))}
 
-      <div className="about-purpose about-purpose--two">
+      <section className="about-quality">
+        <h2 className="about-objectives-title">Чанар, стандарт ба баталгаажуулалт</h2>
+        <p>
+          Бид үйлдвэрлэлдээ Олон Улсын болон Үндэсний стандарт, хариуцлагатай, тогтвортой
+          үйлдвэрлэлийн зарчмыг эрхэмлэн ажилладаг.
+        </p>
+        <ul className="about-certs">
+          {certificates.map((c) => (
+            <li key={c.src}>
+              <Image src={c.src} alt={c.alt} fill sizes="(max-width: 760px) 45vw, 18vw" />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <div className="about-purpose about-purpose--one">
         {production.map((p) => (
           <section key={p.title}>
             <h2 className="about-value-title">{p.title}</h2>
@@ -166,6 +187,14 @@ export default function AboutPage() {
       <ol className="about-steps">
         {steps.map((step, i) => (
           <li key={i}>
+            <div className="about-step-photo">
+              <Image
+                src={`/images/steps/${String(i + 1).padStart(2, "0")}.png`}
+                alt=""
+                fill
+                sizes="(max-width: 1100px) 40vw, 12vw"
+              />
+            </div>
             <span className="about-step-no">{String(i + 1).padStart(2, "0")}</span>
             {step}
           </li>
