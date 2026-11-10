@@ -5162,15 +5162,15 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
 /* Home: one large photo beside two small ones (women, then men flipped) */
 .look-blocks {
   display: grid;
-  gap: var(--grid-gutter);
-  padding: 48px var(--grid-gutter) 64px;
+  gap: 0;
+  padding: 48px 0 0;
   background: var(--color-bg);
 }
 .look-block {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: var(--grid-gutter);
+  gap: 0;
   height: min(92vh, 62vw);
 }
 .look-tile {
