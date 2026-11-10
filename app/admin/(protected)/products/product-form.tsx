@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import type { categories, products } from "@/lib/db/schema";
 import { input } from "../../ui";
-import { GalleryField } from "../gallery-field";
+import { ViewPhotosField } from "./view-photos-field";
+import { productViews } from "@/lib/product-views";
 import { SizePicker } from "../size-picker";
 import { MEASUREMENTS, parseMeasurements } from "@/lib/measurements";
 import { REGION_LABELS, type Region } from "@/lib/money";
@@ -276,7 +277,7 @@ export function ProductForm({
             </p>
           </div>
 
-          <GalleryField images={productImages(product)} cover={product?.image} />
+          <ViewPhotosField initial={productViews(product)} />
 
           <div className="flex flex-wrap gap-6 text-sm">
             <label className="flex items-center gap-2">
@@ -317,18 +318,6 @@ export function ProductForm({
       </form>
     </div>
   );
-}
-
-/** A product's photos; older products only have the single cover `image`. */
-function productImages(product?: { image: string; images: string } | null): string[] {
-  if (!product) return [];
-  try {
-    const list = JSON.parse(product.images) as string[];
-    if (list.length) return list;
-  } catch {
-    // fall through to the cover
-  }
-  return product.image ? [product.image] : [];
 }
 
 /** Stored regional tugrik prices of a product, if any. */

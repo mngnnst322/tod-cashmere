@@ -48,6 +48,9 @@ export const products = sqliteTable("products", {
   // Sizes it comes in, e.g. "S / M / L" or "3-4 нас / 5-6 нас"; empty = one size.
   sizes: text("sizes").notNull().default(""),
   images: text("images").notNull().default("[]"),
+  // Photo per view set in the admin: {"front", "right", "left", "flat"}
+  // (flat = the garment alone). `images` holds them in that order.
+  views: text("views").notNull().default("{}"),
   inStock: integer("in_stock", { mode: "boolean" }).notNull().default(true),
   // Units on hand; null means stock isn't tracked for this product.
   stock: integer("stock"),

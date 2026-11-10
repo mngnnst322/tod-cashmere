@@ -1,0 +1,1 @@
+ALTER TABLE `products` ADD `views` text DEFAULT '{}' NOT NULL;

@@ -169,6 +169,13 @@
       "when": 1793179332434,
       "tag": "0023_product_measurements",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "6",
+      "when": 1794316402310,
+      "tag": "0024_product_views",
+      "breakpoints": true
     }
   ]
 }

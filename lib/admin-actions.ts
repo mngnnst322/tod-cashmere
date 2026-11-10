@@ -21,6 +21,7 @@ import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
 import { isCatalogGender } from "./catalog-types";
 import { translateFromMongolian } from "./translate";
 import { MEASUREMENTS } from "./measurements";
+import { PRODUCT_VIEWS } from "./product-views";
 
 /** Stores an uploaded photo in R2 and returns its public path. */
 async function uploadImage(file: File) {
@@ -147,7 +148,7 @@ export async function createProduct(formData: FormData) {
     id: crypto.randomUUID(),
     ...fields,
     code: fields.slug,
-    ...(await galleryPhotos(formData, true)),
+    ...viewPhotos(formData),
   });
   revalidatePath("/admin", "layout");
   redirect("/admin/products");
@@ -159,12 +160,12 @@ export async function updateProduct(id: string, formData: FormData) {
   const existing = await db.query.products.findFirst({
     where: eq(products.id, id),
   });
-  const photos = await galleryPhotos(formData, true);
+  const photos = viewPhotos(formData);
   await db
     .update(products)
     .set({
       ...(await productFields(formData, existing)),
-      images: photos.images,
+      ...photos,
       image: photos.image || existing?.image || "",
     })
     .where(eq(products.id, id));
@@ -447,6 +448,19 @@ export async function deleteCatalogItem(id: string) {
  * The photo gallery from a product or catalog form: photos kept (`keep`), new uploads
  * (`galleryFiles`), and the cover (`cover`: a kept path or "new:<n>").
  */
+/**
+ * A product's photos from the admin's view slots (already uploaded to R2,
+ * posted as `view-front` etc.). `images` lists them in view order and the
+ * front photo, or else the first one, is the cover.
+ */
+function viewPhotos(formData: FormData) {
+  const views = Object.fromEntries(
+    PRODUCT_VIEWS.map((v) => [v.key, String(formData.get(`view-${v.key}`) || "")] as const).filter(([, src]) => src),
+  );
+  const images = Object.values(views);
+  return { views: JSON.stringify(views), images: JSON.stringify(images), image: images[0] ?? "" };
+}
+
 async function galleryPhotos(formData: FormData, required: true): Promise<{ images: string; image: string }>;
 async function galleryPhotos(formData: FormData): Promise<{ images: string; image: string | null }>;
 async function galleryPhotos(formData: FormData, required?: boolean) {
