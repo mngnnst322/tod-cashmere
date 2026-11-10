@@ -5327,6 +5327,35 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   }
 }
 
+/* Product page: the four view thumbnails run the full height of the large
+   photo, and the page sits a little wider so the photo starts further left. */
+@media (min-width: 861px) {
+  .product-page.katalog-item {
+    max-width: 1280px;
+  }
+  .product-page .katalog-item-layout:has(.katalog-gallery.has-thumbs) {
+    grid-template-columns: minmax(0, 860px) minmax(240px, 1fr);
+  }
+  .product-page .katalog-gallery.has-thumbs {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    align-items: stretch;
+  }
+  .product-page .katalog-thumbs {
+    display: grid;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .product-page .katalog-thumb,
+  .product-page .katalog-thumb.is-empty {
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .product-page .katalog-thumb img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
