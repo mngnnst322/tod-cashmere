@@ -16,10 +16,10 @@ const shopLabels = {
 
 // Brand statement under the hero photo.
 const madeIn = {
-  mn: { eyebrow: "Монголд үйлдвэрлэв", title: "Тал нутгаас таны гарт", sub: "100% Монгол ноолуур" },
-  en: { eyebrow: "Made in Mongolia", title: "From the Steppe to You", sub: "100% Mongolian Cashmere" },
-  ru: { eyebrow: "Сделано в Монголии", title: "Из степи — к вам", sub: "100% монгольский кашемир" },
-  zh: { eyebrow: "蒙古制造", title: "从草原到您手中", sub: "100% 蒙古羊绒" },
+  mn: { eyebrow: "Монголд үйлдвэрлэв", title: "Тал нутгаас таны гарт", sub: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт" },
+  en: { eyebrow: "Made in Mongolia", title: "From the Steppe to You", sub: "From the Mongolian steppe and nomadic heritage to your hands" },
+  ru: { eyebrow: "Сделано в Монголии", title: "Из степи — к вам", sub: "Из монгольской степи и наследия кочевников — в ваши руки" },
+  zh: { eyebrow: "蒙古制造", title: "从草原到您手中", sub: "从蒙古草原与游牧传承，到您手中" },
 };
 
 const serif = Cormorant_Garamond({ subsets: ["latin", "cyrillic"], weight: ["400", "500"] });
