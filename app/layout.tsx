@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { enUS, mnMN, ruRU, zhCN } from "@clerk/localizations";
 import "./globals.css";
@@ -22,15 +21,13 @@ const assetVersion = () =>
   process.env.NODE_ENV === "development" ? Date.now().toString(36) : process.env.NEXT_PUBLIC_ASSET_VERSION;
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const [lang, cookieStore, pricing] = await Promise.all([getLang(), cookies(), getPricing()]);
-  // The light/dark choice is a cookie so the server renders it directly;
-  // with no choice yet, CSS follows the device setting.
-  const themeCookie = cookieStore.get("theme")?.value;
-  const theme = themeCookie === "dark" || themeCookie === "light" ? themeCookie : undefined;
+  const [lang, pricing] = await Promise.all([getLang(), getPricing()]);
+  // Light only: the site has no dark mode, and the fixed theme stops the CSS
+  // from following the device's dark setting.
   return (
-    <html lang={lang} data-theme={theme} suppressHydrationWarning>
+    <html lang={lang} data-theme="light" suppressHydrationWarning>
       <head>
-        <meta name="color-scheme" content="light dark" />
+        <meta name="color-scheme" content="light" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

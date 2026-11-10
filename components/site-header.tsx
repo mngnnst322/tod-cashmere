@@ -80,32 +80,6 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    const attr = root.getAttribute("data-theme");
-    const current =
-      attr === "dark" || (!attr && window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ? "dark"
-        : "light";
-    const next = current === "dark" ? "light" : "dark";
-    const apply = () => {
-      root.setAttribute("data-theme", next);
-      // Read by the root layout on the next page load.
-      document.cookie = `theme=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
-    };
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const docWithTransition = document as Document & {
-      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
-    };
-    if (!docWithTransition.startViewTransition || prefersReducedMotion) {
-      apply();
-      return;
-    }
-    docWithTransition.startViewTransition(apply).ready.catch(() => {});
-  };
-
   return (
     <header
       className={`site-header ${solid || megaOpen ? "is-solid" : ""} ${navOpen ? "nav-open" : ""} ${searchActive ? "search-active" : ""}`}
@@ -218,20 +192,6 @@ export function SiteHeader({ user }: { user: HeaderUser | null }) {
           >
             <svg className="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
               <g className="line-icon"><circle cx="10.5" cy="10.5" r="6" /><path d="m15 15 5 5" /></g>
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            className="nav-icon-button nav-icon-only theme-toggle"
-            aria-label={t("toggleTheme")}
-            onClick={toggleTheme}
-          >
-            <svg className="icon-svg theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-13a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1Zm0 14a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1Zm8-6a1 1 0 0 1-1 1h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1ZM6 12a1 1 0 0 1-1 1H4a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm11.66-6.66a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0ZM7.46 16.54a1 1 0 0 1 0 1.41l-.71.71a1 1 0 0 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0Zm10.2 1.41a1 1 0 0 1-1.41 0l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41ZM7.46 7.46a1 1 0 0 1-1.41 0l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41Z" />
-            </svg>
-            <svg className="icon-svg theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
             </svg>
           </button>
 
