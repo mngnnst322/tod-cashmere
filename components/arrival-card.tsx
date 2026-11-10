@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { AddToCartButton } from "./add-to-cart-button";
+import { ProductHeart } from "./product-heart";
 import { getPricing } from "@/lib/pricing";
 import { formatMoney } from "@/lib/money";
 import { badgeLabel, productColor, productTitle } from "@/lib/i18n";
@@ -25,6 +25,7 @@ export async function ArrivalCard({ product }: { product: Product }) {
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         </Link>
+        <ProductHeart slug={product.slug} />
       </div>
       <div className="arrival-body">
         <div className="arrival-meta">{productColor(product, lang)}</div>
@@ -33,14 +34,6 @@ export async function ArrivalCard({ product }: { product: Product }) {
         )}
         <div className="arrival-title">{title}</div>
         <div className="arrival-price">{formatMoney(product.price, await getPricing())}</div>
-        <div className="arrival-actions">
-          <AddToCartButton
-            id={product.slug}
-            title={title}
-            price={product.price}
-            image={product.image}
-          />
-        </div>
       </div>
     </article>
   );

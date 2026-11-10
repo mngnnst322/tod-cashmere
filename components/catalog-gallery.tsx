@@ -34,7 +34,6 @@ export function CatalogGallery({
                 type="button"
                 className={`katalog-thumb ${img === src ? "is-active" : ""}`}
                 onClick={() => setActive(img)}
-                onMouseEnter={() => setActive(img)}
                 aria-label={`${alt} ${i + 1}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}

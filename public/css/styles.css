@@ -5331,7 +5331,9 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
    photo, and the page sits a little wider so the photo starts further left. */
 @media (min-width: 861px) {
   .product-page.katalog-item {
-    max-width: 1280px;
+    max-width: 1440px;
+    padding-left: clamp(16px, 2.5vw, 40px);
+    padding-right: clamp(16px, 2.5vw, 40px);
   }
   .product-page .katalog-item-layout:has(.katalog-gallery.has-thumbs) {
     grid-template-columns: minmax(0, 860px) minmax(240px, 1fr);
@@ -5354,6 +5356,14 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
     height: 100%;
     aspect-ratio: auto;
   }
+}
+
+/* Shop product cards: heart top-right, so the discount moves bottom-left. */
+.product-card .product-discount {
+  top: auto;
+  right: auto;
+  bottom: 10px;
+  left: 10px;
 }
 
 /* Header logo (shop and catalog): black on the white header, white over the

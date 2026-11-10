@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { AddToCartButton } from "./add-to-cart-button";
+import { ProductHeart } from "./product-heart";
 import { discountPercent, isSoldOut } from "@/lib/products";
 import { getPricing } from "@/lib/pricing";
 import { formatMoney } from "@/lib/money";
@@ -27,6 +27,7 @@ export async function ProductCard({ product }: { product: Product }) {
           </span>
         )}
         {isOut && <span className="product-badge">{dict.outOfStock}</span>}
+        <ProductHeart slug={product.slug} />
         <Link className="product-link" href={`/product/${product.slug}`}>
           <Image
             src={product.image}
@@ -47,18 +48,6 @@ export async function ProductCard({ product }: { product: Product }) {
             <div className="product-price-old">
               {formatMoney(product.compareAtPrice, pricing)}
             </div>
-          )}
-        </div>
-        <div className="product-actions">
-          {isOut ? (
-            <div className="out-of-stock-text">{dict.outOfStock}</div>
-          ) : (
-            <AddToCartButton
-              id={product.slug}
-              title={title}
-              price={product.price}
-              image={product.image}
-            />
           )}
         </div>
       </div>

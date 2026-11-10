@@ -135,12 +135,6 @@ export default function CarePage() {
           </div>
         </section>
       ))}
-
-      <footer className="care-contact">
-        Асуулт байвал бидэнтэй холбогдоорой:{" "}
-        <a href="tel:+97680310023">+976 80310023</a> ·{" "}
-        <a href="mailto:todcashmere@gmail.com">todcashmere@gmail.com</a>
-      </footer>
     </article>
   );
 }
