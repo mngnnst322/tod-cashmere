@@ -86,8 +86,7 @@ export default async function HomePage() {
       </section>
 
       <section className="made-in">
-        <p className="made-in-brand">Cashmere Mongolia</p>
-        <h2 className="made-in-title">{madeIn[lang].title}</h2>
+        <h2 className="made-in-title">Cashmere Mongolia {madeIn[lang].title}</h2>
         <p className="made-in-line">{madeIn[lang].line}</p>
       </section>
 

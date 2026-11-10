@@ -5142,13 +5142,6 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   text-align: center;
   background: var(--color-bg);
 }
-.made-in-brand {
-  margin: 0 0 14px;
-  font-size: 12px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-}
 .made-in-title {
   margin: 0;
   font-size: clamp(26px, 3.4vw, 42px);
