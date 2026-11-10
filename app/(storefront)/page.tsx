@@ -15,7 +15,7 @@ const shopLabels = {
 
 // Brand line under the hero photo.
 const madeIn = {
-  mn: { title: "Монголд үйлдвэрлэв", line: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт" },
+  mn: { title: "Монголд үйлдвэрлэв (Made in Mongolia)", line: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт" },
   en: { title: "Made in Mongolia", line: "From the Mongolian steppe and nomadic heritage to your hands" },
   ru: { title: "Сделано в Монголии", line: "Из монгольской степи и наследия кочевников — в ваши руки" },
   zh: { title: "蒙古制造", line: "从蒙古草原与游牧传承，到您手中" },
