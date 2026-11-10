@@ -5428,9 +5428,41 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   object-fit: contain;
 }
 
-/* About: domestic market map. */
+/* About: each market as heading, full-width map, then "region – places". */
+.about-market {
+  padding: 28px 0 32px;
+  border-top: 1px solid #7a583c;
+}
+.about-market + .about-market {
+  margin-top: 40px;
+}
+.about-market:last-of-type {
+  border-bottom: 1px solid #7a583c;
+}
+.about-market-title {
+  color: #7a583c;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 .about-map {
-  margin: 8px 0 56px;
+  margin: 24px 0;
+}
+.about-market-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #3a3a3a;
+  font-size: clamp(16px, 1.6vw, 22px);
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
+.about-market-list li {
+  font-weight: 400 !important;
+}
+.about-market-list strong {
+  color: #7a583c;
+  font-weight: 500 !important;
 }
 .about-map img {
   display: block;

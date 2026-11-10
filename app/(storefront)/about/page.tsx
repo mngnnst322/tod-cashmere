@@ -107,6 +107,7 @@ const goods = [
 const markets = [
   {
     title: "Гадаад зах зээл",
+    map: { mn: "/images/world-map-animated.svg", en: "/images/world-map-animated-en.svg" },
     rows: [
       ["Америк тив", "АНУ, Канад"],
       ["Ази тив", "БНХАУ, БНСУ, Япон, Казахстан, Сингапур"],
@@ -115,6 +116,7 @@ const markets = [
   },
   {
     title: "Дотоод зах зээл",
+    map: { mn: "/images/mongolia-map-animated.svg", en: "/images/mongolia-map-animated.svg" },
     rows: [
       ["Улаанбаатар хот", "Үндсэн 16 нэрийн дэлгүүр, Томоохон зах худалдааны төвүүдээр"],
       ["Хөдөө орон нутаг", "Үндсэн Эрдэнэт хот 1, Дархан хот 1 нэрийн дэлгүүр, Орон нутгийн бөөний болон жижиглэн худалдаа эрхлэгч"],
@@ -235,35 +237,24 @@ export default async function AboutPage() {
           );
         })}
       </ul>
-      <div className="about-purpose about-purpose--two">
-        {markets.map((m) => (
-          <section key={m.title}>
-            <h2 className="about-value-title">{m.title}</h2>
-            <dl className="about-markets">
-              {m.rows.map(([where, what]) => (
-                <div key={where}>
-                  <dt>{where}</dt>
-                  <dd>{what}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        ))}
-      </div>
-      {/* Animated maps (the lines draw in once loaded): export countries with
-          names in the site language, then the domestic market. */}
-      <div className="about-map">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={lang === "mn" ? "/images/world-map-animated.svg" : "/images/world-map-animated-en.svg"}
-          alt={lang === "mn" ? "Экспортын орнууд" : "Export countries"}
-          loading="lazy"
-        />
-      </div>
-      <div className="about-map">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/mongolia-map-animated.svg" alt="Монгол дахь борлуулалтын сүлжээ" loading="lazy" />
-      </div>
+      {/* Each market: heading, its animated map (the lines draw in once
+          loaded; export countries named in the site language), then the list. */}
+      {markets.map((m) => (
+        <section key={m.title} className="about-market">
+          <h2 className="about-market-title">{m.title}</h2>
+          <div className="about-map">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={m.map[lang === "mn" ? "mn" : "en"]} alt={m.title} loading="lazy" />
+          </div>
+          <ul className="about-market-list">
+            {m.rows.map(([where, what]) => (
+              <li key={where}>
+                <strong>{where} –</strong> {what}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </article>
   );
 }
