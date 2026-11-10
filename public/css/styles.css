@@ -5136,24 +5136,46 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   font-size: 17px;
 }
 
-/* Home: "Made in Mongolia" line under the hero photo */
+/* Home: brand statement under the hero photo */
 .made-in {
-  padding: 64px 16px 8px;
+  padding: 80px 24px;
   text-align: center;
-  background: var(--color-bg);
+  background: #f3f0eb;
+}
+.made-in-eyebrow {
+  margin: 0 0 16px;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #737373;
+  font-weight: 400 !important;
 }
 .made-in-title {
   margin: 0;
-  font-size: clamp(26px, 3.4vw, 42px);
-  line-height: 1.2;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 400 !important;
+  line-height: 1.15;
+  color: #171717;
+}
+.made-in-rule {
+  width: 48px;
+  height: 1px;
+  margin: 24px auto;
+  background: #a3a3a3;
 }
 .made-in-line {
-  margin: 14px auto 0;
-  max-width: 640px;
-  font-size: clamp(15px, 1.4vw, 18px);
-  line-height: 1.6;
-  color: var(--color-muted);
+  margin: 0;
+  font-size: 16px;
+  color: #525252;
   font-weight: 400 !important;
+}
+@media (min-width: 768px) {
+  .made-in {
+    padding: 112px 24px;
+  }
+  .made-in-line {
+    font-size: 18px;
+  }
 }
 .made-in + .section-muted {
   border-top: 0;
@@ -5163,7 +5185,7 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
 .look-blocks {
   display: grid;
   gap: 0;
-  padding: 48px 0 0;
+  padding: 0;
   background: var(--color-bg);
 }
 .look-block {

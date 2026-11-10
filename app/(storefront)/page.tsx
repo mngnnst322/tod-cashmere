@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Cormorant_Garamond } from "next/font/google";
 import {
   getArrivalProducts,
 } from "@/lib/products";
@@ -13,13 +14,15 @@ const shopLabels = {
   zh: { women: "女士系列", men: "男士系列" },
 };
 
-// Brand line under the hero photo.
+// Brand statement under the hero photo.
 const madeIn = {
-  mn: { title: "Монголд үйлдвэрлэв (Made in Mongolia)", line: "Монголын хээр тал, нүүдэлчдийн өв соёлоос таны гарт" },
-  en: { title: "Made in Mongolia", line: "From the Mongolian steppe and nomadic heritage to your hands" },
-  ru: { title: "Сделано в Монголии", line: "Из монгольской степи и наследия кочевников — в ваши руки" },
-  zh: { title: "蒙古制造", line: "从蒙古草原与游牧传承，到您手中" },
+  mn: { title: "Тал нутгаас таны гарт", sub: "100% Монгол ноолуур" },
+  en: { title: "From the Steppe to You", sub: "100% Mongolian Cashmere" },
+  ru: { title: "Из степи — к вам", sub: "100% монгольский кашемир" },
+  zh: { title: "从草原到您手中", sub: "100% 蒙古羊绒" },
 };
+
+const serif = Cormorant_Garamond({ subsets: ["latin", "cyrillic"], weight: ["400", "500"] });
 
 // Photo blocks under the brand line: one large photo beside two small ones,
 // women with the large photo on the left, men with it on the right.
@@ -70,8 +73,10 @@ export default async function HomePage() {
       </section>
 
       <section className="made-in">
-        <h2 className="made-in-title">Cashmere Mongolia {madeIn[lang].title}</h2>
-        <p className="made-in-line">{madeIn[lang].line}</p>
+        <p className="made-in-eyebrow">Made in Mongolia</p>
+        <h2 className={`made-in-title ${serif.className}`}>{madeIn[lang].title}</h2>
+        <div className="made-in-rule" aria-hidden="true" />
+        <p className="made-in-line">{madeIn[lang].sub}</p>
       </section>
 
       <section className="look-blocks">
