@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { getLang } from "@/lib/i18n-server";
+import ProductionScroll from "@/components/production-scroll";
 
 export const metadata = { title: "Бидний тухай – Tod Cashmere" };
 
@@ -121,7 +123,8 @@ const purpose = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const lang = await getLang();
   return (
     <article className="section care-page">
       <header className="care-intro">
@@ -184,22 +187,16 @@ export default function AboutPage() {
       </div>
 
       <h2 className="about-objectives-title">Үйлдвэрлэлийн шат дамжлага</h2>
-      <ol className="about-steps">
-        {steps.map((step, i) => (
-          <li key={i}>
-            <div className="about-step-photo">
-              <Image
-                src={`/images/steps/${String(i + 1).padStart(2, "0")}.png`}
-                alt=""
-                fill
-                sizes="(max-width: 1100px) 40vw, 12vw"
-              />
-            </div>
-            <span className="about-step-no">{String(i + 1).padStart(2, "0")}</span>
-            {step}
-          </li>
-        ))}
-      </ol>
+      <ProductionScroll
+        items={steps.map((label, i) => ({
+          no: i === steps.length - 1 ? null : i + 1,
+          label,
+          src: `/images/steps/${String(i + 1).padStart(2, "0")}.png`,
+        }))}
+        hint={lang === "mn" ? "← Хажуу тийш чирж эргүүлнэ →" : "← Drag sideways to turn →"}
+        prevLabel={lang === "mn" ? "Өмнөх" : "Previous"}
+        nextLabel={lang === "mn" ? "Дараах" : "Next"}
+      />
 
       <h2 className="about-objectives-title">Борлуулалтын үйл ажиллагаа</h2>
       <p className="about-goods-lead">Борлуулж байгаа барааны нэр төрөл ({goods.length})</p>
@@ -223,7 +220,16 @@ export default function AboutPage() {
           </section>
         ))}
       </div>
-      {/* Animated map of the domestic market; the lines draw in once it loads. */}
+      {/* Animated maps (the lines draw in once loaded): export countries with
+          names in the site language, then the domestic market. */}
+      <div className="about-map">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={lang === "mn" ? "/images/world-map-animated.svg" : "/images/world-map-animated-en.svg"}
+          alt={lang === "mn" ? "Экспортын орнууд" : "Export countries"}
+          loading="lazy"
+        />
+      </div>
       <div className="about-map">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/mongolia-map-animated.svg" alt="Монгол дахь борлуулалтын сүлжээ" loading="lazy" />

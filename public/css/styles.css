@@ -5438,6 +5438,246 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   height: auto;
 }
 
+/* About: production step ring (components/production-scroll.tsx). */
+.production-ring {
+  padding-bottom: 56px;
+}
+.pr-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  outline: none;
+}
+.pr-stage:active {
+  cursor: grabbing;
+}
+.pr-ringlayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pr-track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 76%;
+  height: 76%;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(122, 88, 60, 0.15);
+  border-radius: 9999px !important;
+}
+.pr-slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+.pr-dot {
+  position: relative;
+}
+.production-ring img {
+  max-width: none;
+  object-fit: cover;
+  border-radius: 9999px !important;
+}
+.pr-dot img {
+  width: 64px;
+  height: 64px;
+  box-shadow: 0 0 0 2px #fff, 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.pr-badge {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px !important;
+  background: #7a583c;
+  color: #fff;
+  font-size: 11px;
+}
+.pr-badge--lg {
+  box-shadow: 0 0 0 2px #fff;
+}
+.pr-center {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  pointer-events: none;
+}
+.pr-fig {
+  position: relative;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0.75;
+  transition: all 0.5s;
+}
+.pr-fig.is-active {
+  display: flex;
+  opacity: 1;
+}
+.pr-fig img {
+  width: 80px;
+  height: 80px;
+  box-shadow: 0 0 0 2px #fff, 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.pr-fig.is-active img {
+  width: 128px;
+  height: 128px;
+  box-shadow: 0 0 0 4px #fff, 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+.pr-caption {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 150px;
+  margin-top: 6px;
+  transform: translateX(-50%);
+  color: #7a583c;
+  font-size: 11px;
+  line-height: 1.375;
+  text-align: center;
+}
+.pr-caption span {
+  margin-right: 6px;
+  color: #b08968;
+}
+.pr-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 9999px !important;
+  background: rgba(255, 255, 255, 0.9);
+  color: #7a583c;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pr-arrow:hover {
+  background: #fff;
+}
+.pr-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+.pr-arrow--prev {
+  left: -12px;
+}
+.pr-arrow--next {
+  right: -12px;
+}
+.pr-hint {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(122, 88, 60, 0.6);
+  font-size: 12px;
+  font-weight: 400 !important;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+.pr-hint.is-hidden {
+  opacity: 0;
+}
+@media (min-width: 640px) {
+  .production-ring {
+    padding-bottom: 80px;
+  }
+  .pr-stage {
+    max-width: 620px;
+  }
+  .pr-dot img {
+    width: 80px;
+    height: 80px;
+  }
+  .pr-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .pr-center {
+    gap: 32px;
+  }
+  .pr-fig {
+    display: flex;
+  }
+  .pr-fig img {
+    width: 112px;
+    height: 112px;
+  }
+  .pr-fig.is-active img {
+    width: 192px;
+    height: 192px;
+  }
+  .pr-caption {
+    width: 180px;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .pr-arrow--prev {
+    left: -8px;
+  }
+  .pr-arrow--next {
+    right: -8px;
+  }
+}
+@media (min-width: 1024px) {
+  .pr-stage {
+    max-width: 820px;
+  }
+  .pr-dot img {
+    width: 96px;
+    height: 96px;
+  }
+  .pr-fig img {
+    width: 128px;
+    height: 128px;
+  }
+  .pr-fig.is-active img {
+    width: 240px;
+    height: 240px;
+  }
+  .pr-badge--lg {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  .pr-caption {
+    width: 200px;
+    font-size: 14px;
+  }
+  .pr-arrow--prev {
+    left: 0;
+  }
+  .pr-arrow--next {
+    right: 0;
+  }
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {
