@@ -23,6 +23,13 @@ const madeIn = {
 
 // Photo blocks under the brand line: one large photo beside two small ones,
 // women with the large photo on the left, men with it on the right.
+const lookLabels = {
+  mn: { women: "Эмэгтэй", men: "Эрэгтэй", sale: "Sale" },
+  en: { women: "Women", men: "Men", sale: "Sale" },
+  ru: { women: "Женщинам", men: "Мужчинам", sale: "Sale" },
+  zh: { women: "女士", men: "男士", sale: "Sale" },
+};
+
 const lookBlocks = [
   {
     key: "women",
@@ -95,11 +102,19 @@ export default async function HomePage() {
           <div key={block.key} className={`look-block ${i % 2 ? "is-flipped" : ""}`}>
             <Link href={block.href} className="look-tile look-tile--large">
               <Image src={block.large} alt="" fill sizes="(max-width: 760px) 100vw, 58vw" />
-              <span className="shop-split-label">{shopLabels[lang][block.key]}</span>
+              <span className="shop-split-label">{lookLabels[lang][block.key]}</span>
             </Link>
+            {/* Top: that gender's sale items; bottom: that gender's shop. */}
             {block.small.map((src, j) => (
-              <Link key={j} href={block.href} className={`look-tile look-tile--small look-tile--${j}`}>
+              <Link
+                key={j}
+                href={j === 0 ? `/sale?gender=${block.key}` : block.href}
+                className={`look-tile look-tile--small look-tile--${j}`}
+              >
                 <Image src={src} alt="" fill sizes="(max-width: 760px) 50vw, 42vw" />
+                <span className="shop-split-label">
+                  {j === 0 ? lookLabels[lang].sale : shopLabels[lang][block.key]}
+                </span>
               </Link>
             ))}
           </div>

@@ -7,11 +7,18 @@ export async function generateMetadata() {
   return { title: `${dict.sale} – Tod Cashmere` };
 }
 
-export default async function SalePage() {
-  const [products, { dict }] = await Promise.all([
-    getSaleProducts(),
-    getDict(),
-  ]);
+// `?gender=women|men` narrows the list (used by the home page photo blocks).
+// Products have no gender of their own: men's items sit in the "men"
+// category and everything else counts as women's.
+export default async function SalePage({ searchParams }: PageProps<"/sale">) {
+  const { gender } = await searchParams;
+  const [all, { dict }] = await Promise.all([getSaleProducts(), getDict()]);
+  const products =
+    gender === "men"
+      ? all.filter((p) => p.categorySlug === "men")
+      : gender === "women"
+        ? all.filter((p) => p.categorySlug !== "men")
+        : all;
   return (
     <section className="section">
       <div className="section-header">
