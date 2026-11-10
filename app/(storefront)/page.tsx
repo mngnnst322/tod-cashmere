@@ -73,7 +73,7 @@ export default async function HomePage() {
       </section>
 
       <section className="made-in">
-        <p className="made-in-eyebrow">Cashmere Mongolia {madeIn[lang].eyebrow}</p>
+        <p className="made-in-eyebrow">Cashmere Mongolia, {madeIn[lang].eyebrow}</p>
         <h2 className={`made-in-title ${serif.className}`}>{madeIn[lang].title}</h2>
       </section>
 
