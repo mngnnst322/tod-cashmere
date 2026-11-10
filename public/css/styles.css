@@ -5166,6 +5166,76 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   border-top: 0;
 }
 
+/* Home: one large photo beside two small ones (women, then men flipped) */
+.look-blocks {
+  display: grid;
+  gap: var(--grid-gutter);
+  padding: 48px var(--grid-gutter) 64px;
+  background: var(--color-bg);
+}
+.look-block {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--grid-gutter);
+  height: min(92vh, 62vw);
+}
+.look-tile {
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+.look-tile img {
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.look-tile:hover img {
+  transform: scale(1.03);
+}
+.look-tile--large {
+  grid-row: 1 / span 2;
+}
+.look-tile .shop-split-label {
+  color: #fff !important;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5);
+}
+.look-block.is-flipped {
+  grid-template-columns: 1fr 1.4fr;
+}
+.look-block.is-flipped .look-tile--large {
+  grid-column: 2;
+}
+.look-block.is-flipped .look-tile--small {
+  grid-column: 1;
+}
+.look-block.is-flipped .look-tile--0 img {
+  object-position: center 20%;
+}
+.look-block.is-flipped .look-tile--1 img {
+  object-position: center 80%;
+}
+@media (max-width: 760px) {
+  .look-block,
+  .look-block.is-flipped {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 120vw 62vw;
+    height: auto;
+  }
+  .look-tile--large,
+  .look-block.is-flipped .look-tile--large {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+  }
+  .look-tile--small,
+  .look-block.is-flipped .look-tile--small {
+    grid-column: auto;
+    grid-row: 2;
+  }
+}
+.look-blocks + .section-muted {
+  border-top: 0;
+}
+
 /* Header logo (shop and catalog): black on the white header, white over the
    hero photo and in dark mode. */
 .katalog-logo {

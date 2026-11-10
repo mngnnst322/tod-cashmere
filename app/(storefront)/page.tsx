@@ -21,6 +21,24 @@ const madeIn = {
   zh: { title: "蒙古制造", line: "从蒙古草原与游牧传承，到您手中" },
 };
 
+// Photo blocks under the brand line: one large photo beside two small ones,
+// women with the large photo on the left, men with it on the right.
+const lookBlocks = [
+  {
+    key: "women",
+    href: "/categories#women",
+    large: "/images/front-view-woman-posing-beach_23-2150100135.jpg",
+    small: ["/images/woman-holding-coffee-cup-front-view.jpg", "/images/woman-walking-beach-side-view.jpg"],
+  },
+  {
+    key: "men",
+    href: "/categories#men",
+    large: "/images/eregtei.png",
+    // Only one men's photo so far; the small tiles show crops of it.
+    small: ["/images/eregtei.png", "/images/eregtei.png"],
+  },
+] as const;
+
 // Garment-type tiles under the gender pair.
 const shopTiles = [
   {
@@ -71,6 +89,22 @@ export default async function HomePage() {
         <p className="made-in-brand">Cashmere Mongolia</p>
         <h2 className="made-in-title">{madeIn[lang].title}</h2>
         <p className="made-in-line">{madeIn[lang].line}</p>
+      </section>
+
+      <section className="look-blocks">
+        {lookBlocks.map((block, i) => (
+          <div key={block.key} className={`look-block ${i % 2 ? "is-flipped" : ""}`}>
+            <Link href={block.href} className="look-tile look-tile--large">
+              <Image src={block.large} alt="" fill sizes="(max-width: 760px) 100vw, 58vw" />
+              <span className="shop-split-label">{shopLabels[lang][block.key]}</span>
+            </Link>
+            {block.small.map((src, j) => (
+              <Link key={j} href={block.href} className={`look-tile look-tile--small look-tile--${j}`}>
+                <Image src={src} alt="" fill sizes="(max-width: 760px) 50vw, 42vw" />
+              </Link>
+            ))}
+          </div>
+        ))}
       </section>
 
       <section className="section section-muted section--centered-title" id="arrivals">
