@@ -23,14 +23,15 @@ const megaFeatures = (gender: string, d: Dict) => [
     caption: d.megaCollectionCaption,
   },
   {
-    href: "/sale",
+    // Title names the sale once ("Эмэгтэй хямдрал"); the caption adds
+    // something new instead of repeating "Хямдрал".
+    href: gender === "women" || gender === "men" ? `/sale?gender=${gender}` : "/sale",
     image:
       gender === "women"
         ? "/images/smiley-woman-beach-front-view_23-2150100099.avif"
         : "/images/woman-walking-beach-side-view.jpg",
-    title: d.megaSale,
-    caption:
-      gender === "women" ? d.megaSaleWomen : gender === "men" ? d.megaSaleMen : d.megaSale,
+    title: gender === "women" ? d.megaSaleWomen : gender === "men" ? d.megaSaleMen : d.megaSale,
+    caption: d.saleSubtitle,
   },
 ];
 
