@@ -1,16 +1,16 @@
 export type Lang = "mn" | "en" | "ru" | "zh";
 
+// The site offers only Mongolian and English; the RU/ZH dictionaries and
+// stored translations are kept in case those languages come back.
 export const LANGS: { code: Lang; label: string }[] = [
   { code: "mn", label: "Монгол" },
   { code: "en", label: "English" },
-  { code: "ru", label: "Русский" },
-  { code: "zh", label: "中文" },
 ];
 
 export const DEFAULT_LANG: Lang = "mn";
 
 export function isLang(value: unknown): value is Lang {
-  return value === "mn" || value === "en" || value === "ru" || value === "zh";
+  return LANGS.some((l) => l.code === value);
 }
 
 /** Fills `{name}` placeholders in a dictionary string. */
