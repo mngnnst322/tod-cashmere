@@ -5151,8 +5151,10 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   font-weight: 400 !important;
 }
 .made-in-title {
-  margin: 0;
-  font-size: clamp(2rem, 5vw, 3.75rem);
+  margin: 0 auto;
+  max-width: 980px;
+  text-wrap: balance;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
   font-weight: 400 !important;
   line-height: 1.15;
   color: #171717;
