@@ -8,6 +8,7 @@ export default clerkMiddleware((_auth, req) => {
   // to keep /sign-in reachable while the site is in "coming soon" mode).
   const headers = new Headers(req.headers);
   headers.set("x-pathname", req.nextUrl.pathname);
+  headers.set("x-search", req.nextUrl.search);
   return NextResponse.next({ request: { headers } });
 });
 
