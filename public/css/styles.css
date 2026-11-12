@@ -6015,7 +6015,7 @@ body:has(.hero--video) .site-header:not(.is-solid) .nav-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ece8e3;
+  background: #fff;
   perspective: 2400px;
   cursor: pointer;
   transition: opacity 0.6s var(--ease-smooth) 0.35s, visibility 0s linear 0.95s;
