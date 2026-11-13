@@ -5511,8 +5511,14 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   width: 0;
   height: 0;
 }
+/* The slot is a 0×0 point on the ring; size its wrapper to the photo so
+   translate(-50%, -50%) centres the photo (and its badge) on that point. */
+.pr-slot > div {
+  width: max-content;
+}
 .pr-dot {
   position: relative;
+  width: max-content;
 }
 .production-ring img {
   max-width: none;
