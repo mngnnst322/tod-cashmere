@@ -48,13 +48,10 @@ export default async function StorefrontLayout({
   // Before launch, visitors only see the logo; staff browse the real site and
   // the sign-in pages stay open so they can log in.
   // The privacy policy stays public too: Google sign-in links to it.
-  // Sign-in stays open only for staff on their way to /admin (the admin guard
-  // sends them with ?redirect_url=…/admin) and for the steps of that sign-in;
-  // a visitor opening /sign-in or /sign-up sees the coming-soon screen.
-  const search = requestHeaders.get("x-search") ?? "";
+  // Sign-in stays open so people can log in; sign-up shows the coming-soon
+  // screen.
   const isAuthPage =
-    (path === "/sign-in" && decodeURIComponent(search).includes("/admin")) ||
-    path.startsWith("/sign-in/") ||
+    path.startsWith("/sign-in") ||
     path === "/privacy";
   if (comingSoon && !isStaff && !isAuthPage) {
     return <ComingSoon />;
