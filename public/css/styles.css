@@ -5656,14 +5656,15 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
     font-size: 12px;
   }
   .pr-center {
-    gap: 32px;
+    gap: 16px;
   }
   .pr-fig {
     display: flex;
   }
+  /* Prev/next stay inside the ring so they don't cover its photos. */
   .pr-fig img {
-    width: 112px;
-    height: 112px;
+    width: 72px;
+    height: 72px;
   }
   .pr-fig.is-active img {
     width: 192px;
@@ -5689,9 +5690,12 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
     width: 96px;
     height: 96px;
   }
+  .pr-center {
+    gap: 24px;
+  }
   .pr-fig img {
-    width: 128px;
-    height: 128px;
+    width: 96px;
+    height: 96px;
   }
   .pr-fig.is-active img {
     width: 240px;
