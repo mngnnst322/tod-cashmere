@@ -44,8 +44,8 @@ const lookBlocks = [
     key: "men",
     href: "/categories/men",
     large: "/images/eregtei-tom.jpg",
-    // Only one men's photo so far; the small tiles show crops of it.
-    small: ["/images/eregtei.png", "/images/eregtei.png"],
+    // Small tiles: free Pexels photos (3754247, 3754251) until our own shoot.
+    small: ["/images/eregtei-sale.jpg", "/images/eregtei-delguur.jpg"],
   },
 ] as const;
 

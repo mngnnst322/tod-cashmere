@@ -5215,10 +5215,10 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   grid-column: 1;
 }
 .look-block.is-flipped .look-tile--0 img {
-  object-position: center 20%;
+  object-position: center 6%;
 }
 .look-block.is-flipped .look-tile--1 img {
-  object-position: center 80%;
+  object-position: center 12%;
 }
 @media (max-width: 760px) {
   .look-blocks {
