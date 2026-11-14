@@ -5202,8 +5202,10 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   color: #000 !important;
   text-shadow: none;
 }
+/* Men: the large tile is as wide as the 2:3 photo is at this height, so the
+   model shows head to toe. */
 .look-block.is-flipped {
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr calc(min(92vh, 62vw) * 2 / 3);
 }
 .look-block.is-flipped .look-tile--large {
   grid-column: 2;
@@ -5223,6 +5225,9 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 120vw 62vw;
     height: auto;
+  }
+  .look-block.is-flipped {
+    grid-template-rows: 150vw 62vw;
   }
   .look-tile--large,
   .look-block.is-flipped .look-tile--large {
