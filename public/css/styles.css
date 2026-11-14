@@ -5202,17 +5202,12 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   color: #000 !important;
   text-shadow: none;
 }
-/* Men: the large photo at its own 2:3 shape, head to toe, with plain space
-   around it. */
+/* Men: the large 2:3 photo whole, the small tiles flush beside it, and the
+   pair centred with plain space on both sides. */
 .look-block.is-flipped {
-  grid-template-columns: 1fr 1.4fr;
-}
-.look-block.is-flipped .look-tile--large {
-  background: var(--color-bg);
-}
-.look-block.is-flipped .look-tile--large img {
-  object-fit: contain;
-  padding: 24px !important;
+  --look-h: min(92vh, 62vw);
+  grid-template-columns: calc(var(--look-h) * 0.75) calc(var(--look-h) * 2 / 3);
+  justify-content: center;
 }
 .look-block.is-flipped .look-tile--large {
   grid-column: 2;
@@ -5235,9 +5230,6 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   }
   .look-block.is-flipped {
     grid-template-rows: 150vw 62vw;
-  }
-  .look-block.is-flipped .look-tile--large img {
-    padding: 16px !important;
   }
   .look-tile--large,
   .look-block.is-flipped .look-tile--large {
