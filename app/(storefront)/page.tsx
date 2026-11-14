@@ -43,7 +43,7 @@ const lookBlocks = [
   {
     key: "men",
     href: "/categories/men",
-    large: "/images/eregtei.png",
+    large: "/images/eregtei-tom.jpg",
     // Only one men's photo so far; the small tiles show crops of it.
     small: ["/images/eregtei.png", "/images/eregtei.png"],
   },
