@@ -5173,15 +5173,15 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
 /* Home: one large photo beside two small ones (women, then men flipped) */
 .look-blocks {
   display: grid;
-  gap: 0;
-  padding: 0;
+  gap: 8px;
+  padding: 8px 48px 0;
   background: var(--color-bg);
 }
 .look-block {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 0;
+  gap: 8px;
   height: min(92vh, 62vw);
 }
 .look-tile {
@@ -5203,12 +5203,10 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   color: #000 !important;
   text-shadow: none;
 }
-/* Men: the large 2:3 photo whole, the small tiles flush beside it, and the
-   pair centred with plain space on both sides. */
+/* Men: the large tile is as wide as the 2:3 photo at this height, so it
+   shows whole; the small tiles take the rest, lining up with the women's. */
 .look-block.is-flipped {
-  --look-h: min(92vh, 62vw);
-  grid-template-columns: calc(var(--look-h) * 0.75) calc(var(--look-h) * 2 / 3);
-  justify-content: center;
+  grid-template-columns: 1fr calc(min(92vh, 62vw) * 2 / 3);
 }
 .look-block.is-flipped .look-tile--large {
   grid-column: 2;
@@ -5223,6 +5221,13 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   object-position: center 80%;
 }
 @media (max-width: 760px) {
+  .look-blocks {
+    gap: 6px;
+    padding: 6px 12px 0;
+  }
+  .look-block {
+    gap: 6px;
+  }
   .look-block,
   .look-block.is-flipped {
     grid-template-columns: 1fr 1fr;
