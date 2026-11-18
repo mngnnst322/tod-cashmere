@@ -16,6 +16,7 @@ const manage: NavItem[] = [
   { href: "/admin/beltgel", label: "Бэлтгэл", icon: icons.package, roles: ["admin", "packer"] },
   { href: "/admin/news", label: "Мэдээ", icon: icons.news, roles: ["admin"] },
   { href: "/admin/catalog", label: "Каталог", icon: icons.book, roles: ["admin"] },
+  { href: "/admin/lookbook", label: "Lookbook", icon: icons.image, roles: ["admin"] },
   { href: "/admin/users", label: "Хэрэглэгчид", icon: icons.users, roles: ["admin"] },
   { href: "/admin/reports", label: "Тайлан", icon: icons.chart, roles: ["admin"] },
 ];

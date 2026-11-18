@@ -11,10 +11,14 @@ import {
   catalogItems,
   catalogTypes,
   categories,
+  lookbookLayers,
+  lookbookModels,
   news,
   orders,
   products,
   siteSettings,
+  LOOKBOOK_LAYER_STATUSES,
+  type LookbookLayerStatus,
   type OrderStatus,
 } from "./db/schema";
 import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
@@ -22,6 +26,8 @@ import { isCatalogGender } from "./catalog-types";
 import { translateFromMongolian } from "./translate";
 import { MEASUREMENTS } from "./measurements";
 import { PRODUCT_VIEWS } from "./product-views";
+import { isLookbookGender, slotFor } from "./lookbook";
+import { getActiveModel } from "./lookbook-data";
 
 /** Stores an uploaded photo in R2 and returns its public path. */
 async function uploadImage(file: File) {
@@ -120,7 +126,17 @@ async function productFields(
     stock: optionalInt(formData, "stock"),
     inStock: formData.get("inStock") === "on",
     hidden: formData.get("hidden") === "on",
+    ...lookbookFields(formData),
   };
+}
+
+/** Lookbook tags from the product form; a type the gender can't wear clears both. */
+function lookbookFields(formData: FormData) {
+  const gender = String(formData.get("lookbookGender") || "");
+  const type = String(formData.get("lookbookType") || "");
+  return slotFor(type, gender)
+    ? { lookbookGender: gender, lookbookType: type }
+    : { lookbookGender: null, lookbookType: null };
 }
 
 function categoryFields(formData: FormData) {
@@ -573,4 +589,82 @@ export async function revokeRole(userId: string) {
     publicMetadata: { role: null },
   });
   revalidatePath("/admin", "layout");
+}
+
+// ---- Lookbook try-on ----
+
+function revalidateLookbook() {
+  revalidatePath("/admin", "layout");
+  revalidatePath("/lookbook");
+}
+
+/** Adds a model photo and makes it the one the try-on uses for that gender. */
+export async function addLookbookModel(gender: string, image: string) {
+  await requireAdmin();
+  if (!isLookbookGender(gender) || !image.startsWith("/api/images/")) throw new Error("Bad input");
+  const db = await getDb();
+  await db.update(lookbookModels).set({ active: false }).where(eq(lookbookModels.gender, gender));
+  await db.insert(lookbookModels).values({ id: crypto.randomUUID(), gender, image, active: true });
+  revalidateLookbook();
+}
+
+export async function activateLookbookModel(id: string) {
+  await requireAdmin();
+  const db = await getDb();
+  const model = await db.query.lookbookModels.findFirst({ where: eq(lookbookModels.id, id) });
+  if (!model) return;
+  await db.update(lookbookModels).set({ active: false }).where(eq(lookbookModels.gender, model.gender));
+  await db.update(lookbookModels).set({ active: true }).where(eq(lookbookModels.id, id));
+  revalidateLookbook();
+}
+
+/** Deleting a model photo also deletes the layers made for it. */
+export async function deleteLookbookModel(id: string) {
+  await requireAdmin();
+  const db = await getDb();
+  await db.delete(lookbookLayers).where(eq(lookbookLayers.modelId, id));
+  await db.delete(lookbookModels).where(eq(lookbookModels.id, id));
+  revalidateLookbook();
+}
+
+/**
+ * Adds a garment layer (a transparent image the size of the model photo) for
+ * a product, on the active model of the product's gender. New layers start as
+ * drafts: someone checks them on the model before they go live.
+ */
+export async function addLookbookLayer(productId: string, image: string) {
+  await requireAdmin();
+  if (!image.startsWith("/api/images/")) throw new Error("Bad input");
+  const db = await getDb();
+  const product = await db.query.products.findFirst({ where: eq(products.id, productId) });
+  const slot = slotFor(product?.lookbookType, product?.lookbookGender);
+  if (!product || !slot || !isLookbookGender(product.lookbookGender)) {
+    throw new Error("Энэ барааны Lookbook хүйс, төрлийг эхлээд тохируулна уу.");
+  }
+  const model = await getActiveModel(product.lookbookGender);
+  if (!model) throw new Error("Энэ хүйсийн загвар өмсөгчийн зураг алга.");
+  await db.insert(lookbookLayers).values({
+    id: crypto.randomUUID(),
+    productId,
+    modelId: model.id,
+    slot,
+    image,
+    status: "draft",
+  });
+  revalidateLookbook();
+}
+
+export async function setLookbookLayerStatus(id: string, status: LookbookLayerStatus) {
+  await requireAdmin();
+  if (!LOOKBOOK_LAYER_STATUSES.includes(status)) throw new Error("Bad status");
+  const db = await getDb();
+  await db.update(lookbookLayers).set({ status }).where(eq(lookbookLayers.id, id));
+  revalidateLookbook();
+}
+
+export async function deleteLookbookLayer(id: string) {
+  await requireAdmin();
+  const db = await getDb();
+  await db.delete(lookbookLayers).where(eq(lookbookLayers.id, id));
+  revalidateLookbook();
 }

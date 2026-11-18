@@ -2,6 +2,12 @@ import Link from "next/link";
 import { getDict } from "@/lib/i18n-server";
 import { STORY_IMAGES } from "@/lib/stories";
 import { BundleConfigurator } from "@/components/bundle-configurator";
+import { LookbookTryOn } from "@/components/lookbook-tryon";
+import { getLookbookLooks } from "@/lib/lookbook-data";
+
+// Cache-buster for the page stylesheets (fresh on every dev reload).
+const ASSET_VERSION =
+  process.env.NODE_ENV === "development" ? Date.now().toString(36) : process.env.NEXT_PUBLIC_ASSET_VERSION;
 
 export async function generateMetadata() {
   const { dict } = await getDict();
@@ -10,12 +16,23 @@ export async function generateMetadata() {
 
 
 export default async function LookbookPage() {
-  const { dict } = await getDict();
+  const { dict, lang } = await getDict();
+  const looks = await getLookbookLooks(lang);
   return (
     <>
-      <link rel="stylesheet" href={`/css/bundle.css?v=${process.env.NODE_ENV === "development" ? Date.now().toString(36) : process.env.NEXT_PUBLIC_ASSET_VERSION}`} />
-      {/* The "build the look" bundle sits at the top of the lookbook. */}
-      <BundleConfigurator />
+      {/* The try-on opens the lookbook once a model photo has approved
+          garment layers (Admin → Lookbook); until then the old look stays. */}
+      {looks.length > 0 ? (
+        <>
+          <link rel="stylesheet" href={`/css/tryon.css?v=${ASSET_VERSION}`} />
+          <LookbookTryOn looks={looks} />
+        </>
+      ) : (
+        <>
+          <link rel="stylesheet" href={`/css/bundle.css?v=${ASSET_VERSION}`} />
+          <BundleConfigurator />
+        </>
+      )}
       <section className="section">
         <div className="section-header">
           <div>

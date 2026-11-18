@@ -9,6 +9,7 @@ import { productViews } from "@/lib/product-views";
 import { SizePicker } from "../size-picker";
 import { MEASUREMENTS, parseMeasurements } from "@/lib/measurements";
 import { REGION_LABELS, type Region } from "@/lib/money";
+import { LOOKBOOK_GENDERS, LOOKBOOK_TYPES } from "@/lib/lookbook";
 
 type Category = typeof categories.$inferSelect;
 type Product = typeof products.$inferSelect;
@@ -222,6 +223,8 @@ export function ProductForm({
             </div>
           </div>
 
+          <LookbookFields gender={product?.lookbookGender} type={product?.lookbookType} />
+
           <SizePicker defaultValue={product?.sizes} />
           <div>
             <div className={group}>Хэмжилт</div>
@@ -327,4 +330,53 @@ function regionPricesOf(product?: { regionPrices: string } | null): Partial<Reco
   } catch {
     return {};
   }
+}
+
+/** Lookbook try-on tags: who wears it and which garment type it is (sets its body slot). */
+function LookbookFields({ gender, type }: { gender?: string | null; type?: string | null }) {
+  const [g, setG] = useState(gender ?? "");
+  const types = LOOKBOOK_TYPES.filter((t) => (t.genders as readonly string[]).includes(g));
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label className={cap} htmlFor="lookbookGender">
+          Lookbook: хүйс
+        </label>
+        <select
+          id="lookbookGender"
+          name="lookbookGender"
+          value={g}
+          onChange={(e) => setG(e.target.value)}
+          className={input}
+        >
+          <option value="">Lookbook-д оруулахгүй</option>
+          {LOOKBOOK_GENDERS.map((x) => (
+            <option key={x.key} value={x.key}>
+              {x.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className={cap} htmlFor="lookbookType">
+          Lookbook: төрөл
+        </label>
+        <select
+          id="lookbookType"
+          name="lookbookType"
+          key={g}
+          defaultValue={types.some((t) => t.key === type) ? (type ?? "") : ""}
+          disabled={!g}
+          className={input}
+        >
+          <option value="">Сонгох…</option>
+          {types.map((t) => (
+            <option key={t.key} value={t.key}>
+              {t.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
 }

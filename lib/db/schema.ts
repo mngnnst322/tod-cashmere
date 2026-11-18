@@ -56,6 +56,11 @@ export const products = sqliteTable("products", {
   stock: integer("stock"),
   // Hidden products stay in the admin but disappear from the storefront.
   hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
+  // Lookbook try-on: which model wears it ("women" | "men") and what it is
+  // ("hat" | "tshirt" | "shirt" | "pants" | "skirt", see lib/lookbook.ts).
+  // Both null = not in the lookbook.
+  lookbookGender: text("lookbook_gender"),
+  lookbookType: text("lookbook_type"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -219,4 +224,38 @@ export const catalogTypes = sqliteTable("catalog_types", {
 export const siteSettings = sqliteTable("site_settings", {
   key: text("key").primaryKey(),
   value: text("value").notNull(),
+});
+
+// Lookbook try-on. One base photo of the model per gender; every garment is a
+// transparent layer the same size as that photo, stacked on it in the browser.
+export const lookbookModels = sqliteTable("lookbook_models", {
+  id: text("id").primaryKey(),
+  gender: text("gender").notNull(),
+  image: text("image").notNull(),
+  active: integer("active", { mode: "boolean" }).notNull().default(true),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const LOOKBOOK_LAYER_STATUSES = ["draft", "approved", "rejected"] as const;
+export type LookbookLayerStatus = (typeof LOOKBOOK_LAYER_STATUSES)[number];
+
+export const lookbookLayers = sqliteTable("lookbook_layers", {
+  id: text("id").primaryKey(),
+  productId: text("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  modelId: text("model_id")
+    .notNull()
+    .references(() => lookbookModels.id, { onDelete: "cascade" }),
+  // "head" | "top" | "bottom": decides the stacking order.
+  slot: text("slot").notNull(),
+  // Transparent PNG/WebP, same pixel size as the model photo.
+  image: text("image").notNull(),
+  // Only approved layers reach the storefront.
+  status: text("status").notNull().default("draft"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
 });
