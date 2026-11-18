@@ -39,8 +39,22 @@ if slot == "top":
 elif slot == "bottom":
     m = isin(5, 6, 7) | base_has(5, 6) | (isin(12, 13) & changed)
 else:                  # head: an accessory worn OVER other clothes - only strongly changed pixels
-    strong = ndi.binary_opening(d > 45, structure=np.ones((5, 5)))
-    m = isin(1, 17) | (isin(1, 2, 4, 11, 17) & strong)
+    # The model labels a hood or bib mostly as upper clothes, and the edit often
+    # re-renders the sweater under it with thin streaks. Compare blurred images
+    # so only a real change of colour counts, then keep what is joined to the
+    # change around the head (only the accessory can be there).
+    soft = lambda im: np.asarray(im.filter(ImageFilter.GaussianBlur(9))).astype(np.float32)
+    d_low = np.sqrt(((soft(base) - soft(edit)) ** 2).sum(2))
+    rows = np.arange(H)[:, None]
+    m = isin(1, 17) | (isin(1, 2, 4, 11, 17) & (d_low > 28))
+    m = ndi.binary_opening(m, structure=np.ones((7, 7)))
+    lab, n = ndi.label(m)
+    touching = np.unique(lab[m & (rows < 0.24 * H)])
+    m = np.isin(lab, touching[touching > 0])
+    # Blurring spreads the change onto the untouched sweater around the bib
+    # and ties; drop pixels that still match the base photo.
+    m &= d > 22
+    m = ndi.binary_opening(m, structure=np.ones((3, 3)))
     m &= np.arange(H)[:, None] < 0.55 * H
 lab, n = ndi.label(m)
 if n:

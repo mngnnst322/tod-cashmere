@@ -3,7 +3,8 @@
    right. Colours come from the site tokens in styles.css. */
 .tryon {
   --tryon-stage-h: min(78vh, 760px);
-  --tryon-stage-w: calc(var(--tryon-stage-h) * 9 / 16);
+  /* Model photos are 2:3 (1333 x 2000, the shop photo size). */
+  --tryon-stage-w: calc(var(--tryon-stage-h) * 2 / 3);
   --tryon-card-w: 150px;
   --tryon-studio: #e9eaee;
   max-width: var(--max-width);

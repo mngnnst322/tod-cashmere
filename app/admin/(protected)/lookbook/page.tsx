@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { guardPage } from "@/lib/auth-guard";
 import { getLookbookAdmin } from "@/lib/lookbook-data";
-import { LOOKBOOK_GENDERS, SLOT_ORDER, isLookbookGender, lookbookType } from "@/lib/lookbook";
+import { LOOKBOOK_GENDERS, isLookbookGender, lookbookType } from "@/lib/lookbook";
 import {
   activateLookbookModel,
   deleteLookbookLayer,
@@ -47,7 +47,7 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
         </div>
 
         <section className={`${panel} grid gap-6 p-6 md:grid-cols-[220px_minmax(0,1fr)]`}>
-          <div className="aspect-[9/16] overflow-hidden rounded-lg bg-adm-paper">
+          <div className="aspect-[2/3] overflow-hidden rounded-lg bg-adm-paper">
             {active && (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={active.image} alt="" className="h-full w-full object-cover" />
@@ -92,7 +92,7 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
           <section className={`${panel} space-y-4 p-6`}>
             <h2 className="text-lg font-medium">Давхарга нэмэх</h2>
             <p className="max-w-prose text-sm text-adm-mute">
-              Тунгалаг PNG эсвэл WebP, суурь зурагтай ижил харьцаатай (scripts/lookbook-д үүсгэнэ). Бараа
+              Тунгалаг PNG эсвэл WebP, суурь зурагтай ижил хэмжээтэй. Бараа
               энд харагдахын тулд барааны формд Lookbook хүйс, төрлийг тохируулна.
             </p>
             <LayerUploader products={tagged.map((p) => ({ id: p.id, label: `${p.titleMn} · ${p.color}` }))} />
@@ -110,7 +110,7 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
               const st = STATUS[l.status as keyof typeof STATUS] ?? STATUS.draft;
               return (
                 <div key={l.id} className={`${panel} overflow-hidden`}>
-                  <div className="relative aspect-[9/16] bg-adm-paper">
+                  <div className="relative aspect-[2/3] bg-adm-paper">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={active.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -145,7 +145,6 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
             })}
           </section>
         )}
-        <p className="text-xs text-adm-mute">Давхарлах дараалал: {SLOT_ORDER.join(" → ")}</p>
       </PageBody>
     </>
   );
