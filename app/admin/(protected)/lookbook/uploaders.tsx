@@ -6,7 +6,7 @@ import { btnDark, btnSoft, input } from "../../ui";
 import { uploadPhoto } from "../shrink-image";
 
 /** Stores a file in R2 as-is. Layers keep their transparency, so they skip the JPEG shrink. */
-async function uploadRaw(file: File) {
+export async function uploadRaw(file: File) {
   const res = await fetch("/api/admin/upload", {
     method: "POST",
     headers: { "Content-Type": file.type },

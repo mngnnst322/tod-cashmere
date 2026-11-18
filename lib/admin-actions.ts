@@ -668,3 +668,68 @@ export async function deleteLookbookLayer(id: string) {
   await db.delete(lookbookLayers).where(eq(lookbookLayers.id, id));
   revalidateLookbook();
 }
+
+/**
+ * Adds a garment straight from Admin -> Lookbook: makes the product (tagged
+ * for the lookbook, in the women's or men's category) and its first layer on
+ * the active model, as a draft to check before publishing.
+ */
+export async function addLookbookProduct(input: {
+  gender: string;
+  type: string;
+  titleMn: string;
+  color: string;
+  price: number;
+  sizes: string;
+  image: string;
+  layer: string;
+}) {
+  await requireAdmin();
+  const titleMn = input.titleMn.trim();
+  const color = input.color.trim();
+  const price = Math.round(Number(input.price));
+  const slot = slotFor(input.type, input.gender);
+  if (!slot || !isLookbookGender(input.gender)) throw new Error("Төрөл энэ хүйст тохирохгүй байна.");
+  if (!titleMn || !color || !(price > 0)) throw new Error("Нэр, өнгө, үнийг бөглөнө үү.");
+  if (!input.layer.startsWith("/api/images/")) throw new Error("Давхаргын файлаа сонгоно уу.");
+  const image = input.image.startsWith("/api/images/") ? input.image : input.layer;
+
+  const db = await getDb();
+  const model = await getActiveModel(input.gender);
+  if (!model) throw new Error("Энэ хүйсийн суурь зургийг эхлээд оруулна уу.");
+
+  const [title, colour] = await Promise.all([translateFromMongolian(titleMn), translateFromMongolian(color)]);
+  const id = crypto.randomUUID();
+  const slug = `lookbook-${id.slice(0, 8)}`;
+  await db.insert(products).values({
+    id,
+    slug,
+    code: slug,
+    titleMn,
+    titleEn: title.en || titleMn,
+    titleRu: title.ru || null,
+    titleZh: title.zh || null,
+    price,
+    color,
+    colorEn: colour.en || null,
+    colorRu: colour.ru || null,
+    colorZh: colour.zh || null,
+    sizes: input.sizes.trim(),
+    categorySlug: input.gender,
+    collection: "lookbook",
+    image,
+    images: JSON.stringify([image]),
+    lookbookGender: input.gender,
+    lookbookType: input.type,
+  });
+  await db.insert(lookbookLayers).values({
+    id: crypto.randomUUID(),
+    productId: id,
+    modelId: model.id,
+    slot,
+    image: input.layer,
+    status: "draft",
+  });
+  revalidatePath("/admin", "layout");
+  revalidateLookbook();
+}

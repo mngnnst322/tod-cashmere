@@ -11,6 +11,7 @@ import {
 import { ConfirmButton } from "../confirm-button";
 import { PageBody, PageHeader, btnDark, btnSoft, panel } from "../../ui";
 import { LayerUploader, ModelUploader } from "./uploaders";
+import { LookbookProductForm } from "./product-form";
 
 const STATUS = {
   draft: { label: "Шалгах", tone: "bg-amber-100 text-amber-800" },
@@ -90,10 +91,21 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
 
         {active && (
           <section className={`${panel} space-y-4 p-6`}>
-            <h2 className="text-lg font-medium">Давхарга нэмэх</h2>
+            <h2 className="text-lg font-medium">Lookbook бараа нэмэх</h2>
             <p className="max-w-prose text-sm text-adm-mute">
-              Тунгалаг PNG эсвэл WebP, суурь зурагтай ижил хэмжээтэй. Бараа
-              энд харагдахын тулд барааны формд Lookbook хүйс, төрлийг тохируулна.
+              Барааг энд шууд нэмнэ: нэр, төрөл, өнгө, үнэ, размер, картын зураг болон давхарга
+              (тунгалаг PNG/WebP, суурь зурагтай ижил хэмжээтэй). Давхарга нь доор «Шалгах» төлөвтэй
+              гарч ирнэ.
+            </p>
+            <LookbookProductForm key={gender} gender={gender} />
+          </section>
+        )}
+
+        {active && tagged.length > 0 && (
+          <section className={`${panel} space-y-4 p-6`}>
+            <h2 className="text-lg font-medium">Байгаа бараанд давхарга нэмэх</h2>
+            <p className="max-w-prose text-sm text-adm-mute">
+              Өмнө нэмсэн Lookbook бараанд шинэ давхарга (жишээ нь шинэ суурь зурагт) оруулах.
             </p>
             <LayerUploader products={tagged.map((p) => ({ id: p.id, label: `${p.titleMn} · ${p.color}` }))} />
             {missing.length > 0 && (
