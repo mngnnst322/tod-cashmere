@@ -30,7 +30,12 @@ type Row = {
 };
 
 const collectionLabel = (c: string) =>
-  c === "arrival" ? "Шинэ" : c === "catalog" ? "Каталог" : c;
+  c === "arrival" ? "Шинэ" : c === "catalog" ? "Каталог" : c === "lookbook" ? "Lookbook" : c;
+
+/** Lookbook garments get their own group at the top of the list. */
+const LOOKBOOK_GROUP = "__lookbook";
+const groupOf = (p: { collection: string; categorySlug: string }) =>
+  p.collection === "lookbook" ? LOOKBOOK_GROUP : p.categorySlug;
 
 export function ProductsTable({
   products,
@@ -47,7 +52,7 @@ export function ProductsTable({
   const [pending, startTransition] = useTransition();
 
   const categoryName = (slug: string) =>
-    categories.find((c) => c.slug === slug)?.name ?? slug;
+    slug === LOOKBOOK_GROUP ? "Lookbook" : (categories.find((c) => c.slug === slug)?.name ?? slug);
 
   const groups = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -59,10 +64,10 @@ export function ProductsTable({
             v.toLowerCase().includes(q),
           )),
     );
-    const order = [...categories.map((c) => c.slug)];
-    for (const p of filtered) if (!order.includes(p.categorySlug)) order.push(p.categorySlug);
+    const order = [LOOKBOOK_GROUP, ...categories.map((c) => c.slug)];
+    for (const p of filtered) if (!order.includes(groupOf(p))) order.push(groupOf(p));
     return order
-      .map((slug) => ({ slug, items: filtered.filter((p) => p.categorySlug === slug) }))
+      .map((slug) => ({ slug, items: filtered.filter((p) => groupOf(p) === slug) }))
       .filter((g) => g.items.length > 0);
     // categoryName only depends on `categories`
     // eslint-disable-next-line react-hooks/exhaustive-deps

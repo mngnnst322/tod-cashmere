@@ -213,6 +213,7 @@ export function ProductForm({
               <select id="collection" name="collection" defaultValue={product?.collection ?? "catalog"} className={input}>
                 <option value="catalog">Каталог</option>
                 <option value="arrival">Шинэ</option>
+                <option value="lookbook">Lookbook</option>
               </select>
             </div>
             <div>
