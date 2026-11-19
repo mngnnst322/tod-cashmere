@@ -14,16 +14,14 @@
   scroll-margin-top: var(--header-h);
 }
 
-/* Room: soft daylight walls, a lighter floor from two thirds down, and faint
-   window light falling across the back wall. */
+/* Room: soft warm daylight walls with faint window light falling across. */
 .tryon-room {
   position: relative;
   overflow: hidden;
   padding: 18px 0 28px;
   background:
-    linear-gradient(180deg, rgba(255, 250, 242, 0) 64%, rgba(255, 250, 242, 0.7) 64.3%, #f7efe3 100%),
     repeating-linear-gradient(105deg, rgba(255, 250, 240, 0) 0 70px, rgba(255, 250, 240, 0.3) 70px 150px, rgba(255, 250, 240, 0) 150px 260px),
-    radial-gradient(ellipse 70% 60% at 50% 35%, #fbf6ee 0%, #efe4d4 60%, #e4d5c0 100%);
+    radial-gradient(ellipse 80% 75% at 50% 45%, #fbf6ee 0%, #efe4d4 60%, #e4d5c0 100%);
 }
 
 .tryon-top {
