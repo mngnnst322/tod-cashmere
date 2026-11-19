@@ -296,9 +296,9 @@
   padding: 12px 18px;
   border: 1px solid var(--tryon-glass-line);
   border-radius: 20px !important;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  /* See-through: the room shows behind the details. No backdrop blur, which
+     would also stop the photos below from blending in. */
+  background: rgba(255, 255, 255, 0.22);
   box-shadow: 0 14px 40px rgba(30, 35, 45, 0.1);
 }
 .tryon-bar-thumb {
@@ -427,11 +427,13 @@
 .tryon-worn-photo {
   padding: 0;
   border: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: transparent;
   border-radius: 10px !important;
   cursor: pointer;
 }
 .tryon-worn-photo img {
+  /* The product photo's white backdrop takes on the room colour. */
+  mix-blend-mode: multiply;
   width: 72px;
   height: 92px;
   max-width: none;
