@@ -320,11 +320,13 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
 
         {current && (
           <div className="tryon-bar" aria-live="polite">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="tryon-bar-thumb" src={current.thumb} alt="" />
-            <div className="tryon-bar-info">
-              <strong>{current.title}</strong>
-              <span>{current.color}</span>
+            <div className="tryon-bar-head">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="tryon-bar-thumb" src={current.thumb} alt="" />
+              <div className="tryon-bar-info">
+                <strong>{current.title}</strong>
+                <span>{current.color}</span>
+              </div>
             </div>
             {sizes.length > 0 && !current.soldOut && (
               <div className="tryon-sizes" role="group" aria-label={t.size}>
@@ -337,11 +339,6 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
             )}
             <div className="tryon-bar-price">
               <strong>{money(current.price)}</strong>
-              {wornItems.length > 1 && (
-                <span>
-                  {t.look}: {money(lookTotal)}
-                </span>
-              )}
             </div>
             <div className="tryon-actions">
               {worn[current.slot] !== current.layerId ? (
@@ -361,6 +358,34 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
               )}
             </div>
             {status === "warn" && <p className="tryon-warn">{t.pick}</p>}
+            {wornItems.length > 0 && (
+              <div className="tryon-worn">
+                <ul>
+                  {/* Each piece on the model with its own price, top to bottom. */}
+                  {[...wornItems].reverse().map((i) => (
+                    <li key={i.layerId}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const idx = cards.findIndex((c) => c.layerId === i.layerId);
+                          if (idx >= 0) setFocus(idx);
+                        }}
+                      >
+                        <span>{t.types[i.type]}</span>
+                        <em>{i.title}</em>
+                      </button>
+                      <strong>{money(i.price)}</strong>
+                    </li>
+                  ))}
+                </ul>
+                {wornItems.length > 1 && (
+                  <div className="tryon-worn-total">
+                    <span>{t.look}</span>
+                    <strong>{money(lookTotal)}</strong>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

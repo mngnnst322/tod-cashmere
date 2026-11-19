@@ -4,10 +4,10 @@
    The storefront's global rules square every corner and bold every font, so
    rounded corners and weights here carry !important. */
 .tryon {
-  --tryon-stage-h: min(calc(100vh - 290px), 720px);
+  --tryon-stage-h: min(calc(100vh - 210px), 760px);
   /* Model photos are 2:3 (1333 x 2000, the shop photo size). */
   --tryon-stage-w: calc(var(--tryon-stage-h) * 2 / 3);
-  --tryon-card-w: clamp(132px, 12vw, 178px);
+  --tryon-card-w: clamp(118px, 10.5vw, 170px);
   --tryon-glass: rgba(255, 255, 255, 0.42);
   --tryon-glass-line: rgba(255, 255, 255, 0.8);
   color: #1c1c1c;
@@ -381,6 +381,131 @@
   font-size: 12px;
   font-weight: 400 !important;
   text-align: center;
+}
+
+.tryon-bar-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+/* What the model wears, piece by piece with its own price. */
+.tryon-worn {
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+}
+.tryon-worn ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tryon-worn li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tryon-worn li button {
+  display: grid;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.tryon-worn li button span {
+  color: #888;
+  font-size: 11px;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.tryon-worn li button em {
+  overflow: hidden;
+  font-style: normal;
+  font-weight: 500 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tryon-worn li strong,
+.tryon-worn-total strong {
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tryon-worn-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+}
+.tryon-worn-total span {
+  font-weight: 500 !important;
+}
+
+/* Desktop: the piece's details stand in a glass panel on the right. */
+@media (min-width: 901px) {
+  .tryon-room {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    column-gap: 20px;
+    padding-right: 32px;
+  }
+  .tryon-top {
+    grid-column: 1 / -1;
+  }
+  .tryon-floor {
+    grid-column: 1;
+    overflow: hidden;
+  }
+  .tryon-bar {
+    grid-column: 2;
+    align-self: center;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 20px;
+  }
+  .tryon-bar-thumb {
+    width: 72px;
+    height: 92px;
+    background: rgba(255, 255, 255, 0.6);
+    object-fit: contain;
+  }
+  .tryon-bar-info strong {
+    font-size: 18px;
+  }
+  .tryon-bar-price {
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .tryon-bar-price strong {
+    font-size: 20px;
+  }
+  .tryon-actions {
+    flex-wrap: wrap;
+  }
+  .tryon-add {
+    flex: 1 1 100%;
+    min-height: 46px;
+  }
+  .tryon-warn {
+    text-align: left;
+  }
+  .tryon-arrow.is-next {
+    right: 8px;
+  }
 }
 
 /* Phones and narrow tablets: model on top, the cards in a swipe row
