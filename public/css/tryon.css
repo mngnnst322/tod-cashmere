@@ -165,8 +165,8 @@
 .tryon-shelf {
   position: absolute;
   inset: 0;
-  /* Above the model: cards pass in front of her while the row turns. */
-  z-index: 25;
+  /* Under the model: cards pass behind her while the row turns. */
+  z-index: 10;
   pointer-events: none;
   /* 3D only for the cards: on the floor it would isolate the model photo
      from the room and stop its studio grey from blending in. */
