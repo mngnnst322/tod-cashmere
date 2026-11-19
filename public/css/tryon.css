@@ -21,9 +21,9 @@
   overflow: hidden;
   padding: 18px 0 28px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0) 64%, rgba(255, 255, 255, 0.75) 64.3%, #f6f6f5 100%),
-    repeating-linear-gradient(105deg, rgba(255, 255, 255, 0) 0 70px, rgba(255, 255, 255, 0.28) 70px 150px, rgba(255, 255, 255, 0) 150px 260px),
-    radial-gradient(ellipse 70% 60% at 50% 35%, #fbfbfb 0%, #eceeef 60%, #dfe2e5 100%);
+    linear-gradient(180deg, rgba(255, 250, 242, 0) 64%, rgba(255, 250, 242, 0.7) 64.3%, #f7efe3 100%),
+    repeating-linear-gradient(105deg, rgba(255, 250, 240, 0) 0 70px, rgba(255, 250, 240, 0.3) 70px 150px, rgba(255, 250, 240, 0) 150px 260px),
+    radial-gradient(ellipse 70% 60% at 50% 35%, #fbf6ee 0%, #efe4d4 60%, #e4d5c0 100%);
 }
 
 .tryon-top {
@@ -91,11 +91,11 @@
   top: 6%;
   left: 50%;
   transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 251, 245, 0.85);
   font: 800 clamp(90px, 15vw, 230px)/1 var(--font-heading);
   font-weight: 800 !important;
   letter-spacing: 0.04em;
-  text-shadow: 0 2px 30px rgba(170, 176, 186, 0.35);
+  text-shadow: 0 2px 30px rgba(184, 160, 128, 0.35);
   white-space: nowrap;
   pointer-events: none;
 }
@@ -112,12 +112,12 @@
   height: var(--tryon-stage-h);
   transform: translateX(-50%);
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0, #000 24%, #000 76%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 12%, #000 97%, transparent 100%);
+    linear-gradient(to right, transparent 0, #000 34%, #000 66%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 97%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent 0, #000 24%, #000 76%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 12%, #000 97%, transparent 100%);
+    linear-gradient(to right, transparent 0, #000 34%, #000 66%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 97%, transparent 100%);
   mask-composite: intersect;
   /* The photo's light studio grey melts into the room instead of showing
      as a box; the model and clothes are darker, so they stay as they are. */
