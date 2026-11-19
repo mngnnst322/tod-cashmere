@@ -112,13 +112,16 @@
   height: var(--tryon-stage-h);
   transform: translateX(-50%);
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0, #000 18%, #000 82%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 24%, #000 76%, transparent 100%),
     linear-gradient(to bottom, transparent 0, #000 12%, #000 97%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent 0, #000 18%, #000 82%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 24%, #000 76%, transparent 100%),
     linear-gradient(to bottom, transparent 0, #000 12%, #000 97%, transparent 100%);
   mask-composite: intersect;
+  /* The photo's light studio grey melts into the room instead of showing
+     as a box; the model and clothes are darker, so they stay as they are. */
+  mix-blend-mode: multiply;
   pointer-events: none;
 }
 .tryon-layer {
