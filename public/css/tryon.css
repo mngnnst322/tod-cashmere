@@ -95,6 +95,11 @@
   text-shadow: 0 2px 30px rgba(184, 160, 128, 0.35);
   white-space: nowrap;
   pointer-events: none;
+  /* Clear behind the model: the photo blends with what is under it, so
+     letters there would show through her body. */
+  --gap: calc(var(--tryon-stage-w) * 0.34);
+  -webkit-mask-image: linear-gradient(to right, #000 calc(50% - var(--gap) - 40px), transparent calc(50% - var(--gap)), transparent calc(50% + var(--gap)), #000 calc(50% + var(--gap) + 40px));
+  mask-image: linear-gradient(to right, #000 calc(50% - var(--gap) - 40px), transparent calc(50% - var(--gap)), transparent calc(50% + var(--gap)), #000 calc(50% + var(--gap) + 40px));
 }
 
 /* The studio photo's sides and top fade into the room. The fade must stay
