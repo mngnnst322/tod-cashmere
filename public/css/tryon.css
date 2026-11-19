@@ -77,7 +77,6 @@
   position: relative;
   height: calc(var(--tryon-stage-h) + 20px);
   margin-top: 8px;
-  perspective: 1400px;
   touch-action: pan-y;
   user-select: none;
   cursor: grab;
@@ -143,6 +142,9 @@
   position: absolute;
   inset: 0;
   z-index: 10;
+  /* 3D only for the cards: on the floor it would isolate the model photo
+     from the room and stop its studio grey from blending in. */
+  perspective: 1400px;
 }
 .tryon-card {
   --clear: calc(var(--tryon-stage-w) / 2 + var(--tryon-card-w) * 0.62);
@@ -546,7 +548,6 @@
   }
   .tryon-floor {
     height: auto;
-    perspective: none;
     display: grid;
     gap: 14px;
     cursor: auto;
