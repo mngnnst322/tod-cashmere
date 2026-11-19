@@ -399,74 +399,104 @@
   align-items: center;
   gap: 14px;
 }
-/* What the model wears, piece by piece with its own price. */
+/* What the model wears, head to toe: each piece with its photo, details,
+   size and cart button. */
 .tryon-worn {
   display: grid;
-  gap: 10px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  font-size: 13px;
-}
-.tryon-worn ul {
-  display: grid;
-  gap: 8px;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .tryon-worn li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-}
-.tryon-worn li button {
   display: grid;
-  min-width: 0;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.tryon-worn-photo {
   padding: 0;
   border: 0;
-  background: none;
-  color: inherit;
-  text-align: left;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px !important;
   cursor: pointer;
 }
-.tryon-worn li button span {
-  color: #888;
-  font-size: 11px;
+.tryon-worn-photo img {
+  width: 72px;
+  height: 92px;
+  max-width: none;
+  object-fit: contain;
+  border-radius: 10px !important;
+}
+.tryon-worn-info {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  font-size: 13px;
+}
+.tryon-worn-type {
+  color: #8a8a8a;
+  font-size: 10px;
   font-weight: 500 !important;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.tryon-worn li button em {
+.tryon-worn-info strong {
   overflow: hidden;
-  font-style: normal;
-  font-weight: 500 !important;
+  font-size: 14px;
+  font-weight: 600 !important;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.tryon-worn li strong,
-.tryon-worn-total strong {
+.tryon-worn-color {
+  color: #777;
+  font-weight: 400 !important;
+}
+.tryon-worn-price {
+  font-size: 14px;
   font-weight: 600 !important;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+}
+.tryon-worn-info .tryon-sizes button {
+  min-width: 30px;
+  height: 28px;
+  font-size: 11px;
+}
+.tryon-worn-info .tryon-actions {
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 2px;
+}
+.tryon-worn-info .tryon-add {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0 14px;
+  font-size: 10px;
+}
+.tryon-worn-info .tryon-link {
+  font-size: 12px;
 }
 .tryon-worn-total {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  padding-top: 10px;
-  border-top: 1px dashed rgba(0, 0, 0, 0.12);
-  font-size: 14px;
+  font-size: 15px;
 }
 .tryon-worn-total span {
   font-weight: 500 !important;
+}
+.tryon-worn-total strong {
+  font-weight: 700 !important;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Desktop: the piece's details stand in a glass panel on the right. */
 @media (min-width: 901px) {
   .tryon-room {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 290px;
+    grid-template-columns: minmax(0, 1fr) 320px;
     column-gap: 20px;
     padding-right: 32px;
   }
@@ -482,37 +512,14 @@
     align-self: center;
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    flex-wrap: nowrap;
+    gap: 12px;
     width: auto;
     max-width: none;
+    max-height: calc(var(--tryon-stage-h) + 20px);
     margin: 0;
-    padding: 20px;
-  }
-  .tryon-bar-thumb {
-    width: 72px;
-    height: 92px;
-    background: rgba(255, 255, 255, 0.6);
-    object-fit: contain;
-  }
-  .tryon-bar-info strong {
-    font-size: 18px;
-  }
-  .tryon-bar-price {
-    padding-top: 12px;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
-  }
-  .tryon-bar-price strong {
-    font-size: 20px;
-  }
-  .tryon-actions {
-    flex-wrap: wrap;
-  }
-  .tryon-add {
-    flex: 1 1 100%;
-    min-height: 46px;
-  }
-  .tryon-warn {
-    text-align: left;
+    padding: 18px;
+    overflow-y: auto;
   }
   .tryon-arrow.is-next {
     right: 8px;
@@ -591,7 +598,9 @@
     display: none;
   }
   .tryon-bar {
-    justify-content: flex-start;
+    display: grid;
+    gap: 12px;
+    width: auto;
   }
 }
 

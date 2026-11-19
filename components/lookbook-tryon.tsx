@@ -95,8 +95,9 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
 
   const [worn, setWorn] = useState<Worn>(() => initialLook(look.items));
   const [focus, setFocus] = useState(0); // index in `cards` of the piece in the bar
-  const [size, setSize] = useState<string | null>(null);
-  const [status, setStatus] = useState<"idle" | "warn" | "added">("idle");
+  // Per worn piece (by layerId): the size picked and the cart button state.
+  const [sizeOf, setSizeOf] = useState<Record<string, string>>({});
+  const [statusOf, setStatusOf] = useState<Record<string, "warn" | "added">>({});
 
   // A new gender starts from its own default outfit.
   useEffect(() => {
@@ -115,11 +116,6 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
   }, [gender, activeShelf]);
 
   const current = cards[Math.min(focus, cards.length - 1)];
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSize(null);
-    setStatus("idle");
-  }, [current?.layerId]);
 
   const wrap = (index: number) => {
     const n = cards.length;
@@ -167,25 +163,35 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
     (i): i is LookbookItem => Boolean(i),
   );
   const lookTotal = wornItems.reduce((sum, i) => sum + i.price, 0);
-  const sizes = (current?.sizes ?? "").split("/").map((s) => s.trim()).filter(Boolean);
+  const sizesOf = (item: LookbookItem) => item.sizes.split("/").map((x) => x.trim()).filter(Boolean);
 
-  const addToCart = () => {
-    if (!current || current.soldOut) return;
+  const addToCart = (item: LookbookItem) => {
+    if (item.soldOut) return;
+    const sizes = sizesOf(item);
+    const size = sizeOf[item.layerId];
     if (sizes.length && !size) {
-      setStatus("warn");
+      setStatusOf((st) => ({ ...st, [item.layerId]: "warn" }));
       return;
     }
     addItem({
-      id: size ? `${current.slug}:${size}` : current.slug,
-      title: size ? `${current.title} (${size})` : current.title,
-      price: current.price,
-      image: current.image,
-      slug: current.slug,
-      size: size ?? undefined,
+      id: size ? `${item.slug}:${size}` : item.slug,
+      title: size ? `${item.title} (${size})` : item.title,
+      price: item.price,
+      image: item.image,
+      slug: item.slug,
+      size: size || undefined,
       sizes: sizes.length ? sizes : undefined,
     });
-    setStatus("added");
-    setTimeout(() => setStatus("idle"), 1400);
+    setStatusOf((st) => ({ ...st, [item.layerId]: "added" }));
+    setTimeout(
+      () =>
+        setStatusOf((st) => {
+          const next = { ...st };
+          delete next[item.layerId];
+          return next;
+        }),
+      1400,
+    );
   };
 
   return (
@@ -318,72 +324,84 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
           <p className="tryon-hint">{t.hint}</p>
         </div>
 
-        {current && (
+        {wornItems.length > 0 && (
           <div className="tryon-bar" aria-live="polite">
-            <div className="tryon-bar-head">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="tryon-bar-thumb" src={current.thumb} alt="" />
-              <div className="tryon-bar-info">
-                <strong>{current.title}</strong>
-                <span>{current.color}</span>
-              </div>
-            </div>
-            {sizes.length > 0 && !current.soldOut && (
-              <div className="tryon-sizes" role="group" aria-label={t.size}>
-                {sizes.map((s) => (
-                  <button key={s} type="button" aria-pressed={size === s} onClick={() => { setSize(s); setStatus("idle"); }}>
-                    {s}
-                  </button>
-                ))}
-              </div>
-            )}
-            <div className="tryon-bar-price">
-              <strong>{money(current.price)}</strong>
-            </div>
-            <div className="tryon-actions">
-              {worn[current.slot] !== current.layerId ? (
-                <button type="button" className="tryon-add is-ghost" onClick={() => tryOn(focus)}>
-                  {t.tryOn}
-                </button>
-              ) : (
-                <button type="button" className="tryon-add" disabled={current.soldOut} onClick={addToCart}>
-                  {current.soldOut ? t.soldOut : status === "added" ? t.added : t.add}
-                </button>
-              )}
-              <a className="tryon-link" href={`/product/${current.slug}`}>{t.details}</a>
-              {current.slot === "head" && worn.head && (
-                <button type="button" className="tryon-link" onClick={() => setWorn((w) => ({ ...w, head: undefined }))}>
-                  {t.takeOff}
-                </button>
-              )}
-            </div>
-            {status === "warn" && <p className="tryon-warn">{t.pick}</p>}
-            {wornItems.length > 0 && (
-              <div className="tryon-worn">
-                <ul>
-                  {/* Each piece on the model with its own price, top to bottom. */}
-                  {[...wornItems].reverse().map((i) => (
-                    <li key={i.layerId}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const idx = cards.findIndex((c) => c.layerId === i.layerId);
-                          if (idx >= 0) setFocus(idx);
-                        }}
-                      >
-                        <span>{t.types[i.type]}</span>
-                        <em>{i.title}</em>
-                      </button>
-                      <strong>{money(i.price)}</strong>
-                    </li>
-                  ))}
-                </ul>
-                {wornItems.length > 1 && (
-                  <div className="tryon-worn-total">
-                    <span>{t.look}</span>
-                    <strong>{money(lookTotal)}</strong>
-                  </div>
-                )}
+            {/* Every piece on the model, head to toe, each with its own
+                photo, details, size and cart button. */}
+            <ul className="tryon-worn">
+              {[...wornItems].reverse().map((item) => {
+                const sizes = sizesOf(item);
+                const st = statusOf[item.layerId];
+                return (
+                  <li key={item.layerId} className={item.layerId === current?.layerId ? "is-current" : ""}>
+                    <button
+                      type="button"
+                      className="tryon-worn-photo"
+                      aria-label={item.title}
+                      onClick={() => {
+                        const idx = cards.findIndex((c) => c.layerId === item.layerId);
+                        if (idx >= 0) setFocus(idx);
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={item.thumb} alt="" />
+                    </button>
+                    <div className="tryon-worn-info">
+                      <span className="tryon-worn-type">{t.types[item.type]}</span>
+                      <strong>{item.title}</strong>
+                      <span className="tryon-worn-color">{item.color}</span>
+                      <span className="tryon-worn-price">{money(item.price)}</span>
+                      {sizes.length > 0 && !item.soldOut && (
+                        <div className="tryon-sizes" role="group" aria-label={t.size}>
+                          {sizes.map((x) => (
+                            <button
+                              key={x}
+                              type="button"
+                              aria-pressed={sizeOf[item.layerId] === x}
+                              onClick={() => {
+                                setSizeOf((m) => ({ ...m, [item.layerId]: x }));
+                                setStatusOf((m) => {
+                                  const next = { ...m };
+                                  delete next[item.layerId];
+                                  return next;
+                                });
+                              }}
+                            >
+                              {x}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      {st === "warn" && <span className="tryon-warn">{t.pick}</span>}
+                      <div className="tryon-actions">
+                        <button
+                          type="button"
+                          className="tryon-add"
+                          disabled={item.soldOut}
+                          onClick={() => addToCart(item)}
+                        >
+                          {item.soldOut ? t.soldOut : st === "added" ? t.added : t.add}
+                        </button>
+                        <a className="tryon-link" href={`/product/${item.slug}`}>{t.details}</a>
+                        {item.slot === "head" && (
+                          <button
+                            type="button"
+                            className="tryon-link"
+                            onClick={() => setWorn((w) => ({ ...w, head: undefined }))}
+                          >
+                            {t.takeOff}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            {wornItems.length > 1 && (
+              <div className="tryon-worn-total">
+                <span>{t.look}</span>
+                <strong>{money(lookTotal)}</strong>
               </div>
             )}
           </div>
