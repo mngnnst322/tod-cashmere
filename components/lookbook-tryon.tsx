@@ -56,6 +56,104 @@ const text = {
   },
 };
 
+
+/* ---- Cut-out: the model photo and her garment layers are studio shots on a
+   light grey backdrop. To stand her in the room (with the big word behind
+   her, hidden by her body), the outfit is drawn onto a canvas and every pixel
+   close to the backdrop colour of its row is made transparent. ---- */
+
+const imageCache = new Map<string, Promise<HTMLImageElement>>();
+function loadImage(src: string) {
+  let p = imageCache.get(src);
+  if (!p) {
+    p = new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+    imageCache.set(src, p);
+  }
+  return p;
+}
+
+const backdropCache = new Map<string, Float32Array>();
+/**
+ * Backdrop model per row: the studio grey shifts from the left edge to the
+ * right and is brighter in the middle (vignette), so each row stores the
+ * colour at both edges (L, R) and a centre bulge (B):
+ * bg(t) = L + (R - L) t + B * 4t(1 - t), t = x / width.
+ */
+function backdropRows(data: Uint8ClampedArray, w: number, h: number) {
+  const rows = new Float32Array(h * 9);
+  const strip = Math.max(4, Math.round(w * 0.025));
+  const mean = (y: number, x0: number) => {
+    let r = 0, g = 0, b = 0;
+    for (let x = x0; x < x0 + strip; x++) {
+      const i = (y * w + x) * 4;
+      r += data[i]; g += data[i + 1]; b += data[i + 2];
+    }
+    return [r / strip, g / strip, b / strip];
+  };
+  const tA = 0.15, tB = 0.85, k = 4 * tA * (1 - tA);
+  for (let y = 0; y < h; y++) {
+    const L = mean(y, 2);
+    const R = mean(y, w - strip - 2);
+    const A = mean(y, Math.round(w * tA - strip / 2));
+    const Bs = mean(y, Math.round(w * tB - strip / 2));
+    for (let c = 0; c < 3; c++) {
+      const lin = (t: number) => L[c] + (R[c] - L[c]) * t;
+      // Garments only ever darken a strip, so the larger estimate wins.
+      const bulge = Math.max(0, (A[c] - lin(tA)) / k, (Bs[c] - lin(tB)) / k);
+      rows[y * 9 + c] = L[c];
+      rows[y * 9 + 3 + c] = R[c];
+      rows[y * 9 + 6 + c] = bulge;
+    }
+  }
+  return rows;
+}
+
+async function drawCutOut(canvas: HTMLCanvasElement, model: string, layers: string[]) {
+  const [base, ...rest] = await Promise.all([model, ...layers].map(loadImage));
+  const scale = Math.min(1, 1500 / base.naturalHeight);
+  const w = Math.round(base.naturalWidth * scale);
+  const h = Math.round(base.naturalHeight * scale);
+  const work = document.createElement("canvas");
+  work.width = w;
+  work.height = h;
+  const ctx = work.getContext("2d", { willReadFrequently: true });
+  if (!ctx) throw new Error("no canvas");
+  const key = `${model}@${w}`;
+  let bg = backdropCache.get(key);
+  ctx.drawImage(base, 0, 0, w, h);
+  if (!bg) {
+    bg = backdropRows(ctx.getImageData(0, 0, w, h).data, w, h);
+    backdropCache.set(key, bg);
+  }
+  for (const img of rest) ctx.drawImage(img, 0, 0, w, h);
+  const frame = ctx.getImageData(0, 0, w, h);
+  const d = frame.data;
+  const LO = 11, HI = 28;
+  for (let y = 0; y < h; y++) {
+    const o = y * 9;
+    for (let x = 0; x < w; x++) {
+      const t = x / (w - 1);
+      const q = 4 * t * (1 - t);
+      const br = bg[o] + (bg[o + 3] - bg[o]) * t + bg[o + 6] * q;
+      const bgc = bg[o + 1] + (bg[o + 4] - bg[o + 1]) * t + bg[o + 7] * q;
+      const bb = bg[o + 2] + (bg[o + 5] - bg[o + 2]) * t + bg[o + 8] * q;
+      const i = (y * w + x) * 4;
+      const dist = Math.max(Math.abs(d[i] - br), Math.abs(d[i + 1] - bgc), Math.abs(d[i + 2] - bb));
+      if (dist <= LO) d[i + 3] = 0;
+      else if (dist < HI) d[i + 3] = Math.round((255 * (dist - LO)) / (HI - LO));
+    }
+  }
+  ctx.putImageData(frame, 0, 0);
+  canvas.width = w;
+  canvas.height = h;
+  canvas.getContext("2d")?.drawImage(work, 0, 0);
+}
+
 type Worn = Partial<Record<LookbookSlot, string>>; // slot -> layerId
 
 /** Puts on the first item of each body slot except the head, so the model opens dressed. */
@@ -133,6 +231,26 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
 
   // Drag, swipe and sideways trackpad scroll move the row.
   const floorRef = useRef<HTMLDivElement>(null);
+
+  // The outfit as a cut-out on a canvas; until it is drawn (or if the
+  // browser can't), the plain photo stack below shows instead.
+  const cutRef = useRef<HTMLCanvasElement>(null);
+  const [cutReady, setCutReady] = useState(false);
+  const wornLayers = SLOT_ORDER.map((slot) => look.items.find((i) => i.layerId === worn[slot])?.layer).filter(
+    (x): x is string => Boolean(x),
+  );
+  const wornKey = wornLayers.join("|");
+  useEffect(() => {
+    const canvas = cutRef.current;
+    if (!canvas) return;
+    let live = true;
+    drawCutOut(canvas, look.model, wornKey ? wornKey.split("|") : [])
+      .then(() => live && setCutReady(true))
+      .catch(() => live && setCutReady(false));
+    return () => {
+      live = false;
+    };
+  }, [look.model, wornKey]);
   const drag = useRef<{ x: number; moved: boolean } | null>(null);
   const focusRef = useRef(focus);
   useEffect(() => {
@@ -291,7 +409,11 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
             })}
           </div>
 
-          <div className="tryon-stage" aria-label={wornItems.map((i) => i.title).join(", ")}>
+          <div
+            className={`tryon-stage ${cutReady ? "is-cut" : ""}`}
+            aria-label={wornItems.map((i) => i.title).join(", ")}
+          >
+            <canvas ref={cutRef} className="tryon-cut" aria-hidden="true" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="tryon-layer" src={look.model} alt="" />
             {SLOT_ORDER.flatMap((slot) =>

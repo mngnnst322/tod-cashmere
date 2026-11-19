@@ -95,11 +95,6 @@
   text-shadow: 0 2px 30px rgba(184, 160, 128, 0.35);
   white-space: nowrap;
   pointer-events: none;
-  /* Clear behind the model: the photo blends with what is under it, so
-     letters there would show through her body. */
-  --gap: calc(var(--tryon-stage-w) * 0.34);
-  -webkit-mask-image: linear-gradient(to right, #000 calc(50% - var(--gap) - 40px), transparent calc(50% - var(--gap)), transparent calc(50% + var(--gap)), #000 calc(50% + var(--gap) + 40px));
-  mask-image: linear-gradient(to right, #000 calc(50% - var(--gap) - 40px), transparent calc(50% - var(--gap)), transparent calc(50% + var(--gap)), #000 calc(50% + var(--gap) + 40px));
 }
 
 /* The studio photo's sides and top fade into the room. The fade must stay
@@ -141,18 +136,44 @@
 .tryon-layer.is-off {
   opacity: 0;
 }
+/* Cut-out canvas: once drawn it replaces the photo stack, and the stage
+   drops the fade and blend that only the plain photos need. */
+.tryon-cut {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.tryon-stage.is-cut {
+  -webkit-mask-image: none;
+  mask-image: none;
+  mix-blend-mode: normal;
+  filter: none;
+}
+.tryon-stage.is-cut .tryon-cut {
+  opacity: 1;
+}
+.tryon-stage.is-cut .tryon-layer {
+  visibility: hidden;
+}
 
 /* Cards: glass panes on a loop, the nearest just clear of the model,
    the further ones turned in and smaller. */
 .tryon-shelf {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  /* Above the model: cards pass in front of her while the row turns. */
+  z-index: 25;
+  pointer-events: none;
   /* 3D only for the cards: on the floor it would isolate the model photo
      from the room and stop its studio grey from blending in. */
   perspective: 1400px;
 }
 .tryon-card {
+  pointer-events: auto;
   --clear: calc(var(--tryon-stage-w) / 2 + var(--tryon-card-w) * 0.62);
   position: absolute;
   top: 46%;
@@ -418,13 +439,14 @@
 }
 .tryon-worn li {
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-columns: 104px minmax(0, 1fr);
   gap: 12px;
   align-items: start;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 }
 .tryon-worn-photo {
+  overflow: hidden;
   padding: 0;
   border: 0;
   background: transparent;
@@ -434,10 +456,12 @@
 .tryon-worn-photo img {
   /* The product photo's white backdrop takes on the room colour. */
   mix-blend-mode: multiply;
-  width: 72px;
-  height: 92px;
+  width: 104px;
+  height: 136px;
   max-width: none;
   object-fit: contain;
+  /* Flat shots leave a wide margin round the garment; zoom past it. */
+  transform: scale(1.45);
   border-radius: 10px !important;
 }
 .tryon-worn-info {
@@ -506,7 +530,7 @@
 @media (min-width: 901px) {
   .tryon-room {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     column-gap: 20px;
     padding-right: 32px;
   }
