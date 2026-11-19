@@ -119,6 +119,9 @@
   /* The photo's light studio grey melts into the room instead of showing
      as a box; the model and clothes are darker, so they stay as they are. */
   mix-blend-mode: multiply;
+  /* Lifts the studio grey to white, so multiply leaves the room colour
+     untouched around her (no darker halo). */
+  filter: brightness(1.08);
   pointer-events: none;
 }
 .tryon-layer {
