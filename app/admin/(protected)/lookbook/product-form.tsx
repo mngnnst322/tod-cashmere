@@ -8,6 +8,7 @@ import { uploadPhoto } from "../shrink-image";
 import { uploadRaw } from "./uploaders";
 
 /** Colour names offered while typing; any other name can still be typed. */
+const OTHER = "__other";
 const COLORS = [
   "Тэмээн бор",
   "Ноолууран бор",
@@ -27,6 +28,7 @@ export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
   const types = LOOKBOOK_TYPES.filter((t) => (t.genders as readonly string[]).includes(gender));
   // No default: a wrong type left as is puts trousers in the top slot.
   const [type, setType] = useState<string>("");
+  const [colorPick, setColorPick] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [layer, setLayer] = useState<File | null>(null);
   const [pending, start] = useTransition();
@@ -65,6 +67,7 @@ export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
             setDone(`“${data.get("titleMn")}” нэмэгдлээ. Доор "Нийтлэх" дарна уу.`);
             form.reset();
             setType("");
+            setColorPick("");
             setPhoto(null);
             setLayer(null);
           } catch (err) {
@@ -92,12 +95,28 @@ export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
       </label>
       <label className="block">
         <span className={label}>Өнгө</span>
-        <input name="color" required list="lookbook-colors" className={input} placeholder="Тэмээн бор" />
-        <datalist id="lookbook-colors">
+        {/* A real list (the browser's typing history would hide a datalist);
+            "Өөр өнгө" opens a box for any other name. */}
+        <select
+          required
+          value={colorPick}
+          onChange={(e) => setColorPick(e.target.value)}
+          className={input}
+          name={colorPick === OTHER ? undefined : "color"}
+        >
+          <option value="" disabled>
+            Өнгө сонгох…
+          </option>
           {COLORS.map((c) => (
-            <option key={c} value={c} />
+            <option key={c} value={c}>
+              {c}
+            </option>
           ))}
-        </datalist>
+          <option value={OTHER}>Өөр өнгө…</option>
+        </select>
+        {colorPick === OTHER && (
+          <input name="color" required autoComplete="off" className={`${input} mt-2`} placeholder="Өнгөний нэр" />
+        )}
       </label>
       <label className="block">
         <span className={label}>Үнэ (₮)</span>
