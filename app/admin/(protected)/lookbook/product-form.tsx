@@ -25,7 +25,8 @@ const COLORS = [
  */
 export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
   const types = LOOKBOOK_TYPES.filter((t) => (t.genders as readonly string[]).includes(gender));
-  const [type, setType] = useState<string>(types[0]?.key ?? "");
+  // No default: a wrong type left as is puts trousers in the top slot.
+  const [type, setType] = useState<string>("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [layer, setLayer] = useState<File | null>(null);
   const [pending, start] = useTransition();
@@ -63,6 +64,7 @@ export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
             });
             setDone(`“${data.get("titleMn")}” нэмэгдлээ. Доор "Нийтлэх" дарна уу.`);
             form.reset();
+            setType("");
             setPhoto(null);
             setLayer(null);
           } catch (err) {
@@ -77,7 +79,10 @@ export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
       </label>
       <label className="block">
         <span className={label}>Төрөл</span>
-        <select value={type} onChange={(e) => setType(e.target.value)} className={input}>
+        <select required value={type} onChange={(e) => setType(e.target.value)} className={input}>
+          <option value="" disabled>
+            Төрөл сонгох…
+          </option>
           {types.map((t) => (
             <option key={t.key} value={t.key}>
               {t.label}
