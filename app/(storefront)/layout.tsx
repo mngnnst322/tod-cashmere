@@ -9,6 +9,7 @@ import { RevealObserver } from "@/components/reveal-observer";
 import { getSessionUser, isStaffRole, staffHome } from "@/lib/auth-guard";
 import { isComingSoon } from "@/lib/site-settings";
 import { listCatalog, listCatalogTypes } from "@/lib/catalog";
+import { getCatalogLang } from "@/lib/catalog-lang";
 
 // Storefront pages read the catalog from D1, so render them per request —
 // otherwise the build bakes in whatever the DB held at build time.
@@ -31,13 +32,14 @@ export default async function StorefrontLayout({
   // The online catalog is its own public page with its own menu, open even
   // before launch.
   if (path.startsWith("/catalog")) {
-    const [items, types] = await Promise.all([listCatalog(), listCatalogTypes()]);
+    const [items, types, catalogLang] = await Promise.all([listCatalog(), listCatalogTypes(), getCatalogLang()]);
     return (
       <div className="page">
         <CatalogHeader
           items={items.map(({ id, name, type, gender }) => ({ id, name, type, gender }))}
           types={types.map(({ gender, name }) => ({ gender, name }))}
           adminHref={isStaff ? staffHome(user.role) : null}
+          lang={catalogLang}
         />
         <main>{children}</main>
         <RevealObserver />

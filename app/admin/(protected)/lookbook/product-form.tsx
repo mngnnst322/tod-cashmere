@@ -7,6 +7,18 @@ import { btnDark, btnSoft, input, label } from "../../ui";
 import { uploadPhoto } from "../shrink-image";
 import { uploadRaw } from "./uploaders";
 
+/** Colour names offered while typing; any other name can still be typed. */
+const COLORS = [
+  "Тэмээн бор",
+  "Ноолууран бор",
+  "Хар саарал",
+  "Бор саарал",
+  "Хар",
+  "Цагаан",
+  "Шаргал",
+  "Улаан",
+];
+
 /**
  * Admin -> Lookbook: one form for a lookbook garment. It creates the product
  * (name, type, colour, price, sizes, card photo) and its layer together.
@@ -75,7 +87,12 @@ export function LookbookProductForm({ gender }: { gender: LookbookGender }) {
       </label>
       <label className="block">
         <span className={label}>Өнгө</span>
-        <input name="color" required className={input} placeholder="Тэмээн бор" />
+        <input name="color" required list="lookbook-colors" className={input} placeholder="Тэмээн бор" />
+        <datalist id="lookbook-colors">
+          {COLORS.map((c) => (
+            <option key={c} value={c} />
+          ))}
+        </datalist>
       </label>
       <label className="block">
         <span className={label}>Үнэ (₮)</span>

@@ -9,7 +9,7 @@ import {
   numberColorOn,
   splitColors,
 } from "@/lib/catalog-colors";
-import type { Lang } from "@/lib/i18n";
+import type { CatalogLang } from "@/lib/catalog-i18n";
 import { useCatalogFavorites } from "./catalog-favorites";
 import { CarouselRow } from "./carousel-row";
 import { isUploadedImage } from "@/lib/format";
@@ -25,7 +25,7 @@ export function CatalogGrid({
 }: {
   items: CatalogItem[];
   strings: CatalogStrings;
-  lang: Lang;
+  lang: CatalogLang;
   /** One sideways-scrolling row instead of a grid. */
   carousel?: boolean;
   /** Show only the items this browser has hearted (the "saved" page). */

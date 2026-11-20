@@ -4,7 +4,7 @@ import type { Lang } from "@/lib/i18n";
 export const LANG_MENU_CODES: Record<Lang, string> = { mn: "МН", en: "EN", ru: "РУ", zh: "ЗХ" };
 
 /** Small inline flag for each site language (emoji flags don't show on Windows). */
-export function LangFlag({ lang }: { lang: Lang }) {
+export function LangFlag({ lang }: { lang: Lang | "ja" }) {
   return (
     <svg className="lang-flag" viewBox="0 0 30 20" aria-hidden="true">
       {lang === "mn" && (
@@ -22,6 +22,12 @@ export function LangFlag({ lang }: { lang: Lang }) {
             <rect key={i} y={(i * 20) / 13} width="30" height={20 / 13} fill="#b22234" />
           ))}
           <rect width="13" height={(7 * 20) / 13} fill="#3c3b6e" />
+        </>
+      )}
+      {lang === "ja" && (
+        <>
+          <rect width="30" height="20" fill="#fff" />
+          <circle cx="15" cy="10" r="6" fill="#bc002d" />
         </>
       )}
       {lang === "ru" && (

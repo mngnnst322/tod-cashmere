@@ -1,6 +1,24 @@
 import type { Lang } from "./i18n";
 import { findCashmereColor, splitColors } from "./catalog-colors";
 
+/**
+ * The catalog has its own language choice (Mongolian, Japanese, English),
+ * stored in the `catalog_lang` cookie, apart from the shop's languages.
+ */
+export type CatalogLang = "mn" | "ja" | "en";
+/** Any language a catalog text helper accepts: the catalog's or the shop's. */
+export type AnyLang = Lang | "ja";
+
+export const CATALOG_LANGS: { code: CatalogLang; label: string; short: string }[] = [
+  { code: "mn", label: "Монгол", short: "МН" },
+  { code: "ja", label: "日本語", short: "JP" },
+  { code: "en", label: "English", short: "EN" },
+];
+
+export const CATALOG_LANG_COOKIE = "catalog_lang";
+
+export const isCatalogLang = (v: unknown): v is CatalogLang => v === "mn" || v === "ja" || v === "en";
+
 // Text for the /catalog page in each site language. Item names come from the
 // admin as typed and are not translated.
 const strings = {
@@ -116,11 +134,39 @@ const strings = {
     introHint: "点击继续 →",
     nextPage: "下一页",
   },
-} satisfies Record<Lang, Record<string, string>>;
+  ja: {
+    similar: "こちらもおすすめ",
+    admin: "管理",
+    back: "カタログに戻る",
+    color: "カラー",
+    size: "サイズ",
+    women: "レディース",
+    men: "メンズ",
+    kids: "キッズ",
+    all: "すべて",
+    eyebrow: "オンラインカタログ",
+    title1: "モンゴル・ゴビの",
+    title2: "カシミヤ。",
+    lead: "モンゴルの草原と遊牧の文化から、あなたの手へ。",
+    styles: "スタイル",
+    search: "検索",
+    searchPlaceholder: "カタログを検索…",
+    searchResults: "検索",
+    close: "閉じる",
+    saved: "お気に入り",
+    savedEmpty: "ハートをタップすると、気に入ったアイテムをここに保存できます。",
+    save: "お気に入りに追加",
+    unsave: "お気に入りから削除",
+    openMenu: "メニューを開く",
+    language: "言語を選択",
+    introHint: "タップして続ける →",
+    nextPage: "次のページ",
+  },
+} satisfies Record<AnyLang, Record<string, string>>;
 
 export type CatalogStrings = (typeof strings)["mn"];
 
-export const catalogStrings = (lang: Lang): CatalogStrings => strings[lang];
+export const catalogStrings = (lang: AnyLang): CatalogStrings => strings[lang];
 
 // Garment type names (stored in Mongolian) in the other languages.
 const typeNames: Record<string, [en: string, ru: string, zh: string]> = {
@@ -153,8 +199,40 @@ const typeNames: Record<string, [en: string, ru: string, zh: string]> = {
   "Поло": ["Polos", "Поло", "Polo衫"],
 };
 
-export function catalogTypeName(type: string, lang: Lang) {
+// Garment type names in Japanese.
+const jaTypeNames: Record<string, string> = {
+  "Оймс": "ソックス",
+  "Түрий": "レッグウォーマー",
+  "Өвдөгөвч": "ニーウォーマー",
+  "Улавч": "インソール",
+  "Бойтог": "ベビーブーティ",
+  "Малгай": "帽子",
+  "Ороолт": "マフラー",
+  "Хүзүүвч": "ネックウォーマー",
+  "Бээлий": "手袋",
+  "Цамц": "ニット",
+  "Ханцуйгүй цамц, хүрэм": "ベスト・ジャケット",
+  "Нуруувч": "腰ウォーマー",
+  "Даашинз": "ワンピース",
+  "Өмд": "パンツ",
+  "Богино өмд": "ショートパンツ",
+  "Банзал (юбка)": "スカート",
+  "Джемпер": "ジャンパー",
+  "Свитер": "セーター",
+  "Пуловер": "プルオーバー",
+  "Кардиган": "カーディガン",
+  "Майк": "ニットトップス",
+  "Жилет": "ベスト",
+  "Платье": "ワンピース",
+  "Шорт": "ショートパンツ",
+  "Юбка": "スカート",
+  "Бомбер": "ボンバージャケット",
+  "Поло": "ポロシャツ",
+};
+
+export function catalogTypeName(type: string, lang: AnyLang) {
   if (lang === "mn") return type;
+  if (lang === "ja") return jaTypeNames[type] ?? type;
   const names = typeNames[type];
   return names ? pick(names, lang) : type;
 }
@@ -221,16 +299,76 @@ const itemNames: Record<string, [en: string, ru: string, zh: string]> = {
 const pick = (names: [string, string, string], lang: Exclude<Lang, "mn">) =>
   names[lang === "en" ? 0 : lang === "ru" ? 1 : 2];
 
-export function catalogItemName(name: string, lang: Lang) {
+// Item names in Japanese; names not listed show as typed.
+const jaItemNames: Record<string, string> = {
+  "Алаг кардиган": "バイカラーカーディガン",
+  "Алаг майк": "バイカラーニットトップス",
+  "Алаг платье": "バイカラーワンピース",
+  "Битүү кебельтэй свитер": "総ケーブル編みセーター",
+  "Битүү кебельтэй цамц": "総ケーブル編みニット",
+  "Богино дотуур өмд": "ショートレギンス",
+  "Богино ханцуйтай платье": "半袖ワンピース",
+  "Богино ханцуйтай сорочка": "半袖襟付きニット",
+  "Бомбер": "ボンバージャケット",
+  "Бүтэн кебельтэй цамц": "フルケーブル編みニット",
+  "Гурвалжин захтай джемпер": "Vネックジャンパー",
+  "Джемпер": "ジャンパー",
+  "Дотуур өмд": "レギンス",
+  "Жилет": "ベスト",
+  "Канттай өмд": "サイドライン入りパンツ",
+  "Кардиган": "カーディガン",
+  "Кебель урт кардиган": "ロングケーブルカーディガン",
+  "Кебель өргөн өмд": "ケーブル編みワイドパンツ",
+  "Кебельтэй цахилгаантай кардиган": "ケーブル編みジップカーディガン",
+  "Майк": "ニットトップス",
+  "Малгайтай цамц": "フーディー",
+  "Нарийн джемпер": "スリムジャンパー",
+  "Нимгэн кардиган": "薄手カーディガン",
+  "Оноотой өмд": "スリット入りパンツ",
+  "Платье": "ワンピース",
+  "Пуловер": "プルオーバー",
+  "Свитер": "セーター",
+  "Сорочка цамц": "襟付きニット",
+  "Сорочкан захтай майк": "襟付きニットトップス",
+  "Сорочкин захтай цамц": "シャツカラーニット",
+  "Сүлжмэл захтай майк": "ニットカラートップス",
+  "Товчтой кардиган": "ボタンカーディガン",
+  "Товчтой майк": "ボタンニットトップス",
+  "Урт майк": "ロングニットトップス",
+  "Уяатай свитер": "リボン付きセーター",
+  "Уяатай цамц": "リボン付きニット",
+  "Хагас ханцуйтай джемпер": "五分袖ジャンパー",
+  "Хагас ханцуйтай майк": "五分袖ニットトップス",
+  "Хагас ханцуйтай платье": "五分袖ワンピース",
+  "Хошуу захтай кардиган": "ポイントカラーカーディガン",
+  "Цамц": "ニット",
+  "Цахилгаантай кардиган": "ジップカーディガン",
+  "Цахилгаантай кебельтэй кардиган": "ケーブル編みジップカーディガン",
+  "Цахилгаантай майк": "ジップニットトップス",
+  "Цахилгаантай поло": "ジップポロ",
+  "Шорт": "ショートパンツ",
+  "Шулуун юбка": "ストレートスカート",
+  "Эм майк": "レディースニットトップス",
+  "Юбка": "スカート",
+  "Өмд": "パンツ",
+  "Өргөн карматай өмд": "パッチポケット付きワイドパンツ",
+  "Өргөн уяатай өмд": "ドローストリングワイドパンツ",
+  "Өргөн ханцуйтай джемпер": "ワイドスリーブジャンパー",
+  "Өргөн өмд халаастай": "ポケット付きワイドパンツ",
+};
+
+export function catalogItemName(name: string, lang: AnyLang) {
+  if (lang === "ja") return jaItemNames[name.trim()] ?? name;
   const names = itemNames[name.trim()];
   return lang === "mn" || !names ? name : pick(names, lang);
 }
 
 // Material and colors are typed in English in the admin, as in the printed
 // catalog; these cover the values it uses.
-const materials: Record<string, Record<Lang, string>> = {
+const materials: Record<string, Record<AnyLang, string>> = {
   "100% mongolian cashmere": {
     mn: "100% Монгол ноолуур",
+    ja: "モンゴル産カシミヤ100%",
     en: "100% Mongolian cashmere",
     ru: "100% монгольский кашемир",
     zh: "100% 蒙古羊绒",
@@ -238,11 +376,11 @@ const materials: Record<string, Record<Lang, string>> = {
 };
 
 
-export function catalogMaterial(material: string, lang: Lang) {
+export function catalogMaterial(material: string, lang: AnyLang) {
   return materials[material.trim().toLowerCase()]?.[lang] ?? material;
 }
 
-export function catalogColors(list: string, lang: Lang) {
+export function catalogColors(list: string, lang: AnyLang) {
   return splitColors(list)
     .map((c) => findCashmereColor(c)?.names[lang] ?? c)
     .join(", ");

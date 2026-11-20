@@ -6,7 +6,7 @@ import type { Lang } from "./i18n";
  */
 export function modelNote(
   item: { modelHeight: number | null; modelSize: string | null },
-  lang: Lang,
+  lang: Lang | "ja",
 ): string | null {
   const h = item.modelHeight;
   const size = item.modelSize?.trim();
@@ -24,6 +24,12 @@ export function modelNote(
         : h
           ? `Рост модели ${h} см.`
           : `На модели размер ${size}.`;
+    case "ja":
+      return h && size
+        ? `モデルは身長${h}cm、${size}サイズを着用しています。`
+        : h
+          ? `モデルの身長は${h}cmです。`
+          : `モデルは${size}サイズを着用しています。`;
     case "zh":
       return h && size ? `模特身高 ${h} 厘米，穿 ${size} 码。` : h ? `模特身高 ${h} 厘米。` : `模特穿 ${size} 码。`;
     default:

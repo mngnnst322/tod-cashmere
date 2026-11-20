@@ -3,18 +3,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
+  CATALOG_LANGS,
+  CATALOG_LANG_COOKIE,
   catalogItemName,
   catalogStrings,
   catalogTypeName,
+  type CatalogLang,
 } from "@/lib/catalog-i18n";
-import { LANGS } from "@/lib/i18n";
-import { useLang } from "./lang-provider";
-import { LANG_MENU_CODES, LangFlag } from "./lang-flag";
+import { LangFlag } from "./lang-flag";
 import { useCatalogFavorites } from "./catalog-favorites";
 import { HeartIcon } from "./catalog-grid";
 
 const MENU = ["women", "men", "kids"] as const;
+
+/** The catalog keeps its own language cookie; the server re-renders in it. */
+function saveCatalogLang(next: CatalogLang) {
+  document.cookie = `${CATALOG_LANG_COOKIE}=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
+  document.documentElement.lang = next;
+}
 
 const typeHref = (gender: string, type: string) =>
   `/catalog?gender=${gender}&type=${encodeURIComponent(type)}`;
@@ -35,11 +43,14 @@ export function CatalogHeader({
   items,
   types,
   adminHref,
+  lang,
 }: {
   items: MenuItem[];
   types: { gender: string; name: string }[];
   /** Set for signed-in staff: their admin entry point. */
   adminHref: string | null;
+  /** The catalog's own language (Mongolian, Japanese or English). */
+  lang: CatalogLang;
 }) {
   const headerRef = useRef<HTMLElement>(null);
   const [navOpen, setNavOpen] = useState(false);
@@ -50,7 +61,11 @@ export function CatalogHeader({
   // The type hovered in an open dropdown; its item names show beside it.
   const [hoverType, setHoverType] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { lang, setLang } = useLang();
+  const router = useRouter();
+  const setLang = (next: CatalogLang) => {
+    saveCatalogLang(next);
+    router.refresh();
+  };
   const { ids: savedIds } = useCatalogFavorites();
   const s = catalogStrings(lang);
 
@@ -232,10 +247,10 @@ export function CatalogHeader({
                 setLangOpen((o) => !o);
               }}
             >
-              <span className="lang-current">{lang.toUpperCase()}</span>
+              <span className="lang-current">{lang === "ja" ? "JP" : lang.toUpperCase()}</span>
             </button>
             <ul className="lang-menu lang-menu--flags" role="listbox">
-              {LANGS.map((option) => (
+              {CATALOG_LANGS.map((option) => (
                 <li key={option.code}>
                   <button
                     type="button"
@@ -250,7 +265,7 @@ export function CatalogHeader({
                     }}
                   >
                     <LangFlag lang={option.code} />
-                    <span className="lang-code">{LANG_MENU_CODES[option.code]}</span>
+                    <span className="lang-code">{option.short}</span>
                   </button>
                 </li>
               ))}

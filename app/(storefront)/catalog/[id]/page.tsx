@@ -7,7 +7,7 @@ import {
   catalogStrings,
   catalogTypeName,
 } from "@/lib/catalog-i18n";
-import { getLang } from "@/lib/i18n-server";
+import { getCatalogLang } from "@/lib/catalog-lang";
 import { modelNote } from "@/lib/model-note";
 import { findCashmereColor, numberColorOn, splitColors } from "@/lib/catalog-colors";
 import { CatalogGrid, CatalogItemHeart } from "@/components/catalog-grid";
@@ -16,7 +16,7 @@ import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
 
 export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
   const { id } = await props.params;
-  const [item, lang] = await Promise.all([getCatalogItem(id), getLang()]);
+  const [item, lang] = await Promise.all([getCatalogItem(id), getCatalogLang()]);
   return {
     title: item
       ? `${catalogItemName(item.name, lang)} – Tod Cashmere`
@@ -32,7 +32,7 @@ export default async function CatalogItemPage(
   const { id } = await props.params;
   const [item, lang, all] = await Promise.all([
     getCatalogItem(id),
-    getLang(),
+    getCatalogLang(),
     listCatalog(),
   ]);
   if (!item) notFound();

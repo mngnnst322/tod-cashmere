@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { listCatalog, listCatalogTypes } from "@/lib/catalog";
 import { catalogItemName, catalogStrings, catalogTypeName } from "@/lib/catalog-i18n";
-import { getLang } from "@/lib/i18n-server";
+import { getCatalogLang } from "@/lib/catalog-lang";
 import { KatalogIntro } from "@/components/katalog-intro";
 import { CatalogGrid } from "@/components/catalog-grid";
 import { KatalogBackdrop, backdropFor } from "@/components/katalog-backdrop";
 
 export async function generateMetadata() {
-  const s = catalogStrings(await getLang());
+  const s = catalogStrings(await getCatalogLang());
   return { title: `${s.eyebrow} – Tod Cashmere` };
 }
 
@@ -23,7 +23,7 @@ export default async function CatalogPage(props: PageProps<"/catalog">) {
     props.searchParams,
     listCatalog(),
     listCatalogTypes(),
-    getLang(),
+    getCatalogLang(),
   ]);
   const s = catalogStrings(lang);
   // Type names in menu order: a gender's own, or both (women's first) for "all".

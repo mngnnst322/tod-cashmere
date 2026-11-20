@@ -7,7 +7,7 @@ type CashmereColor = {
   /** Pantone TCX reference the colour matches. */
   pantone: string;
   hex: string;
-  names: Record<Lang, string>;
+  names: Record<Lang | "ja", string>;
 };
 
 // The cashmere colours the admin ticks for catalog items. Items store the
@@ -18,28 +18,28 @@ export const CASHMERE_COLORS: CashmereColor[] = [
     code: "81",
     pantone: "19-0303 TCX",
     hex: "#2D2C2F",
-    names: { mn: "Хар", en: "Jet Black", ru: "Чёрный", zh: "黑色" },
+    names: { mn: "Хар", en: "Jet Black", ja: "ブラック", ru: "Чёрный", zh: "黑色" },
   },
   {
     name: "Antique White",
     code: "02",
     pantone: "11-0105 TCX",
     hex: "#EDE3D2",
-    names: { mn: "Цайвар шаргал", en: "Antique White", ru: "Античный белый", zh: "古董白" },
+    names: { mn: "Цайвар шаргал", en: "Antique White", ja: "アンティークホワイト", ru: "Античный белый", zh: "古董白" },
   },
   {
     name: "Coca Mocha",
     code: "57",
     pantone: "18-1019 TCX",
     hex: "#8A6F5C",
-    names: { mn: "Кофе бор", en: "Coca Mocha", ru: "Мокко", zh: "摩卡棕" },
+    names: { mn: "Кофе бор", en: "Coca Mocha", ja: "モカブラウン", ru: "Мокко", zh: "摩卡棕" },
   },
   {
     name: "Merlot",
     code: "46",
     pantone: "19-1534 TCX",
     hex: "#72262C",
-    names: { mn: "Улаан хүрэн", en: "Merlot", ru: "Мерло", zh: "酒红色" },
+    names: { mn: "Улаан хүрэн", en: "Merlot", ja: "メルロー", ru: "Мерло", zh: "酒红色" },
   },
 ];
 
