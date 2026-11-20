@@ -27,6 +27,17 @@ def segment(img):
 
 seg_e = segment(edit)
 seg_b = segment(base)
+# The edit often shifts the studio background's brightness a little; where a
+# narrower garment uncovers background that the base garment hid, that shows
+# as a lighter or darker patch. Match the edit's background to the base's,
+# measured locally (blurred) over pixels that are background in both.
+bg = (seg_b == 0) & (seg_e == 0)
+if bg.mean() > 0.05:
+    e_np = np.asarray(edit).astype(np.float32); b_np = np.asarray(base).astype(np.float32)
+    diff = np.where(bg[..., None], b_np - e_np, 0)
+    w = ndi.gaussian_filter(bg.astype(np.float32), 60)
+    corr = np.stack([ndi.gaussian_filter(diff[..., c], 60) for c in range(3)], -1) / np.maximum(w, 1e-3)[..., None]
+    edit = Image.fromarray(np.clip(e_np + corr * (seg_e == 0)[..., None], 0, 255).astype(np.uint8))
 d = np.sqrt(((np.asarray(base.filter(ImageFilter.GaussianBlur(2))).astype(np.float32)
               - np.asarray(edit.filter(ImageFilter.GaussianBlur(2))).astype(np.float32)) ** 2).sum(2))
 changed = ndi.binary_opening(d > 22, structure=np.ones((7, 7)))
