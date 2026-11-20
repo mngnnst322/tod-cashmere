@@ -733,3 +733,48 @@ export async function addLookbookProduct(input: {
   revalidatePath("/admin", "layout");
   revalidateLookbook();
 }
+
+/** Admin -> Lookbook: edits a lookbook garment's name, type, colour, price and sizes. */
+export async function updateLookbookProduct(
+  id: string,
+  input: { titleMn: string; type: string; color: string; price: number; sizes: string },
+) {
+  await requireAdmin();
+  const db = await getDb();
+  const p = await db.query.products.findFirst({ where: eq(products.id, id) });
+  if (!p) throw new Error("Бараа олдсонгүй.");
+  const titleMn = input.titleMn.trim();
+  const color = input.color.trim();
+  const price = Math.round(Number(input.price));
+  const slot = slotFor(input.type, p.lookbookGender);
+  if (!slot) throw new Error("Төрөл энэ хүйст тохирохгүй байна.");
+  if (!titleMn || !color || !(price > 0)) throw new Error("Нэр, өнгө, үнийг бөглөнө үү.");
+  // Only re-translate what changed.
+  const [title, colour] = await Promise.all([
+    titleMn === p.titleMn
+      ? { en: p.titleEn, ru: p.titleRu ?? "", zh: p.titleZh ?? "" }
+      : translateFromMongolian(titleMn),
+    color === p.color
+      ? { en: p.colorEn ?? "", ru: p.colorRu ?? "", zh: p.colorZh ?? "" }
+      : translateFromMongolian(color),
+  ]);
+  await db
+    .update(products)
+    .set({
+      titleMn,
+      titleEn: title.en || titleMn,
+      titleRu: title.ru || null,
+      titleZh: title.zh || null,
+      color,
+      colorEn: colour.en || null,
+      colorRu: colour.ru || null,
+      colorZh: colour.zh || null,
+      price,
+      sizes: input.sizes.trim(),
+      lookbookType: input.type,
+    })
+    .where(eq(products.id, id));
+  await db.update(lookbookLayers).set({ slot }).where(eq(lookbookLayers.productId, id));
+  revalidatePath("/admin", "layout");
+  revalidateLookbook();
+}

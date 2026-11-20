@@ -12,6 +12,7 @@ import { ConfirmButton } from "../confirm-button";
 import { PageBody, PageHeader, btnDark, btnSoft, panel } from "../../ui";
 import { LayerUploader, ModelUploader } from "./uploaders";
 import { LookbookProductForm } from "./product-form";
+import { EditLookbookProduct } from "./edit-product";
 
 const STATUS = {
   draft: { label: "Шалгах", tone: "bg-amber-100 text-amber-800" },
@@ -136,7 +137,13 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
                       </span>
                       <span className={`rounded-full px-2 py-0.5 ${st.tone}`}>{st.label}</span>
                     </div>
+                    {l.product && (
+                      <div className="text-xs text-adm-mute">
+                        {l.product.price.toLocaleString("en-US")}₮{l.product.sizes ? ` · ${l.product.sizes}` : ""}
+                      </div>
+                    )}
                     <div className="flex flex-wrap gap-3 text-xs">
+                      {l.product && <EditLookbookProduct product={l.product} />}
                       {l.status !== "approved" && (
                         <form action={setLookbookLayerStatus.bind(null, l.id, "approved")}>
                           <button className="font-medium text-emerald-700 hover:underline">Нийтлэх</button>
