@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Cormorant_Garamond } from "next/font/google";
 import {
   getArrivalProducts,
 } from "@/lib/products";
@@ -22,7 +21,6 @@ const madeIn = {
   zh: { eyebrow: "蒙古制造", title: "从蒙古草原与游牧传承，到您手中" },
 };
 
-const serif = Cormorant_Garamond({ subsets: ["latin", "cyrillic"], weight: ["400", "500"] });
 
 // Photo blocks under the brand line: one large photo beside two small ones,
 // women with the large photo on the left, men with it on the right.
@@ -74,7 +72,7 @@ export default async function HomePage() {
 
       <section className="made-in">
         <p className="made-in-eyebrow">Cashmere Mongolia, {madeIn[lang].eyebrow}</p>
-        <h2 className={`made-in-title ${serif.className}`}>{madeIn[lang].title}</h2>
+        <h2 className="made-in-title font-cormorant">{madeIn[lang].title}</h2>
       </section>
 
       <section className="look-blocks">
