@@ -143,7 +143,7 @@ export default async function AdminLookbookPage(props: PageProps<"/admin/lookboo
                       </div>
                     )}
                     <div className="flex flex-wrap gap-3 text-xs">
-                      {l.product && <EditLookbookProduct product={l.product} />}
+                      {l.product && <EditLookbookProduct product={l.product} layerId={l.id} />}
                       {l.status !== "approved" && (
                         <form action={setLookbookLayerStatus.bind(null, l.id, "approved")}>
                           <button className="font-medium text-emerald-700 hover:underline">Нийтлэх</button>

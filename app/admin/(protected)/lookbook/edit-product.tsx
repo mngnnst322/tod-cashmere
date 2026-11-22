@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateLookbookProduct } from "@/lib/admin-actions";
+import { replaceLookbookLayer, updateLookbookProduct } from "@/lib/admin-actions";
 import { LOOKBOOK_TYPES } from "@/lib/lookbook";
 import { input } from "../../ui";
+import { uploadPhoto } from "../shrink-image";
+import { uploadRaw } from "./uploaders";
 
 type Product = {
   id: string;
@@ -16,7 +18,9 @@ type Product = {
 };
 
 /** "Засах" on a layer card: edits that garment's details in place. */
-export function EditLookbookProduct({ product }: { product: Product }) {
+export function EditLookbookProduct({ product, layerId }: { product: Product; layerId: string }) {
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [layer, setLayer] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
   const [error, setError] = useState("");
@@ -40,7 +44,13 @@ export function EditLookbookProduct({ product }: { product: Product }) {
         setError("");
         start(async () => {
           try {
+            const [image, layerPath] = await Promise.all([
+              photo ? uploadPhoto(photo) : Promise.resolve(""),
+              layer ? uploadRaw(layer) : Promise.resolve(""),
+            ]);
+            if (layerPath) await replaceLookbookLayer(layerId, layerPath);
             await updateLookbookProduct(product.id, {
+              image,
               titleMn: String(d.get("titleMn") || ""),
               type: String(d.get("type") || ""),
               color: String(d.get("color") || ""),
@@ -48,6 +58,8 @@ export function EditLookbookProduct({ product }: { product: Product }) {
               sizes: String(d.get("sizes") || ""),
             });
             setOpen(false);
+            setPhoto(null);
+            setLayer(null);
           } catch (err) {
             setError(err instanceof Error && err.message ? err.message : "Хадгалж чадсангүй.");
           }
@@ -73,6 +85,24 @@ export function EditLookbookProduct({ product }: { product: Product }) {
         className={field}
       />
       <input name="sizes" defaultValue={product.sizes} placeholder="S / M / L" aria-label="Размер" className={field} />
+      <label className={`${field} cursor-pointer truncate`}>
+        {photo ? `Картын зураг: ${photo.name}` : "Картын зураг солих"}
+        <input
+          type="file"
+          accept="image/*"
+          className="sr-only"
+          onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+        />
+      </label>
+      <label className={`${field} cursor-pointer truncate`}>
+        {layer ? `Давхарга: ${layer.name}` : "Давхарга солих (PNG/WebP)"}
+        <input
+          type="file"
+          accept="image/png,image/webp"
+          className="sr-only"
+          onChange={(e) => setLayer(e.target.files?.[0] ?? null)}
+        />
+      </label>
       <div className="flex gap-3">
         <button type="submit" disabled={pending} className="font-medium text-emerald-700 hover:underline disabled:opacity-50">
           {pending ? "Хадгалж байна…" : "Хадгалах"}

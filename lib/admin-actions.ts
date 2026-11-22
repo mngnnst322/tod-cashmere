@@ -737,7 +737,7 @@ export async function addLookbookProduct(input: {
 /** Admin -> Lookbook: edits a lookbook garment's name, type, colour, price and sizes. */
 export async function updateLookbookProduct(
   id: string,
-  input: { titleMn: string; type: string; color: string; price: number; sizes: string },
+  input: { titleMn: string; type: string; color: string; price: number; sizes: string; image?: string },
 ) {
   await requireAdmin();
   const db = await getDb();
@@ -772,9 +772,48 @@ export async function updateLookbookProduct(
       price,
       sizes: input.sizes.trim(),
       lookbookType: input.type,
+      // A new card photo becomes the cover and the "garment alone" view the
+      // lookbook cards show; the other views stay.
+      ...(input.image?.startsWith("/api/images/")
+        ? {
+            image: input.image,
+            views: JSON.stringify({ ...safeViews(p.views), flat: input.image }),
+            images: JSON.stringify([
+              input.image,
+              ...safeImages(p.images).filter((x) => x !== p.image && x !== input.image),
+            ]),
+          }
+        : {}),
     })
     .where(eq(products.id, id));
   await db.update(lookbookLayers).set({ slot }).where(eq(lookbookLayers.productId, id));
   revalidatePath("/admin", "layout");
+  revalidateLookbook();
+}
+
+function safeViews(json: string) {
+  try {
+    const v = JSON.parse(json);
+    return v && typeof v === "object" ? (v as Record<string, string>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function safeImages(json: string) {
+  try {
+    const v = JSON.parse(json);
+    return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Admin -> Lookbook: swaps a layer's image (same model photo, same garment). */
+export async function replaceLookbookLayer(id: string, image: string) {
+  await requireAdmin();
+  if (!image.startsWith("/api/images/")) throw new Error("Bad input");
+  const db = await getDb();
+  await db.update(lookbookLayers).set({ image }).where(eq(lookbookLayers.id, id));
   revalidateLookbook();
 }
