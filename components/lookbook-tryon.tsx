@@ -133,9 +133,19 @@ async function drawCutOut(canvas: HTMLCanvasElement, model: string, layers: stri
   for (const img of rest) ctx.drawImage(img, 0, 0, w, h);
   const frame = ctx.getImageData(0, 0, w, h);
   const d = frame.data;
-  const LO = 11, HI = 28;
+  // The backdrop stays within 6 of its model (99.9% of pixels on both model
+  // photos), while pale skin under studio light can sit only 15-30 away. A
+  // wider ramp turned bare legs half see-through, so it is kept tight.
+  const LO = 7, HI = 14;
+  // The top edge of the photo is lit unevenly and the row model misses it;
+  // it is above every head, so it is simply dropped.
+  const top = Math.round(h * 0.03);
   for (let y = 0; y < h; y++) {
     const o = y * 9;
+    if (y < top) {
+      for (let x = 0; x < w; x++) d[(y * w + x) * 4 + 3] = 0;
+      continue;
+    }
     for (let x = 0; x < w; x++) {
       const t = x / (w - 1);
       const q = 4 * t * (1 - t);
