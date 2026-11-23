@@ -42,6 +42,8 @@ const lookBlocks = [
     key: "men",
     href: "/categories/men",
     large: "/images/eregtei-tom.jpg",
+    // Laptops show the wide shot; phones keep the tall one above.
+    largeWide: "/images/eregtei-tom-90.jpg",
     // Small tiles: free Pexels photos (3754247, 3754251) until our own shoot.
     small: ["/images/eregtei-sale.jpg", "/images/eregtei-delguur.jpg"],
   },
@@ -79,7 +81,14 @@ export default async function HomePage() {
         {lookBlocks.map((block, i) => (
           <div key={block.key} className={`look-block ${i % 2 ? "is-flipped" : ""}`}>
             <Link href={block.href} className="look-tile look-tile--large">
-              <Image src={block.large} alt="" fill sizes="(max-width: 760px) 100vw, 58vw" />
+              {"largeWide" in block ? (
+                <>
+                  <Image src={block.large} alt="" fill sizes="100vw" className="look-only-phone" />
+                  <Image src={block.largeWide} alt="" fill sizes="58vw" className="look-only-wide" />
+                </>
+              ) : (
+                <Image src={block.large} alt="" fill sizes="(max-width: 760px) 100vw, 58vw" />
+              )}
               <span className="shop-split-label">{lookLabels[lang][block.key]}</span>
             </Link>
             {/* Top: that gender's sale items; bottom: that gender's shop. */}

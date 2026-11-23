@@ -5203,10 +5203,21 @@ body:has(.katalog-backdrop) .katalog-card-swatch {
   color: #000 !important;
   text-shadow: none;
 }
-/* Men: the large tile is as wide as the 2:3 photo at this height, so it
-   shows whole; the small tiles take the rest, lining up with the women's. */
+/* Men: the large tile mirrors the women's (wide shot on laptops). */
 .look-block.is-flipped {
-  grid-template-columns: 1fr calc(min(92vh, 62vw) * 2 / 3);
+  grid-template-columns: 1fr 1.4fr;
+}
+/* Phones get the tall men's photo, wider screens the wide one. */
+.look-tile .look-only-phone {
+  display: none;
+}
+@media (max-width: 760px) {
+  .look-tile .look-only-phone {
+    display: block;
+  }
+  .look-tile .look-only-wide {
+    display: none;
+  }
 }
 .look-block.is-flipped .look-tile--large {
   grid-column: 2;
