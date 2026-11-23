@@ -1,9 +1,9 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
 import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { CartDrawer } from "@/components/cart-drawer";
 import { SiteFooter } from "@/components/site-footer";
-import { ComingSoon } from "@/components/coming-soon";
 import { CatalogHeader } from "@/components/catalog-header";
 import { RevealObserver } from "@/components/reveal-observer";
 import { getSessionUser, isStaffRole, staffHome } from "@/lib/auth-guard";
@@ -55,8 +55,11 @@ export default async function StorefrontLayout({
   const isAuthPage =
     path.startsWith("/sign-in") ||
     path === "/privacy";
+  // For now the public only gets the catalog: every shop page (the home page
+  // included) sends visitors there. Turn "Тун удахгүй" off in the admin
+  // settings to open the shop again.
   if (comingSoon && !isStaff && !isAuthPage) {
-    return <ComingSoon />;
+    redirect("/catalog");
   }
 
   return (
