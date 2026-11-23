@@ -23,7 +23,7 @@ import {
 } from "./db/schema";
 import { isStaffRole, requireAdmin, requireRole } from "./auth-guard";
 import { isCatalogGender } from "./catalog-types";
-import { translateFromMongolian } from "./translate";
+import { translateCatalogName, translateFromMongolian } from "./translate";
 import { MEASUREMENTS } from "./measurements";
 import { PRODUCT_VIEWS } from "./product-views";
 import { isLookbookGender, slotFor } from "./lookbook";
@@ -444,10 +444,16 @@ export async function saveCatalogItem(id: string | null, formData: FormData) {
     sortOrder: Number(formData.get("sortOrder") || 0),
     ...(await galleryPhotos(formData)),
   };
+  // English and Japanese names: made again only when the name is new or changed.
+  const existing = id ? await db.query.catalogItems.findFirst({ where: eq(catalogItems.id, id) }) : null;
+  const names =
+    existing && existing.name.trim() === values.name.trim() && existing.nameJa
+      ? {}
+      : await translateCatalogName(values.name).then((t) => ({ nameEn: t.en || null, nameJa: t.ja || null }));
   if (id) {
-    await db.update(catalogItems).set(values).where(eq(catalogItems.id, id));
+    await db.update(catalogItems).set({ ...values, ...names }).where(eq(catalogItems.id, id));
   } else {
-    await db.insert(catalogItems).values({ id: crypto.randomUUID(), ...values });
+    await db.insert(catalogItems).values({ id: crypto.randomUUID(), ...values, ...names });
   }
   revalidatePath("/admin", "layout");
   redirect(catalogAdminHref(values.gender, type));

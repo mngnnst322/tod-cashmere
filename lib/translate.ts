@@ -65,3 +65,31 @@ export async function translateFromMongolian(text: string): Promise<Translations
     return empty;
   }
 }
+
+/**
+ * Translates a catalog item name (Mongolian, as typed in the admin) into
+ * English and Japanese for the online catalog. Empty strings on failure.
+ */
+export async function translateCatalogName(text: string): Promise<{ en: string; ja: string }> {
+  const empty = { en: "", ja: "" };
+  const source = text.trim();
+  if (!source) return empty;
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const out = (await env.AI.run(MODEL, {
+      messages: [
+        {
+          role: "system",
+          content: `You translate short Mongolian knitwear item names for a cashmere catalog into English and Japanese. Translate every word; never leave Mongolian words or transliterations. Japanese uses the usual fashion katakana (セーター, カーディガン, ニット, ワンピース, パンツ, スカート, ベスト, ポロシャツ, ケーブル編み for "кебель/кебельтэй", ロング for "урт", 半袖 for "богино ханцуйтай"). Glossary (Mongolian = English | Russian | Chinese):\n${GLOSSARY}\nKeep each translation as short as the original, like a product label. Reply with only JSON: {"en":"…","ja":"…"}`,
+        },
+        { role: "user", content: source },
+      ],
+      max_tokens: 120,
+    })) as { response?: unknown };
+    const parsed =
+      typeof out.response === "string" ? JSON.parse(out.response) : (out.response as Partial<{ en: string; ja: string }>);
+    return { en: String(parsed?.en ?? "").trim(), ja: String(parsed?.ja ?? "").trim() };
+  } catch {
+    return empty;
+  }
+}

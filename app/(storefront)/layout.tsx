@@ -36,7 +36,7 @@ export default async function StorefrontLayout({
     return (
       <div className="page">
         <CatalogHeader
-          items={items.map(({ id, name, type, gender }) => ({ id, name, type, gender }))}
+          items={items.map(({ id, name, nameEn, nameJa, type, gender }) => ({ id, name, nameEn, nameJa, type, gender }))}
           types={types.map(({ gender, name }) => ({ gender, name }))}
           adminHref={isStaff ? staffHome(user.role) : null}
           lang={catalogLang}

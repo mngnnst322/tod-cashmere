@@ -56,7 +56,7 @@ export function CatalogGrid({
               )}
             </div>
             <div className="katalog-card-name">
-              {catalogItemName(item.name, lang)}
+              {catalogItemName(item.name, lang, item)}
             </div>
             {item.colors && (
               <div className="katalog-card-colors">

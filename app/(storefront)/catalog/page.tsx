@@ -48,7 +48,7 @@ export default async function CatalogPage(props: PageProps<"/catalog">) {
     const matches = items.filter((i) =>
       [
         i.name,
-        catalogItemName(i.name, lang),
+        catalogItemName(i.name, lang, i),
         i.material,
         i.colors,
         i.type,
@@ -85,7 +85,7 @@ export default async function CatalogPage(props: PageProps<"/catalog">) {
         {sections.map((sec) => (
           <Listing
             key={sec.type}
-            title={`${s[gender]} · ${pickedName ? catalogItemName(pickedName, lang) : catalogTypeName(sec.type, lang)}`}
+            title={`${s[gender]} · ${pickedName ? catalogItemName(pickedName, lang, items.find((i) => i.name === pickedName)) : catalogTypeName(sec.type, lang)}`}
             subtitle={`${sec.items.length} ${s.styles}`}
           >
             {sec.items.length > 0 && <CatalogGrid items={sec.items} strings={s} lang={lang} />}

@@ -190,6 +190,10 @@ export const catalogItems = sqliteTable("catalog_items", {
   id: text("id").primaryKey(),
   type: text("type").notNull(),
   name: text("name").notNull(),
+  // Machine translations of `name`, made when it is saved in the admin; the
+  // hand-written ones in lib/catalog-i18n.ts win when present.
+  nameEn: text("name_en"),
+  nameJa: text("name_ja"),
   // Style code, e.g. "12-10-335".
   code: text("code").notNull().default(""),
   material: text("material").notNull().default(""),

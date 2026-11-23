@@ -19,7 +19,7 @@ export async function generateMetadata(props: PageProps<"/catalog/[id]">) {
   const [item, lang] = await Promise.all([getCatalogItem(id), getCatalogLang()]);
   return {
     title: item
-      ? `${catalogItemName(item.name, lang)} – Tod Cashmere`
+      ? `${catalogItemName(item.name, lang, item)} – Tod Cashmere`
       : "Tod Cashmere",
   };
 }
@@ -51,7 +51,7 @@ export default async function CatalogItemPage(
           ← {s.back}
         </Link>
         <div className="katalog-item-layout">
-          <CatalogGallery images={gallery} alt={catalogItemName(item.name, lang)}>
+          <CatalogGallery images={gallery} alt={catalogItemName(item.name, lang, item)}>
           <CatalogItemHeart id={item.id} strings={s} />
         </CatalogGallery>
           <div className="katalog-item-info">
@@ -59,7 +59,7 @@ export default async function CatalogItemPage(
               {catalogTypeName(item.type, lang)}
             </div>
             <h1 className="katalog-item-name">
-              {catalogItemName(item.name, lang)}
+              {catalogItemName(item.name, lang, item)}
             </h1>
             {item.material && (
               <div className="katalog-item-material">

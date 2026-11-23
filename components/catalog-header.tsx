@@ -30,6 +30,8 @@ const typeHref = (gender: string, type: string) =>
 export type MenuItem = {
   id: string;
   name: string;
+  nameEn?: string | null;
+  nameJa?: string | null;
   type: string;
   gender: string;
 };
@@ -182,7 +184,7 @@ export function CatalogHeader({
                                   href={`${typeHref(gender, hoverType)}&name=${encodeURIComponent(name)}`}
                                   onClick={close}
                                 >
-                                  {catalogItemName(name, lang)}
+                                  {catalogItemName(name, lang, items.find((i) => i.name === name))}
                                 </Link>
                               </li>
                             ))}

@@ -183,6 +183,13 @@
       "when": 1794991369905,
       "tag": "0025_lookbook",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "6",
+      "when": 1795077769905,
+      "tag": "0026_catalog_name_translations",
+      "breakpoints": true
     }
   ]
 }
