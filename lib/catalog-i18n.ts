@@ -197,6 +197,7 @@ const typeNames: Record<string, [en: string, ru: string, zh: string]> = {
   "Юбка": ["Skirts", "Юбки", "半身裙"],
   "Бомбер": ["Bombers", "Бомберы", "飞行员夹克"],
   "Поло": ["Polos", "Поло", "Polo衫"],
+  "Малгайтай цамц": ["Hoodies", "Худи", "连帽衫"],
 };
 
 // Garment type names in Japanese.
@@ -228,6 +229,7 @@ const jaTypeNames: Record<string, string> = {
   "Юбка": "スカート",
   "Бомбер": "ボンバージャケット",
   "Поло": "ポロシャツ",
+  "Малгайтай цамц": "フーディー",
 };
 
 export function catalogTypeName(type: string, lang: AnyLang) {
