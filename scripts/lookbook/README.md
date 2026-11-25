@@ -38,3 +38,39 @@ block once one gender has a model photo and at least one approved layer.
 
 A person must check every layer against the real garment (colour, knit
 pattern, length) before approving it.
+
+## Fast path for tops (sweaters, cardigans, vests, T-shirts)
+
+`make_top_layer.py` does step 2 for a top and also removes what the AI drew
+below the new hem, which `make_layer.py` alone leaves in when the new top is
+shorter than the one in the base photo. It writes one check sheet; look at
+that once.
+
+```sh
+python3 make_top_layer.py segformer_clothes.onnx base.jpg edit.png out/top-name bottom1.webp bottom2.webp
+# -> out/top-name.webp (upload) and out/top-name_sheet.jpg (check)
+```
+
+Per product, the whole job is:
+
+1. Upload the base photo once per session and 1–2 front photos of the
+   garment (Higgsfield `media_upload`, PUT, `media_confirm`). Several
+   products can go in one `media_upload` call.
+2. Generate all edits in one `generate_image_batch` call
+   (`gpt_image_2_6`, quality high, 2k, 2:3, about 2.75 credits each) with:
+
+   > Edit the FIRST image only. Use the other reference images ONLY for the
+   > garment, not the person; ignore any other garments in them. Replace
+   > his/her &lt;current top&gt; with &lt;garment: colour, neckline, sleeves,
+   > fastening, pockets, hem&gt;. &lt;If arms become bare: Her forearms are now
+   > bare, with natural skin matching her hands.&gt; The hem must reach at
+   > least as low as the &lt;current top&gt;'s hem in the first image so none of
+   > it remains visible. Everything else must stay exactly the same as the
+   > first image: same face, hair, pose, hands, trousers, shoes, background,
+   > framing, lighting. Do not move or resize the person.
+
+3. Run `make_top_layer.py` on each result with two bottom layers and look
+   at the sheets. Upload the `.webp` files in Admin → Lookbook.
+
+Base photos are the active model photos in Admin → Lookbook (1333×2000).
+Bottoms and hats still use `make_layer.py` as in step 2.
