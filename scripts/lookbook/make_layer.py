@@ -4,7 +4,10 @@ Compares an AI try-on edit with the base model photo and keeps the garment
 (found with a SegFormer clothing model) as a transparent image the size of
 the base photo. See scripts/lookbook/README.md.
 
-usage: make_layer.py model.onnx base.png edit.png head|top|bottom out_prefix
+usage: make_layer.py model.onnx base.png edit.png head|top|bottom|full out_prefix
+
+"full" is for a dress: it replaces both the top and the bottom, so the layer
+also carries the bare legs and shoes that show where the trousers were.
 """
 import sys, json
 import numpy as np, onnxruntime as ort
@@ -49,6 +52,10 @@ if slot == "top":
     m = isin(4, 7) | base_has(4) | (isin(14, 15) & changed)
 elif slot == "bottom":
     m = isin(5, 6, 7) | base_has(5, 6) | (isin(12, 13) & changed)
+elif slot == "full":
+    # Dress, legs and shoes from the edit, over everything the base top and
+    # trousers covered, so no part of the base outfit shows around the hem.
+    m = isin(4, 5, 6, 7, 12, 13) | base_has(4, 5, 6) | (isin(9, 10, 14, 15) & changed)
 else:                  # head: an accessory worn OVER other clothes - only strongly changed pixels
     # The model labels a hood or bib mostly as upper clothes, and the edit often
     # re-renders the sweater under it with thin streaks. Compare blurred images

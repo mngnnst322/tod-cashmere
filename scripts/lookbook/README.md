@@ -27,6 +27,9 @@ python3 make_layer.py segformer_clothes.onnx base.png edit.png top out/sweater-t
 ```
 
 Slot by type: hat → `head`, tshirt/shirt → `top`, pants/skirt → `bottom`.
+Dress → `full`: the edit replaces both the top and the trousers ("bare lower
+legs, same shoes"), and the layer keeps the legs and shoes too. Upload it as
+type "Даашинз"; the try-on takes the bottom off while a dress is worn.
 It writes `out/<name>.png` (full size) and `out/<name>.webp` (half size).
 
 ### Accessories worn over a top (hood-bib, scarf)
