@@ -29,6 +29,16 @@ python3 make_layer.py segformer_clothes.onnx base.png edit.png top out/sweater-t
 Slot by type: hat → `head`, tshirt/shirt → `top`, pants/skirt → `bottom`.
 It writes `out/<name>.png` (full size) and `out/<name>.webp` (half size).
 
+### Accessories worn over a top (hood-bib, scarf)
+
+The edit re-draws the top under them a little, so cut them through a green
+top instead:
+
+1. Edit the base photo: recolour the top flat chroma-key green (#00B140),
+   everything else unchanged.
+2. Edit that green photo to wear the accessory.
+3. `python3 make_accessory_layer.py base.jpg green.png accessory.png out/hood`
+
 ## 3. Upload and approve
 
 Admin → Lookbook → pick the product → upload the `.webp`. New layers start as
