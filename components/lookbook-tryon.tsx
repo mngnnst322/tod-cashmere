@@ -7,6 +7,7 @@ import { useLang } from "./lang-provider";
 import {
   LOOKBOOK_TYPES,
   SLOT_ORDER,
+  isFullBody,
   type LookbookItem,
   type LookbookLook,
   type LookbookSlot,
@@ -18,7 +19,7 @@ const text = {
     eyebrow: "Виртуал хувцаслалт",
     title: "Өмсөөд үзээрэй",
     women: "Эмэгтэй", men: "Эрэгтэй",
-    types: { hat: "Малгай", tshirt: "Майк", shirt: "Цамц", pants: "Өмд", skirt: "Юбка" },
+    types: { hat: "Малгай", tshirt: "Майк", shirt: "Цамц", pants: "Өмд", skirt: "Юбка", dress: "Даашинз" },
     size: "Хэмжээ", pick: "Хэмжээгээ сонгоно уу", add: "Сагсанд хийх", added: "Нэмэгдлээ",
     soldOut: "Дууссан", details: "Дэлгэрэнгүй", takeOff: "Тайлах", look: "Образын нийт үнэ",
     prev: "Өмнөх", next: "Дараах", note: "Зураг нь хувцас өмссөн байдлыг ойролцоогоор харуулна.",
@@ -28,7 +29,7 @@ const text = {
     eyebrow: "Virtual fitting",
     title: "Try it on",
     women: "Women", men: "Men",
-    types: { hat: "Hats", tshirt: "T-shirts", shirt: "Tops", pants: "Trousers", skirt: "Skirts" },
+    types: { hat: "Hats", tshirt: "T-shirts", shirt: "Tops", pants: "Trousers", skirt: "Skirts", dress: "Dresses" },
     size: "Size", pick: "Please choose a size", add: "Add to cart", added: "Added",
     soldOut: "Sold out", details: "Details", takeOff: "Take off", look: "Look total",
     prev: "Previous", next: "Next", note: "Images show an approximate fit.",
@@ -38,7 +39,7 @@ const text = {
     eyebrow: "Виртуальная примерка",
     title: "Примерьте",
     women: "Женщинам", men: "Мужчинам",
-    types: { hat: "Шапки", tshirt: "Футболки", shirt: "Кофты", pants: "Брюки", skirt: "Юбки" },
+    types: { hat: "Шапки", tshirt: "Футболки", shirt: "Кофты", pants: "Брюки", skirt: "Юбки", dress: "Платья" },
     size: "Размер", pick: "Выберите размер", add: "В корзину", added: "Добавлено",
     soldOut: "Нет в наличии", details: "Подробнее", takeOff: "Снять", look: "Итого за образ",
     prev: "Назад", next: "Вперёд", note: "Изображение показывает посадку приблизительно.",
@@ -48,7 +49,7 @@ const text = {
     eyebrow: "虚拟试穿",
     title: "试穿一下",
     women: "女士", men: "男士",
-    types: { hat: "帽子", tshirt: "T恤", shirt: "上衣", pants: "裤子", skirt: "半身裙" },
+    types: { hat: "帽子", tshirt: "T恤", shirt: "上衣", pants: "裤子", skirt: "半身裙", dress: "连衣裙" },
     size: "尺码", pick: "请选择尺码", add: "加入购物车", added: "已加入",
     soldOut: "售罄", details: "详情", takeOff: "取下", look: "整套价格",
     prev: "上一个", next: "下一个", note: "图片仅显示大致上身效果。",
@@ -166,14 +167,34 @@ async function drawCutOut(canvas: HTMLCanvasElement, model: string, layers: stri
 
 type Worn = Partial<Record<LookbookSlot, string>>; // slot -> layerId
 
+/** The first in-stock item of a slot (else the first at all), skipping dresses for the top. */
+function firstOf(items: LookbookItem[], slot: LookbookSlot) {
+  const fits = (i: LookbookItem) => i.slot === slot && !isFullBody(i.type);
+  return items.find((i) => fits(i) && !i.soldOut) ?? items.find(fits);
+}
+
 /** Puts on the first item of each body slot except the head, so the model opens dressed. */
 function initialLook(items: LookbookItem[]): Worn {
   const worn: Worn = {};
   for (const slot of ["top", "bottom"] as const) {
-    const first = items.find((i) => i.slot === slot && !i.soldOut) ?? items.find((i) => i.slot === slot);
+    const first = firstOf(items, slot);
     if (first) worn[slot] = first.layerId;
   }
   return worn;
+}
+
+/**
+ * The outfit after putting `item` on. A dress takes the bottom off (its layer
+ * already shows the legs); a bottom put on over a dress swaps the dress for
+ * a plain top, so the model is never left without one.
+ */
+function wear(worn: Worn, item: LookbookItem, items: LookbookItem[]): Worn {
+  if (isFullBody(item.type)) return { ...worn, top: item.layerId, bottom: undefined };
+  const top = items.find((i) => i.layerId === worn.top);
+  if (item.slot === "bottom" && top && isFullBody(top.type)) {
+    return { ...worn, top: firstOf(items, "top")?.layerId, bottom: item.layerId };
+  }
+  return { ...worn, [item.slot]: item.layerId };
 }
 
 type Shelf = LookbookType | "all";
@@ -219,7 +240,7 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
     const wornIdx = cards.findIndex((c) => worn[c.slot] === c.layerId);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFocus(wornIdx >= 0 ? wornIdx : 0);
-    if (activeShelf !== "all" && wornIdx < 0) setWorn((w) => ({ ...w, [cards[0].slot]: cards[0].layerId }));
+    if (activeShelf !== "all" && wornIdx < 0) setWorn((w) => wear(w, cards[0], look.items));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gender, activeShelf]);
 
@@ -236,7 +257,7 @@ export function LookbookTryOn({ looks }: { looks: LookbookLook[] }) {
     const i = wrap(index);
     setFocus(i);
     const item = cards[i];
-    setWorn((w) => ({ ...w, [item.slot]: item.layerId }));
+    setWorn((w) => wear(w, item, look.items));
   };
 
   // Drag, swipe and sideways trackpad scroll move the row.

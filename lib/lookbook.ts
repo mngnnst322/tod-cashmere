@@ -10,11 +10,15 @@ export const LOOKBOOK_TYPES = [
   { key: "shirt", label: "Цамц", slot: "top", genders: ["women", "men"] },
   { key: "pants", label: "Өмд", slot: "bottom", genders: ["women", "men"] },
   { key: "skirt", label: "Юбка", slot: "bottom", genders: ["women"] },
+  // A dress fills the top slot and also takes the bottom off: its layer
+  // covers the legs down to the shoes, so trousers or a skirt must not show.
+  { key: "dress", label: "Даашинз", slot: "top", genders: ["women"], fullBody: true },
 ] as const satisfies readonly {
   key: string;
   label: string;
   slot: LookbookSlot;
   genders: readonly LookbookGender[];
+  fullBody?: boolean;
 }[];
 
 export type LookbookType = (typeof LOOKBOOK_TYPES)[number]["key"];
@@ -31,6 +35,12 @@ export const isLookbookGender = (v: unknown): v is LookbookGender => v === "wome
 
 export function lookbookType(key: string | null | undefined) {
   return LOOKBOOK_TYPES.find((t) => t.key === key);
+}
+
+/** True for a garment that is worn instead of both a top and a bottom (a dress). */
+export function isFullBody(type: string | null | undefined) {
+  const t = lookbookType(type);
+  return Boolean(t && "fullBody" in t && t.fullBody);
 }
 
 /** The slot a product's type fills, or null if the type doesn't apply to that gender. */
